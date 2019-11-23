@@ -71,7 +71,7 @@ public class ItemsPropertiesObject {
     }
 
     private int getMaxStackSize() {
-        return maxStackSize;
+        return Math.min(maxStackSize, 64);
     }
 
     private boolean noRepair() {
