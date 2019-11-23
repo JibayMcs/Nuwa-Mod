@@ -1,0 +1,47 @@
+package api.contentpack.common.data;
+
+import api.contentpack.client.itemGroup.JsonItemGroup;
+import api.contentpack.client.itemGroup.VanillaItemGroups;
+import api.contentpack.common.IPackData;
+import api.contentpack.common.PackManager;
+import api.contentpack.common.json.datas.itemGroups.ItemGroupObject;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+
+public class ItemGroupData implements IPackData {
+
+    @Override
+    public String getEntryName() {
+        return "objects/itemgroup.json";
+    }
+
+    @Override
+    public void parseData(InputStreamReader readerIn) {
+        ItemGroupObject itemGroupObject = PackManager.GSON.fromJson(readerIn, ItemGroupObject.class);
+
+        if (itemGroupObject != null) {
+            String formatedId = String.format("%s.%s", itemGroupObject.getId().getNamespace(), itemGroupObject.getId().getPath());
+
+            ItemGroup parsedItemGroup = new JsonItemGroup(formatedId, itemGroupObject.hasNoTitle(), itemGroupObject.hasSearchBar(), itemGroupObject.hasScrollBar(), itemGroupObject.getBackgroundImage()) {
+                @OnlyIn(Dist.CLIENT)
+                @Override
+                public ItemStack createIcon() {
+                    return ForgeRegistries.ITEMS.getValue(itemGroupObject.getIcon()).getDefaultInstance();
+                }
+            };
+            VanillaItemGroups.getItemGroupsMap().put(itemGroupObject.getId(), parsedItemGroup);
+        }
+    }
+
+    @Override
+    public LinkedList<? extends ForgeRegistryEntry> getObjectsList() {
+        return null;
+    }
+}

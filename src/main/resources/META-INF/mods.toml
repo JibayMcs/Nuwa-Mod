@@ -1,0 +1,26 @@
+modLoader="javafml" #mandatory
+loaderVersion="[28,)" #mandatory (28 is current forge version)
+#issueTrackerURL="http://my.issue.tracker/" #optional
+[[mods]] #mandatory
+modId="mjson" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="MJson Mod" #mandatory
+#updateJSONURL="http://myurl.me/" #optional
+#displayURL="http://example.com/" #optional
+#logoFile="examplemod.png" #optional
+credits="Yeah BOI." #optional
+authors="ZeAmateis" #optional
+description=''''''
+
+[[dependencies.mjson]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[28,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.mjson]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.14.4]"
+    ordering="NONE"
+    side="BOTH"
