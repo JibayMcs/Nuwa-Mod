@@ -1,4 +1,4 @@
-package fr.zeamateis.mjson.client.gui.contentPack;
+package fr.zeamateis.nuwa.client.gui.contentPack;
 
 import api.contentpack.common.ContentPack;
 import com.mojang.blaze3d.platform.GlStateManager;

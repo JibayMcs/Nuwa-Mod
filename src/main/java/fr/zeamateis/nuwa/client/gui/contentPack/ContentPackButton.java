@@ -1,15 +1,15 @@
-package fr.zeamateis.mjson.client.gui.contentPack;
+package fr.zeamateis.nuwa.client.gui.contentPack;
 
-import fr.zeamateis.mjson.Constant;
+import fr.zeamateis.nuwa.Constant;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 
 public class ContentPackButton extends ImageButton {
-    public static final ResourceLocation BUTTONS_TEXTURE = new ResourceLocation(Constant.MODID, "textures/gui/buttons.png");
+    private static final ResourceLocation BUTTONS_TEXTURE = new ResourceLocation(Constant.MODID, "textures/gui/buttons.png");
 
     private final boolean assetButton;
-    public String toolTipText = I18n.format("mjson.screen.tooltip.reloadAssets");
+    String toolTipText = I18n.format("nuwa.screen.tooltip.reloadAssets");
     private int animationFrames = 3, animationTicks;
 
     public ContentPackButton(boolean assetButton, int p_i51135_1_, int p_i51135_2_, int p_i51135_3_, int p_i51135_4_, int p_i51135_5_, int p_i51135_6_, int p_i51135_7_, int p_i51135_9_, int p_i51135_10_, IPressable p_i51135_11_) {

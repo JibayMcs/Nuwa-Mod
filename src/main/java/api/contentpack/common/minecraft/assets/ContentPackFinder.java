@@ -1,7 +1,7 @@
 package api.contentpack.common.minecraft.assets;
 
 import api.contentpack.common.ContentPack;
-import fr.zeamateis.mjson.MJsonMod;
+import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.resources.FilePack;
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.ResourcePackInfo;
@@ -29,7 +29,7 @@ public class ContentPackFinder implements IPackFinder {
             }, packInfoFactory, ResourcePackInfo.Priority.TOP);
             if (t1 != null) {
                 nameToPackMap.put(contentPack.getNamespace(), t1);
-                MJsonMod.getLogger().debug("Added {} content pack assets to resources packs list.", t1.getName());
+                NuwaMod.getLogger().debug("Added {} content pack assets to resources packs list.", t1.getName());
             }
         }
     }

@@ -1,8 +1,8 @@
-package fr.zeamateis.mjson.client.event;
+package fr.zeamateis.nuwa.client.event;
 
-import fr.zeamateis.mjson.Constant;
-import fr.zeamateis.mjson.client.gui.contentPack.ContentPackButton;
-import fr.zeamateis.mjson.client.gui.contentPack.ContentPacksScreen;
+import fr.zeamateis.nuwa.Constant;
+import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackButton;
+import fr.zeamateis.nuwa.client.gui.contentPack.ContentPacksScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.widget.button.Button;

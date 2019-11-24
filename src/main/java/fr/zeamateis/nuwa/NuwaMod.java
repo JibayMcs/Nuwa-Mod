@@ -1,14 +1,14 @@
-package fr.zeamateis.mjson;
+package fr.zeamateis.nuwa;
 
 import api.contentpack.client.itemGroup.VanillaItemGroups;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.minecraft.assets.ContentPackFinder;
-import fr.zeamateis.mjson.common.network.C2SContentPackInfoPacket;
-import fr.zeamateis.mjson.common.network.S2CContentPackInfoPacket;
-import fr.zeamateis.mjson.proxy.ClientProxy;
-import fr.zeamateis.mjson.proxy.CommonProxy;
-import fr.zeamateis.mjson.proxy.ServerProxy;
+import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
+import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
+import fr.zeamateis.nuwa.proxy.ClientProxy;
+import fr.zeamateis.nuwa.proxy.CommonProxy;
+import fr.zeamateis.nuwa.proxy.ServerProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.resources.*;
@@ -17,7 +17,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -32,11 +31,11 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 @Mod(Constant.MODID)
-public class MJsonMod implements ISelectiveResourceReloadListener {
+public class NuwaMod implements ISelectiveResourceReloadListener {
     private static final String PROTOCOL_VERSION = String.valueOf(1);
 
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
-            .named(new ResourceLocation(Constant.MODID, "mjson_channel"))
+            .named(new ResourceLocation(Constant.MODID, "nuwa_channel"))
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
@@ -46,7 +45,7 @@ public class MJsonMod implements ISelectiveResourceReloadListener {
     private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     private static PackManager packManager;
 
-    public MJsonMod() {
+    public NuwaMod() {
         packManager = new PackManager(PROXY.getPackDir().toPath());
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerVanillaItemGroups);
@@ -54,13 +53,10 @@ public class MJsonMod implements ISelectiveResourceReloadListener {
         packManager.fetchPacks(Constant.MODELS_PACK_DIR);
         packManager.getPacks().forEach(contentPack -> {
             PROXY.objectsRegistry(contentPack);
-            //PROXY.registerPackFinder(contentPack);
         });
 
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
-        //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
-        //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onSetupFinished);*/
     }
 
     public static Logger getLogger() {
@@ -106,10 +102,8 @@ public class MJsonMod implements ISelectiveResourceReloadListener {
                         }, packInfoFactory, ResourcePackInfo.Priority.TOP);
                         if (t1 != null) {
                             nameToPackMap.put(contentPack.getNamespace(), t1);
-                            //TODO Fix non-closing pack.
-                            //Minecraft.getInstance().getResourceManager().addResourcePack(t1.getResourcePack());
                             resourceManager.addResourcePack(t1.getResourcePack());
-                            MJsonMod.getLogger().debug("Added {} content pack assets to resources packs list.", t1.getName());
+                            NuwaMod.getLogger().debug("Added {} content pack assets to resources packs list.", t1.getName());
                         }
                     }
                 }
@@ -128,11 +122,7 @@ public class MJsonMod implements ISelectiveResourceReloadListener {
         VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.COMBAT.getTabLabel()), ItemGroup.COMBAT);
         VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.BREWING.getTabLabel()), ItemGroup.BREWING);
         VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.MISC.getTabLabel()), ItemGroup.MISC);
-        VanillaItemGroups.getItemGroupsMap().forEach((resourceLocation, itemGroup) -> MJsonMod.getLogger().debug(resourceLocation.toString()));
-    }
-
-    private void onClientSetup(FMLClientSetupEvent event) {
-
+        VanillaItemGroups.getItemGroupsMap().forEach((resourceLocation, itemGroup) -> NuwaMod.getLogger().debug(resourceLocation.toString()));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {

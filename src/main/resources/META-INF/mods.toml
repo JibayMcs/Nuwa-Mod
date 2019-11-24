@@ -1,24 +1,24 @@
 modLoader="javafml" #mandatory
 loaderVersion="[28,)" #mandatory (28 is current forge version)
-#issueTrackerURL="http://my.issue.tracker/" #optional
+issueTrackerURL="http://my.issue.tracker/" #optional
 [[mods]] #mandatory
-modId="mjson" #mandatory
+modId="nuwa" #mandatory
 version="${file.jarVersion}" #mandatory
-displayName="MJson Mod" #mandatory
+displayName="Nuwa" #mandatory
 #updateJSONURL="http://myurl.me/" #optional
 #displayURL="http://example.com/" #optional
-#logoFile="examplemod.png" #optional
-credits="Yeah BOI." #optional
-authors="ZeAmateis" #optional
-description=''''''
+logoFile="logo.png" #optional
+#credits="" #optional
+authors="ZeAmateis, Nywhere, Vroulas" #optional
+description='''A Minecraft mod that allow you to create content packs and add a tons of new objects without any lines of code !'''
 
-[[dependencies.mjson]] #optional
+[[dependencies.nuwa]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
     versionRange="[28,)" #mandatory
     ordering="NONE"
     side="BOTH"
-[[dependencies.mjson]]
+[[dependencies.nuwa]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.14.4]"

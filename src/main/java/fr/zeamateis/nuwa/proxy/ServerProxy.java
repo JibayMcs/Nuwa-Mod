@@ -1,4 +1,4 @@
-package fr.zeamateis.mjson.proxy;
+package fr.zeamateis.nuwa.proxy;
 
 import java.io.File;
 

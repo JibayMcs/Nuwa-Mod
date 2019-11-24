@@ -1,4 +1,4 @@
-package fr.zeamateis.mjson.proxy;
+package fr.zeamateis.nuwa.proxy;
 
 import api.contentpack.common.ContentPack;
 
@@ -9,7 +9,5 @@ public interface IProxy {
     File getPackDir();
 
     void objectsRegistry(ContentPack contentPackIn);
-
-    void registerPackFinder(ContentPack contentPackIn);
 
 }

@@ -1,8 +1,8 @@
-package fr.zeamateis.mjson.server.event;
+package fr.zeamateis.nuwa.server.event;
 
-import fr.zeamateis.mjson.Constant;
-import fr.zeamateis.mjson.MJsonMod;
-import fr.zeamateis.mjson.common.network.S2CContentPackInfoPacket;
+import fr.zeamateis.nuwa.Constant;
+import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -16,7 +16,7 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onPlayerLoggin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getPlayer() != null) {
-            MJsonMod.getNetwork().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new S2CContentPackInfoPacket(event.getPlayer().getUniqueID()));
+            NuwaMod.getNetwork().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new S2CContentPackInfoPacket(event.getPlayer().getUniqueID()));
         }
     }
 

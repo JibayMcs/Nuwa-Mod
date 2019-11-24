@@ -1,7 +1,7 @@
-package fr.zeamateis.mjson.common.network;
+package fr.zeamateis.nuwa.common.network;
 
 import api.contentpack.common.ContentPack;
-import fr.zeamateis.mjson.MJsonMod;
+import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -41,7 +41,7 @@ public class C2SContentPackInfoPacket {
     }
 
     public static void handle(C2SContentPackInfoPacket packet, Supplier<NetworkEvent.Context> ctx) {
-        for (ContentPack packs : MJsonMod.getPackManager().getPacks()) {
+        for (ContentPack packs : NuwaMod.getPackManager().getPacks()) {
             try {
                 try (InputStream is = Files.newInputStream(Paths.get(packs.getFile().getPath()))) {
                     String md5 = DigestUtils.md5Hex(is);

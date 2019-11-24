@@ -1,9 +1,9 @@
-package fr.zeamateis.mjson.client.gui.contentPack;
+package fr.zeamateis.nuwa.client.gui.contentPack;
 
 import api.contentpack.common.ContentPack;
 import com.mojang.blaze3d.platform.GlStateManager;
-import fr.zeamateis.mjson.Constant;
-import fr.zeamateis.mjson.MJsonMod;
+import fr.zeamateis.nuwa.Constant;
+import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.gui.ScrollPanel;
 import net.minecraftforge.common.ForgeHooks;
@@ -42,7 +41,7 @@ public class ContentPacksScreen extends Screen {
     private InfoPanel infoPanel;
     private ContentPacksList.PackEntry selected = null;
     private int listWidth;
-    private List<ContentPack> contentPacks = MJsonMod.getPackManager().getPacks();
+    private List<ContentPack> contentPacks = NuwaMod.getPackManager().getPacks();
     private int buttonMargin = 1;
     private int numButtons = SortType.values().length;
     private String lastFilterText = "";
@@ -55,7 +54,7 @@ public class ContentPacksScreen extends Screen {
      * @param mainMenu
      */
     public ContentPacksScreen(Screen mainMenu) {
-        super(new TranslationTextComponent("fml.menu.mods.title"));
+        super(new StringTextComponent(""));
         this.mainMenu = mainMenu;
         this.unsortedMods = Collections.unmodifiableList(this.contentPacks);
     }
@@ -83,14 +82,14 @@ public class ContentPacksScreen extends Screen {
         this.addButton(new Button(((contentPacksList.getWidth() + 8 + this.width - doneButtonWidth) / 2), this.height - 24, doneButtonWidth, 20,
                 I18n.format("gui.done"), b -> ContentPacksScreen.this.minecraft.displayGuiScreen(ContentPacksScreen.this.mainMenu)));
         this.addButton(new Button(6, this.height - 24, this.listWidth - 25, 20,
-                I18n.format("mjson.screen.label.openFolder"), b -> Util.getOSType().openFile(Constant.MODELS_PACK_DIR)));
+                I18n.format("nuwa.screen.label.openFolder"), b -> Util.getOSType().openFile(Constant.MODELS_PACK_DIR)));
 
 
         this.addButton(new ContentPackButton(true, listWidth - 14, this.height - 24, 20, 20, 20, 0, 20, 64, 64, onPress -> {
             ForgeHooksClient.refreshResources(this.minecraft);
         }));
 
-        search = new TextFieldWidget(getFontRenderer(), 8, 20, listWidth - 4, 14, I18n.format("fml.menu.mods.search"));
+        search = new TextFieldWidget(getFontRenderer(), 8, 20, this.width / 2 - 28, 14, I18n.format("fml.menu.mods.search"));
         children.add(search);
         children.add(contentPacksList);
         children.add(infoPanel);
@@ -98,7 +97,7 @@ public class ContentPacksScreen extends Screen {
         search.setCanLoseFocus(true);
 
         final int width = listWidth / numButtons;
-        int x = 6, y = 40;
+        int x = 25, y = 40;
         addButton(SortType.NORMAL.button = new Button(x, y, width - buttonMargin, 20, SortType.NORMAL.getButtonText(), b -> resortMods(SortType.NORMAL)));
         x += width + buttonMargin;
         addButton(SortType.A_TO_Z.button = new Button(x, y, width - buttonMargin, 20, SortType.A_TO_Z.getButtonText(), b -> resortMods(SortType.A_TO_Z)));
@@ -196,13 +195,13 @@ public class ContentPacksScreen extends Screen {
                         fill(j2 - 3, k2 - 3, j2 + k + 3, k2 - 3 + 1, k1);
                         fill(j2 - 3, k2 + i1 + 2, j2 + k + 3, k2 + i1 + 3, f1);
 
-                        font.drawSplitString(I18n.format(String.format("mjson.license.%s.text", selected.getContentPack().getLicense())), j2, k2, 210, 0xB0A6B0);
+                        font.drawSplitString(I18n.format(String.format("nuwa.license.%s.text", selected.getContentPack().getLicense())), j2, k2, 210, 0xB0A6B0);
                     }
                 }
             }
         }
 
-        String text = I18n.format("msjon.screen.label.search");
+        String text = I18n.format("nuwa.screen.label.search");
         int x = ((contentPacksList.getLeft()) / 2) - (getFontRenderer().getStringWidth(text) / 2);
         getFontRenderer().drawString(text, x, 5, 0xFFFFFF);
         this.search.render(mouseX, mouseY, partialTicks);
@@ -245,17 +244,17 @@ public class ContentPacksScreen extends Screen {
 
         List<String> lines = new ArrayList<>();
 
-        lines.add(I18n.format("msjon.infoPanel.label.packVersion", selectedContentPack.getVersion() != null ? selectedContentPack.getVersion() : missingno));
+        lines.add(I18n.format("nuwa.infoPanel.label.packVersion", selectedContentPack.getVersion() != null ? selectedContentPack.getVersion() : missingno));
         lines.add(null);
-        lines.add(I18n.format("msjon.infoPanel.label.namespace", selectedContentPack.getNamespace() != null ? selectedContentPack.getNamespace() : missingno));
+        lines.add(I18n.format("nuwa.infoPanel.label.namespace", selectedContentPack.getNamespace() != null ? selectedContentPack.getNamespace() : missingno));
 
         if (selectedContentPack.getAuthors() != null) {
             lines.add(null);
-            lines.add(I18n.format("msjon.infoPanel.label.authors", Arrays.toString(selectedContentPack.getAuthors().toArray())));
+            lines.add(I18n.format("nuwa.infoPanel.label.authors", Arrays.toString(selectedContentPack.getAuthors().toArray())));
         }
         if (selectedContentPack.getCredits() != null) {
             lines.add(null);
-            lines.add(I18n.format("msjon.infoPanel.label.credits"));
+            lines.add(I18n.format("nuwa.infoPanel.label.credits"));
             lines.add(null);
             selectedContentPack.getCredits().forEach(credits -> lines.add(credits));
         }

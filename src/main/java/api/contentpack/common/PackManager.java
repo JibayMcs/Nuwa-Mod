@@ -6,7 +6,7 @@ import api.contentpack.common.data.ItemsData;
 import api.contentpack.common.json.PackInfoObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.zeamateis.mjson.MJsonMod;
+import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.*;
@@ -53,7 +53,7 @@ public class PackManager {
             }
         } catch (IOException e) {
         }
-        MJsonMod.getLogger().warn("Item Group {{}} at line {} in {}/{} does not exist.", parsedItemGroup.toString(), erroredLine, contentPackIn.getFile().getName(), entryName);
+        NuwaMod.getLogger().warn("Item Group {{}} at line {} in {}/{} does not exist.", parsedItemGroup.toString(), erroredLine, contentPackIn.getFile().getName(), entryName);
         try {
             lnr.close();
         } catch (IOException e) {
@@ -157,7 +157,7 @@ public class PackManager {
         }
 
         packs.forEach(contentPack -> {
-            MJsonMod.getLogger().debug(contentPack.getBlockList().size());
+            NuwaMod.getLogger().debug(contentPack.getBlockList().size());
         });
     }
 

@@ -12,9 +12,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.3'
-group = 'fr.zeamateis.mjson'
-archivesBaseName = 'modid'
+version = '0.0.4'
+group = 'fr.zeamateis.nuwa'
+archivesBaseName = 'nuwa'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -28,7 +28,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'info'
             mods {
-                mjson {
+                nuwa {
                     source sourceSets.main
                 }
             }
@@ -38,7 +38,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'info'
             mods {
-                mjson {
+                nuwa {
                     source sourceSets.main
                 }
             }
@@ -47,9 +47,9 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'info'
-            args '--mod', 'mjson', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'nuwa', '--all', '--output', file('src/generated/resources/')
             mods {
-                mjson {
+                nuwa {
                     source sourceSets.main
                 }
             }
@@ -64,7 +64,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "mjson",
+                "Specification-Title"     : "nuwa",
                 "Specification-Vendor"    : "zeamateis",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,

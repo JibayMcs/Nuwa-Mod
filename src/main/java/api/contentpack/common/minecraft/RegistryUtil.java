@@ -1,6 +1,6 @@
 package api.contentpack.common.minecraft;
 
-import fr.zeamateis.mjson.MJsonMod;
+import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -23,15 +23,15 @@ public class RegistryUtil {
                 regName = ForgeRegistryEntry.class.getDeclaredField("registryName");
                 regName.setAccessible(true);
             } catch (NoSuchFieldException | SecurityException e) {
-                MJsonMod.getLogger().error(REGISTRIES, "Could not get `registryName` field from IForgeRegistryEntry.Impl", e);
+                NuwaMod.getLogger().error(REGISTRIES, "Could not get `registryName` field from IForgeRegistryEntry.Impl", e);
                 throw new RuntimeException(e);
             }
         }
         try {
             regName.set(entry, name);
-            MJsonMod.getLogger().debug("{} has now registryName : {}", entry, name);
+            NuwaMod.getLogger().debug("{} has now registryName : {}", entry, name);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            MJsonMod.getLogger().error(REGISTRIES, "Could not set `registryName` field in IForgeRegistryEntry.Impl to `{}`", name.toString(), e);
+            NuwaMod.getLogger().error(REGISTRIES, "Could not set `registryName` field in IForgeRegistryEntry.Impl to `{}`", name.toString(), e);
             throw new RuntimeException(e);
         }
 
