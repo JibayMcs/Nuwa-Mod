@@ -1,7 +1,7 @@
 package api.contentpack.common.data;
 
+import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.client.itemGroup.JsonItemGroup;
-import api.contentpack.client.itemGroup.VanillaItemGroups;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.itemGroups.ItemGroupObject;
@@ -36,7 +36,7 @@ public class ItemGroupData implements IPackData {
                     return ForgeRegistries.ITEMS.getValue(itemGroupObject.getIcon()).getDefaultInstance();
                 }
             };
-            VanillaItemGroups.getItemGroupsMap().put(itemGroupObject.getId(), parsedItemGroup);
+            ItemGroups.putItemGroup(itemGroupObject.getId(), parsedItemGroup);
         }
     }
 

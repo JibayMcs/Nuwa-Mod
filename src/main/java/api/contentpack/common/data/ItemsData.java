@@ -1,6 +1,6 @@
 package api.contentpack.common.data;
 
-import api.contentpack.client.itemGroup.VanillaItemGroups;
+import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
@@ -49,13 +49,13 @@ public class ItemsData implements IPackData {
 
                 if (itemsObject.getItemGroup() != null) {
                     ResourceLocation parsedItemGroup = new ResourceLocation(itemsObject.getItemGroup());
-                    if (VanillaItemGroups.getItemGroupsMap().containsKey(parsedItemGroup)) {
-                        properties.group(VanillaItemGroups.getItemGroupsMap().get(parsedItemGroup));
+                    if (ItemGroups.contains(parsedItemGroup)) {
+                        properties.group(ItemGroups.get(parsedItemGroup));
                     } else {
                         PackManager.throwItemGroupWarn(this.contentPack, this.zipFile, getEntryName(), parsedItemGroup);
                     }
                 } else {
-                    properties.group(VanillaItemGroups.getItemGroupsMap().get(new ResourceLocation("minecraft:misc")));
+                    properties.group(ItemGroups.get(new ResourceLocation("minecraft:misc")));
                 }
 
                 itemList.add(parsedItem);

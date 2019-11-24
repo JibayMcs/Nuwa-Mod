@@ -9,7 +9,7 @@ displayName="Nuwa" #mandatory
 #displayURL="http://example.com/" #optional
 logoFile="logo.png" #optional
 #credits="" #optional
-authors="ZeAmateis, Nywhere, Vroulas" #optional
+authors="ZeAmateis, Vroulas, Nywhere" #optional
 description='''A Minecraft mod that allow you to create content packs and add a tons of new objects without any lines of code !'''
 
 [[dependencies.nuwa]] #optional

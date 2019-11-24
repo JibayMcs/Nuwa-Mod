@@ -1,9 +1,8 @@
 package fr.zeamateis.nuwa;
 
-import api.contentpack.client.itemGroup.VanillaItemGroups;
+import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.minecraft.assets.ContentPackFinder;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -55,7 +54,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
             PROXY.objectsRegistry(contentPack);
         });
 
-        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerReloadListener);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
     }
 
@@ -75,6 +74,12 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         return CHANNEL;
     }
 
+    @OnlyIn(Dist.CLIENT)
+    private void registerReloadListener() {
+
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
+    }
+
     /**
      * A version of onResourceManager that selectively chooses {@link IResourceType}s
      * to reload.
@@ -87,9 +92,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
         for (ContentPack contentPack : getPackManager().getPacks()) {
-            ContentPackFinder contentPackFinder = new ContentPackFinder(contentPack);
-            Minecraft.getInstance().getResourcePackList().addPackFinder(contentPackFinder);
-            new IPackFinder() {
+            Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
                 @Override
                 public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> nameToPackMap, ResourcePackInfo.IFactory<T> packInfoFactory) {
                     File contentPackFile = contentPack.getFile();
@@ -103,26 +106,26 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
                         if (t1 != null) {
                             nameToPackMap.put(contentPack.getNamespace(), t1);
                             resourceManager.addResourcePack(t1.getResourcePack());
-                            NuwaMod.getLogger().debug("Added {} content pack assets to resources packs list.", t1.getName());
+                            getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());
                         }
                     }
                 }
-            };
+            });
+
         }
     }
 
     @OnlyIn(Dist.CLIENT)
     private void registerVanillaItemGroups() {
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", "building_blocks"), ItemGroup.BUILDING_BLOCKS);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.DECORATIONS.getTabLabel()), ItemGroup.DECORATIONS);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.REDSTONE.getTabLabel()), ItemGroup.REDSTONE);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.TRANSPORTATION.getTabLabel()), ItemGroup.TRANSPORTATION);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.FOOD.getTabLabel()), ItemGroup.FOOD);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.TOOLS.getTabLabel()), ItemGroup.TOOLS);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.COMBAT.getTabLabel()), ItemGroup.COMBAT);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.BREWING.getTabLabel()), ItemGroup.BREWING);
-        VanillaItemGroups.addVanillaItemGroup(new ResourceLocation("minecraft", ItemGroup.MISC.getTabLabel()), ItemGroup.MISC);
-        VanillaItemGroups.getItemGroupsMap().forEach((resourceLocation, itemGroup) -> NuwaMod.getLogger().debug(resourceLocation.toString()));
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", "building_blocks"), ItemGroup.BUILDING_BLOCKS);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.DECORATIONS.getTabLabel()), ItemGroup.DECORATIONS);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.REDSTONE.getTabLabel()), ItemGroup.REDSTONE);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.TRANSPORTATION.getTabLabel()), ItemGroup.TRANSPORTATION);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.FOOD.getTabLabel()), ItemGroup.FOOD);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.TOOLS.getTabLabel()), ItemGroup.TOOLS);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.COMBAT.getTabLabel()), ItemGroup.COMBAT);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.BREWING.getTabLabel()), ItemGroup.BREWING);
+        ItemGroups.putItemGroup(new ResourceLocation("minecraft", ItemGroup.MISC.getTabLabel()), ItemGroup.MISC);
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
