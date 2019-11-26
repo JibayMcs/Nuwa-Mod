@@ -19,13 +19,10 @@ import java.util.zip.ZipFile;
 
 public class ItemsData implements IPackData {
 
-    private final ContentPack contentPack;
-    private final ZipFile zipFile;
-    private LinkedList<Item> itemList = new LinkedList();
+    private final LinkedList<Item> itemList;
 
-    public ItemsData(ContentPack contentPackIn, ZipFile zipFileIn) {
-        this.contentPack = contentPackIn;
-        this.zipFile = zipFileIn;
+    public ItemsData() {
+        itemList = new LinkedList<>();
     }
 
     @Override
@@ -34,14 +31,14 @@ public class ItemsData implements IPackData {
     }
 
     @Override
-    public void parseData(InputStreamReader readerIn) {
+    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         Type itemsType = new TypeToken<List<ItemsObject>>() {
         }.getType();
         List<ItemsObject> itemsList = PackManager.GSON.fromJson(readerIn, itemsType);
 
         if (itemsType != null && itemsList != null) {
             itemsList.forEach(itemsObject -> {
-                ResourceLocation itemRegistryName = new ResourceLocation(this.contentPack.getNamespace(), itemsObject.getRegistryName());
+                ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());
 
                 Item.Properties properties = itemsObject.getProperties() != null ? itemsObject.getProperties().getParsedProperties() : new Item.Properties();
 
@@ -52,7 +49,7 @@ public class ItemsData implements IPackData {
                     if (ItemGroups.contains(parsedItemGroup)) {
                         properties.group(ItemGroups.get(parsedItemGroup));
                     } else {
-                        PackManager.throwItemGroupWarn(this.contentPack, this.zipFile, getEntryName(), parsedItemGroup);
+                        PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryName(), parsedItemGroup);
                     }
                 } else {
                     properties.group(ItemGroups.get(new ResourceLocation("minecraft:misc")));

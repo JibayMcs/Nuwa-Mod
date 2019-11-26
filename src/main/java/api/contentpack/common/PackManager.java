@@ -1,20 +1,18 @@
 package api.contentpack.common;
 
-import api.contentpack.common.data.BlocksData;
-import api.contentpack.common.data.ItemGroupData;
-import api.contentpack.common.data.ItemsData;
 import api.contentpack.common.json.PackInfoObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.util.ResourceLocation;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -22,18 +20,18 @@ import java.util.zip.ZipFile;
 
 public class PackManager {
 
-
     public static final Gson GSON = new GsonBuilder().create();
-
+    private final Path contentPackPath;
     private final List<ContentPack> packs;
-
+    private final Map<ResourceLocation, Class<? extends IPackData>> packDataMap;
 
     public PackManager(Path contentPackPathIn) {
         packs = new ArrayList<>();
-        Path path = contentPackPathIn;
-        if (!Files.exists(path)) {
+        packDataMap = new HashMap<>();
+        contentPackPath = contentPackPathIn;
+        if (!Files.exists(contentPackPath)) {
             try {
-                Files.createDirectories(path);
+                Files.createDirectories(contentPackPath);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -64,101 +62,91 @@ public class PackManager {
         return packs;
     }
 
-    public void fetchPacks(File contentPackDirIn) {
-        try (Stream<Path> walk = Files.walk(contentPackDirIn.toPath())) {
-            walk.map(Path::toFile)
-                    .filter(f -> f.getName().endsWith(".zip")).collect(Collectors.toList()).forEach(files -> {
+    public void loadPacks() {
+        if (this.contentPackPath != null) {
+            try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
+                walk.map(Path::toFile)
+                        .filter(f -> f.getName().endsWith(".zip"))
+                        .collect(Collectors.toList())
+                        .forEach(files -> {
+                            ZipFile zipFile = null;
+                            InputStream stream = null;
+                            InputStreamReader reader = null;
+                            try {
+                                zipFile = new ZipFile(files);
+                                Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
-                ZipFile zipFile = null;
-                InputStream stream = null;
-                InputStreamReader reader = null;
-                try {
-                    zipFile = new ZipFile(files);
-                    Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                                while (entries.hasMoreElements()) {
+                                    if (entries.nextElement().getName().equals("content.pack")) {
+                                        ZipEntry contentPackEntry = zipFile.getEntry("content.pack");
+                                        ZipEntry packIconEntry = zipFile.getEntry("pack.png");
 
-                    while (entries.hasMoreElements()) {
-                        if (entries.nextElement().getName().equals("content.pack")) {
-                            ZipEntry contentPackEntry = zipFile.getEntry("content.pack");
-                            ZipEntry packIconEntry = zipFile.getEntry("pack.png");
+                                        ContentPack contentPack;
 
-                            ContentPack contentPack;
+                                        if (contentPackEntry != null) {
+                                            stream = zipFile.getInputStream(contentPackEntry);
+                                            reader = new InputStreamReader(stream);
+                                            PackInfoObject packInfoObject = GSON.fromJson(reader, PackInfoObject.class);
 
-                            BlocksData blocksData;
-                            ItemsData itemsData;
-                            ItemGroupData itemGroupData;
-                            ZipEntry blocksEntry, itemsEntry, itemGroupEntry;
+                                            if (packIconEntry != null) {
+                                                stream = zipFile.getInputStream(packIconEntry);
+                                                contentPack = new ContentPack(stream, files, packInfoObject, files.length());
+                                            } else {
+                                                contentPack = new ContentPack(files, packInfoObject, files.length());
+                                            }
 
 
-                            if (contentPackEntry != null) {
-                                stream = zipFile.getInputStream(contentPackEntry);
-                                reader = new InputStreamReader(stream);
-                                PackInfoObject packInfoObject = GSON.fromJson(reader, PackInfoObject.class);
-
-                                if (packIconEntry != null) {
-                                    stream = zipFile.getInputStream(packIconEntry);
-                                    contentPack = new ContentPack(stream, files, packInfoObject, files.length());
-                                } else {
-                                    contentPack = new ContentPack(files, packInfoObject, files.length());
+                                            if (!this.packDataMap.isEmpty()) {
+                                                for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
+                                                    IPackData packData = packDataEntry.getValue().newInstance();
+                                                    if (!packData.getEntryName().isEmpty()) {
+                                                        ZipEntry zipEntry = zipFile.getEntry(packData.getEntryName());
+                                                        if (zipEntry != null) {
+                                                            stream = zipFile.getInputStream(zipEntry);
+                                                            reader = new InputStreamReader(stream);
+                                                            packData.parseData(contentPack, zipFile, reader);
+                                                            if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
+                                                                contentPack.getObjectsList().addAll(packData.getObjectsList());
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            packs.add(contentPack);
+                                        }
+                                    }
                                 }
-
-                                blocksData = new BlocksData(contentPack, zipFile);
-                                blocksEntry = zipFile.getEntry(blocksData.getEntryName());
-
-                                itemsData = new ItemsData(contentPack, zipFile);
-                                itemsEntry = zipFile.getEntry(itemsData.getEntryName());
-
-                                itemGroupData = new ItemGroupData();
-                                itemGroupEntry = zipFile.getEntry(itemGroupData.getEntryName());
-
-                                if (itemGroupEntry != null) {
-                                    stream = zipFile.getInputStream(itemGroupEntry);
-                                    reader = new InputStreamReader(stream);
-                                    itemGroupData.parseData(reader);
+                            } catch (IOException | IllegalAccessException | InstantiationException e) {
+                                e.printStackTrace();
+                            } finally {
+                                try {
+                                    if (zipFile != null) {
+                                        zipFile.close();
+                                    }
+                                    if (stream != null) {
+                                        stream.close();
+                                    }
+                                    if (reader != null) {
+                                        reader.close();
+                                    }
+                                    walk.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
-
-                                if (blocksEntry != null) {
-                                    stream = zipFile.getInputStream(blocksEntry);
-                                    reader = new InputStreamReader(stream);
-                                    blocksData.parseData(reader);
-                                    contentPack.getBlockList().addAll(blocksData.getObjectsList());
-                                }
-
-                                if (itemsEntry != null) {
-                                    stream = zipFile.getInputStream(itemsEntry);
-                                    reader = new InputStreamReader(stream);
-                                    itemsData.parseData(reader);
-                                    contentPack.getItemList().addAll(itemsData.getObjectsList());
-                                }
-                                packs.add(contentPack);
                             }
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (zipFile != null) {
-                            zipFile.close();
-                        }
-                        if (stream != null) {
-                            stream.close();
-                        }
-                        if (reader != null) {
-                            reader.close();
-                        }
-                        walk.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
+                        });
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
+    }
 
-        packs.forEach(contentPack -> {
-            NuwaMod.getLogger().debug(contentPack.getBlockList().size());
-        });
+    public void registerDataEntry(ResourceLocation entryName, Class<? extends IPackData> packDataIn) {
+        this.packDataMap.put(entryName, packDataIn);
+    }
+
+    public void removePackDataEntry(ResourceLocation entryNameIn) {
+        this.packDataMap.remove(entryNameIn);
     }
 
 }

@@ -1,8 +1,12 @@
 package fr.zeamateis.nuwa;
 
 import api.contentpack.client.itemGroup.ItemGroups;
+import api.contentpack.client.minecraft.assets.ContentPackFinder;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
+import api.contentpack.common.data.BlocksData;
+import api.contentpack.common.data.ItemGroupData;
+import api.contentpack.common.data.ItemsData;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -10,13 +14,16 @@ import fr.zeamateis.nuwa.proxy.CommonProxy;
 import fr.zeamateis.nuwa.proxy.ServerProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.resources.*;
+import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -25,8 +32,6 @@ import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.util.Map;
 import java.util.function.Predicate;
 
 @Mod(Constant.MODID)
@@ -49,14 +54,19 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerVanillaItemGroups);
 
-        packManager.fetchPacks(Constant.MODELS_PACK_DIR);
-        packManager.getPacks().forEach(contentPack -> {
-            PROXY.objectsRegistry(contentPack);
-        });
+        packManager.registerDataEntry(new ResourceLocation(Constant.MODID, "item_group_data"), ItemGroupData.class);
+        packManager.registerDataEntry(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
+        packManager.registerDataEntry(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
 
+        packManager.loadPacks();
+
+        packManager.getPacks().forEach(PROXY::objectsRegistry);
+
+        MinecraftForge.EVENT_BUS.addListener(this::onServerAboutToStart);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerReloadListener);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
     }
+
 
     public static Logger getLogger() {
         return LOGGER;
@@ -76,8 +86,14 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
     @OnlyIn(Dist.CLIENT)
     private void registerReloadListener() {
-
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
+    }
+
+
+    private void onServerAboutToStart(FMLServerAboutToStartEvent event) {
+        for (ContentPack contentPack : getPackManager().getPacks()) {
+            event.getServer().getResourcePacks().addPackFinder(new ContentPackFinder(contentPack));
+        }
     }
 
     /**
@@ -92,26 +108,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
         for (ContentPack contentPack : getPackManager().getPacks()) {
-            Minecraft.getInstance().getResourcePackList().addPackFinder(new IPackFinder() {
-                @Override
-                public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> nameToPackMap, ResourcePackInfo.IFactory<T> packInfoFactory) {
-                    File contentPackFile = contentPack.getFile();
-                    if (contentPackFile != null && contentPackFile.isFile()) {
-                        T t1 = ResourcePackInfo.createResourcePack(contentPack.getNamespace(), true, () -> new FilePack(contentPackFile) {
-                            @Override
-                            public boolean isHidden() {
-                                return true;
-                            }
-                        }, packInfoFactory, ResourcePackInfo.Priority.TOP);
-                        if (t1 != null) {
-                            nameToPackMap.put(contentPack.getNamespace(), t1);
-                            resourceManager.addResourcePack(t1.getResourcePack());
-                            getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());
-                        }
-                    }
-                }
-            });
-
+            Minecraft.getInstance().getResourcePackList().addPackFinder(new ContentPackFinder(contentPack));
         }
     }
 

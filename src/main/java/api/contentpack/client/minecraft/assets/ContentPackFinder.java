@@ -1,4 +1,4 @@
-package api.contentpack.common.minecraft.assets;
+package api.contentpack.client.minecraft.assets;
 
 import api.contentpack.common.ContentPack;
 import fr.zeamateis.nuwa.NuwaMod;
@@ -26,13 +26,22 @@ public class ContentPackFinder implements IPackFinder {
                 public boolean isHidden() {
                     return true;
                 }
+
+                @Override
+                public void close() {
+                    super.close();
+                }
+
+                @Override
+                protected void finalize() throws Throwable {
+                    super.finalize();
+                }
             }, packInfoFactory, ResourcePackInfo.Priority.TOP);
             if (t1 != null) {
                 nameToPackMap.put(contentPack.getNamespace(), t1);
-                NuwaMod.getLogger().debug("Added {} content pack assets to resources packs list.", t1.getName());
+                NuwaMod.getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());
             }
         }
     }
-
 
 }

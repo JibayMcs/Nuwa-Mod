@@ -264,7 +264,7 @@ public class ContentPacksScreen extends Screen {
             selectedContentPack.getDescription().forEach(descriptions -> lines.add(descriptions));
         }
 
-        if (selectedContentPack.getTotalBlocks() > 0) {
+       /* if (selectedContentPack.getTotalBlocks() > 0) {
             lines.add(null);
             lines.add(null);
             lines.add(String.format("Blocks: " + selectedContentPack.getTotalBlocks()));
@@ -272,7 +272,7 @@ public class ContentPacksScreen extends Screen {
 
         if (selectedContentPack.getTotalItems(true) > 0) {
             lines.add(String.format("Items: " + selectedContentPack.getTotalItems(true)));
-        }
+        }*/
 
         infoPanel.setInfo(lines);
 

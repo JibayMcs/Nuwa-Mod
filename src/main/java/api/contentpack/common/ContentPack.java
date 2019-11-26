@@ -1,10 +1,10 @@
 package api.contentpack.common;
 
 import api.contentpack.common.json.PackInfoObject;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +19,10 @@ public class ContentPack {
     private final long zipFileSize;
     private NativeImage packIcon;
 
-    private LinkedList<Block> blockList = new LinkedList<>();
-    private LinkedList<Item> itemList = new LinkedList();
+   /* private LinkedList<Block> blockList = new LinkedList<>();
+    private LinkedList<Item> itemList = new LinkedList<>();*/
+
+    private LinkedList<ForgeRegistryEntry> objectsList = new LinkedList<>();
 
     public ContentPack(File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this.contentPackFile = contentPackFileIn;
@@ -30,13 +32,14 @@ public class ContentPack {
 
     public ContentPack(InputStream stream, File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this(contentPackFileIn, packInfoObject, zipFileSize);
-        NativeImage nativeimage = null;
 
-        try (InputStream inputstream = stream) {
-            nativeimage = NativeImage.read(inputstream);
-        } catch (IllegalArgumentException | IOException var21) {
-        }
-        this.setPackIcon(nativeimage);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            try {
+                packIcon = NativeImage.read(stream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
@@ -84,13 +87,13 @@ public class ContentPack {
         return this.packInfoObject.getLicense();
     }
 
-    public int getTotalBlocks() {
+  /*  public int getTotalBlocks() {
         return this.blockList.size();
     }
 
     public int getTotalItems(boolean withBlockItem) {
         return withBlockItem ? this.itemList.size() : (int) this.itemList.stream().filter(item -> !(item instanceof BlockItem)).count();
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -98,17 +101,21 @@ public class ContentPack {
                 "contentPackFile=" + contentPackFile +
                 ", packInfoObject=" + packInfoObject +
                 ", zipFileSize=" + zipFileSize +
-                ", packIcon=" + packIcon +
+                ", packIcon=" + packIcon +/*
                 ", blockList=" + blockList +
-                ", itemList=" + itemList +
+                ", itemList=" + itemList +*/
                 '}';
     }
 
-    public LinkedList<Block> getBlockList() {
+   /* public LinkedList<Block> getBlockList() {
         return blockList;
     }
 
     public LinkedList<Item> getItemList() {
         return itemList;
+    }*/
+
+    public LinkedList<ForgeRegistryEntry> getObjectsList() {
+        return objectsList;
     }
 }

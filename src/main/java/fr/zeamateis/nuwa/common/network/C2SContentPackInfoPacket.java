@@ -3,7 +3,7 @@ package fr.zeamateis.nuwa.common.network;
 import api.contentpack.common.ContentPack;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -43,17 +43,12 @@ public class C2SContentPackInfoPacket {
     public static void handle(C2SContentPackInfoPacket packet, Supplier<NetworkEvent.Context> ctx) {
         for (ContentPack packs : NuwaMod.getPackManager().getPacks()) {
             try {
-                try (InputStream is = Files.newInputStream(Paths.get(packs.getFile().getPath()))) {
-                    String md5 = DigestUtils.md5Hex(is);
-                    if (!md5.equals(packet.md5)) {
-                        String disconnectMsg = String.format("§lMJson Content Pack Error§r\n\n\n" +
-                                        "MD5 Hash of §n%s§r (v%s) Client/Server Content Pack Mismatch.\n\n" +
-                                        " Client Hash: %s\n" +
-                                        "Info: ContentPack[%s, v%s]\n\n" +
-                                        "Server Hash: %s\n" +
-                                        "Info: ContentPack[%s, v%s]",
-                                packet.contentPackName, packet.contentPackVersion, packet.md5, packet.contentPackName, packet.contentPackVersion, md5, packs.getPackName(), packs.getVersion());
-                        Objects.requireNonNull(ctx.get().getSender()).connection.disconnect(new StringTextComponent(disconnectMsg));
+                if (packs.getPackName().equals(packet.contentPackName)) {
+                    try (InputStream is = Files.newInputStream(Paths.get(packs.getFile().getPath()))) {
+                        String md5 = DigestUtils.md5Hex(is);
+                        if (!md5.equals(packet.md5)) {
+                            Objects.requireNonNull(ctx.get().getSender()).connection.disconnect(new TranslationTextComponent("nuwa.multiplayer.contentpack.mismatch", packet.contentPackName, packet.contentPackVersion, packet.md5, packet.contentPackName, packet.contentPackVersion, md5, packs.getPackName(), packs.getVersion()));
+                        }
                     }
                 }
             } catch (IOException ex) {

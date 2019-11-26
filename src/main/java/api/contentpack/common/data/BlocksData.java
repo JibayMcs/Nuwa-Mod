@@ -23,13 +23,10 @@ import java.util.zip.ZipFile;
 
 public class BlocksData implements IPackData {
 
-    private final ContentPack contentPack;
-    private final ZipFile zipFile;
-    private LinkedList<Block> blocksList = new LinkedList();
+    private final LinkedList<Block> blocksList;
 
-    public BlocksData(ContentPack contentPackIn, ZipFile zipFileIn) {
-        this.contentPack = contentPackIn;
-        this.zipFile = zipFileIn;
+    public BlocksData() {
+        blocksList = new LinkedList();
     }
 
     @Override
@@ -38,20 +35,20 @@ public class BlocksData implements IPackData {
     }
 
     @Override
-    public void parseData(InputStreamReader readerIn) {
+    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+
         Type blocksType = new TypeToken<List<BlocksObject>>() {
         }.getType();
         List<BlocksObject> blocksList = PackManager.GSON.fromJson(readerIn, blocksType);
 
         if (blocksType != null && blocksList != null) {
             blocksList.forEach(blocksObject -> {
-                ResourceLocation blockRegistryName = new ResourceLocation(this.contentPack.getNamespace(), blocksObject.getRegistryName());
+                ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
 
                 Block.Properties properties = blocksObject.getProperties() != null ?
                         blocksObject.getProperties().getParsedProperties() : Block.Properties.create(Material.ROCK);
 
                 JsonBlock parsedBlock = new JsonBlock(properties, Objects.requireNonNull(blockRegistryName));
-
 
                 parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
                 parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
@@ -61,7 +58,7 @@ public class BlocksData implements IPackData {
                     if (ItemGroups.contains(parsedItemGroup)) {
                         parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
                     } else {
-                        PackManager.throwItemGroupWarn(this.contentPack, this.zipFile, getEntryName(), parsedItemGroup);
+                        PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryName(), parsedItemGroup);
                     }
                 } else {
                     parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
@@ -78,9 +75,8 @@ public class BlocksData implements IPackData {
             if (block instanceof JsonBlock) {
                 JsonBlock jsonBlock = (JsonBlock) block;
                 jsonBlockItem = new JsonBlockItem(jsonBlock, new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                this.contentPack.getItemList().add(jsonBlockItem);
+                contentPackIn.getObjectsList().add(jsonBlockItem);
             }
-
         });
     }
 

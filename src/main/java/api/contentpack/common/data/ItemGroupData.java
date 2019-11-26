@@ -2,6 +2,7 @@ package api.contentpack.common.data;
 
 import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.client.itemGroup.JsonItemGroup;
+import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.itemGroups.ItemGroupObject;
@@ -14,6 +15,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.zip.ZipFile;
 
 public class ItemGroupData implements IPackData {
 
@@ -23,7 +25,7 @@ public class ItemGroupData implements IPackData {
     }
 
     @Override
-    public void parseData(InputStreamReader readerIn) {
+    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         ItemGroupObject itemGroupObject = PackManager.GSON.fromJson(readerIn, ItemGroupObject.class);
 
         if (itemGroupObject != null) {
