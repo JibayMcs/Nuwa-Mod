@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.function.Predicate;
 
+//TODO Fix content packs not closed after loading.
 @Mod(Constant.MODID)
 public class NuwaMod implements ISelectiveResourceReloadListener {
     private static final String PROTOCOL_VERSION = String.valueOf(1);
@@ -63,7 +64,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         packManager.getPacks().forEach(PROXY::objectsRegistry);
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerAboutToStart);
-        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerReloadListener);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerAssetsManager);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
     }
 
@@ -85,16 +86,19 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     }
 
     @OnlyIn(Dist.CLIENT)
-    private void registerReloadListener() {
+    private void registerAssetsManager() {
+        for (ContentPack contentPack : packManager.getPacks()) {
+            Minecraft.getInstance().getResourcePackList().addPackFinder(new ContentPackFinder(contentPack));
+        }
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
     }
-
 
     private void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         for (ContentPack contentPack : getPackManager().getPacks()) {
             event.getServer().getResourcePacks().addPackFinder(new ContentPackFinder(contentPack));
         }
     }
+
 
     /**
      * A version of onResourceManager that selectively chooses {@link IResourceType}s
@@ -138,5 +142,4 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
                 .consumer(C2SContentPackInfoPacket::handle)
                 .add();
     }
-
 }

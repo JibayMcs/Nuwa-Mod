@@ -12,6 +12,11 @@ logoFile="logo.png" #optional
 authors="ZeAmateis, Vroulas, Nywhere" #optional
 description='''A Minecraft mod that allow you to create content packs and add a tons of new objects without any lines of code !'''
 
+[[mods]] #mandatory
+modId="test" #mandatory
+version="0.0" #mandatory
+displayName="Test" #mandatory
+
 [[dependencies.nuwa]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
@@ -23,4 +28,11 @@ description='''A Minecraft mod that allow you to create content packs and add a 
     mandatory=true
     versionRange="[1.14.4]"
     ordering="NONE"
+    side="BOTH"
+
+[[dependencies.test]] #optional
+    modId="nuwa" #mandatory
+    mandatory=true #mandatory
+    versionRange="[NONE,)" #mandatory
+    ordering="BEFORE"
     side="BOTH"

@@ -4,7 +4,7 @@ import api.contentpack.common.json.PackInfoObject;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class ContentPack {
    /* private LinkedList<Block> blockList = new LinkedList<>();
     private LinkedList<Item> itemList = new LinkedList<>();*/
 
-    private LinkedList<ForgeRegistryEntry> objectsList = new LinkedList<>();
+    private LinkedList<IForgeRegistryEntry> objectsList = new LinkedList<>();
 
     public ContentPack(File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this.contentPackFile = contentPackFileIn;
@@ -115,7 +115,7 @@ public class ContentPack {
         return itemList;
     }*/
 
-    public LinkedList<ForgeRegistryEntry> getObjectsList() {
+    public LinkedList<IForgeRegistryEntry> getObjectsList() {
         return objectsList;
     }
 }

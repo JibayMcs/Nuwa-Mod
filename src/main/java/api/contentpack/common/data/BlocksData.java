@@ -5,10 +5,12 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.blocks.BlocksObject;
-import api.contentpack.common.minecraft.blocks.JsonBlock;
+import api.contentpack.common.json.datas.blocks.type.BlockType;
+import api.contentpack.common.minecraft.blocks.*;
 import api.contentpack.common.minecraft.items.JsonBlockItem;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -23,7 +25,7 @@ import java.util.zip.ZipFile;
 
 public class BlocksData implements IPackData {
 
-    private final LinkedList<Block> blocksList;
+    private final LinkedList<IJsonBlock> blocksList;
 
     public BlocksData() {
         blocksList = new LinkedList();
@@ -48,7 +50,22 @@ public class BlocksData implements IPackData {
                 Block.Properties properties = blocksObject.getProperties() != null ?
                         blocksObject.getProperties().getParsedProperties() : Block.Properties.create(Material.ROCK);
 
-                JsonBlock parsedBlock = new JsonBlock(properties, Objects.requireNonNull(blockRegistryName));
+                BlockType blockType = blocksObject.getBlockType() != null ? blocksObject.getBlockType() : BlockType.DEFAULT;
+                IJsonBlock parsedBlock;
+
+                switch (blockType) {
+                    case STAIRS:
+                        parsedBlock = new JsonStairsBlock(Blocks.ACACIA_LOG.getDefaultState(), properties, Objects.requireNonNull(blockRegistryName));
+                        break;
+                    case SLABS:
+                        parsedBlock = new JsonSlabBlock(properties, Objects.requireNonNull(blockRegistryName));
+                        break;
+                    case WALL:
+                        parsedBlock = new JsonWallBlock(properties, Objects.requireNonNull(blockRegistryName));
+                        break;
+                    default:
+                        parsedBlock = new JsonBlock(properties, Objects.requireNonNull(blockRegistryName));
+                }
 
                 parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
                 parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
@@ -71,17 +88,14 @@ public class BlocksData implements IPackData {
 
         //Registering itemblocks
         this.blocksList.forEach(block -> {
-            JsonBlockItem jsonBlockItem;
-            if (block instanceof JsonBlock) {
-                JsonBlock jsonBlock = (JsonBlock) block;
-                jsonBlockItem = new JsonBlockItem(jsonBlock, new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                contentPackIn.getObjectsList().add(jsonBlockItem);
-            }
+            IJsonBlock jsonBlock = block;
+            JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
+            contentPackIn.getObjectsList().add(jsonBlockItem);
         });
     }
 
     @Override
-    public LinkedList<Block> getObjectsList() {
+    public LinkedList<IJsonBlock> getObjectsList() {
         return blocksList;
     }
 

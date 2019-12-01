@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
-public class JsonBlock extends Block {
+public class JsonBlock extends Block implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
@@ -26,6 +26,12 @@ public class JsonBlock extends Block {
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }
 
+    @Override
+    public VoxelShape getCollisionShape() {
+        return collisionShape;
+    }
+
+    @Override
     public void setCollisionShape(VoxelShape collisionShape) {
         this.collisionShape = collisionShape;
     }
@@ -35,10 +41,12 @@ public class JsonBlock extends Block {
         return this.shape;
     }
 
+    @Override
     public VoxelShape getShape() {
         return shape;
     }
 
+    @Override
     public void setShape(VoxelShape shape) {
         this.shape = shape;
     }
@@ -48,10 +56,12 @@ public class JsonBlock extends Block {
         return this.blocksMovement ? this.collisionShape : VoxelShapes.empty();
     }
 
+    @Override
     public ItemGroup getItemGroup() {
         return itemGroup;
     }
 
+    @Override
     public void setItemGroup(ItemGroup itemGroup) {
         this.itemGroup = itemGroup;
     }

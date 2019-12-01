@@ -1,6 +1,6 @@
 package api.contentpack.common;
 
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -12,6 +12,6 @@ public interface IPackData {
 
     void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn);
 
-    LinkedList<? extends ForgeRegistryEntry> getObjectsList();
+    LinkedList<? extends IForgeRegistryEntry> getObjectsList();
 
 }
