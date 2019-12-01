@@ -12,7 +12,10 @@ public enum BlockType {
     FENCE(JsonFenceBlock.class),
     FENCE_GATE(JsonFenceGateBlock.class),
     TRAPDOOR(JsonTrapdoorBlock.class),
-    DOOR(JsonDoorBlock.class);
+    DOOR(JsonDoorBlock.class),
+    FLOWER(JsonFlowerBlock.class),
+    TALL_PLANT(JsonTallFlowerBlock.class),
+    GRASS(JsonGrassBlock.class);
 
     private Class<? extends Block> blockType;
 

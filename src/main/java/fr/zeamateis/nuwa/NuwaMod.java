@@ -63,7 +63,9 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
         packManager.getPacks().forEach(PROXY::objectsRegistry);
 
+
         MinecraftForge.EVENT_BUS.addListener(this::onServerAboutToStart);
+
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerAssetsManager);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
     }
