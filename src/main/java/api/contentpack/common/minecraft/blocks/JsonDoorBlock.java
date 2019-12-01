@@ -1,21 +1,20 @@
 package api.contentpack.common.minecraft.blocks;
 
 import api.contentpack.common.minecraft.RegistryUtil;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
-public class JsonStairsBlock extends StairsBlock implements IJsonBlock {
+public class JsonDoorBlock extends DoorBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
 
-    public JsonStairsBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
-        super(Blocks.STONE.getDefaultState(), properties);
+    public JsonDoorBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
+        super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }
 
@@ -49,5 +48,4 @@ public class JsonStairsBlock extends StairsBlock implements IJsonBlock {
     public void setItemGroup(ItemGroup itemGroup) {
         this.itemGroup = itemGroup;
     }
-
 }

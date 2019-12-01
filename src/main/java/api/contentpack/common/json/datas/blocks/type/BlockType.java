@@ -1,16 +1,18 @@
 package api.contentpack.common.json.datas.blocks.type;
 
-import api.contentpack.common.minecraft.blocks.JsonBlock;
+import api.contentpack.common.minecraft.blocks.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
 
 public enum BlockType {
     DEFAULT(JsonBlock.class),
-    STAIRS(StairsBlock.class),
-    SLABS(SlabBlock.class),
-    WALL(WallBlock.class);
+    STAIRS(JsonStairsBlock.class),
+    SLABS(JsonSlabBlock.class),
+    WALL(JsonWallBlock.class),
+    FALLING_BLOCK(JsonFallingBlock.class),
+    FENCE(JsonFenceBlock.class),
+    FENCE_GATE(JsonFenceGateBlock.class),
+    TRAPDOOR(JsonTrapdoorBlock.class),
+    DOOR(JsonDoorBlock.class);
 
     private Class<? extends Block> blockType;
 
