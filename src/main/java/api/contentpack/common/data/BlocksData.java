@@ -7,7 +7,9 @@ import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.blocks.BlocksObject;
 import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.IJsonBlock;
+import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.items.JsonBlockItem;
+import api.contentpack.common.minecraft.items.JsonNamedItem;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -61,26 +63,22 @@ public class BlocksData implements IPackData {
                     parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
                     parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
 
-                    if (blocksObject.getItemGroup() != null) {
-                        ResourceLocation parsedItemGroup = new ResourceLocation(blocksObject.getItemGroup());
-                        if (ItemGroups.contains(parsedItemGroup)) {
-                            parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
+                    if (!(parsedBlock instanceof JsonCropsBlock)) {
+                        if (blocksObject.getItemGroup() != null) {
+                            ResourceLocation parsedItemGroup = new ResourceLocation(blocksObject.getItemGroup());
+                            if (ItemGroups.contains(parsedItemGroup)) {
+                                parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
+                            } else {
+                                PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryName(), parsedItemGroup);
+                            }
                         } else {
-                            PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryName(), parsedItemGroup);
+                            parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
                         }
-                    } else {
-                        parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
                     }
 
                     this.blocksList.add(parsedBlock);
 
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     e.printStackTrace();
                 }
             });
@@ -89,8 +87,13 @@ public class BlocksData implements IPackData {
         //Registering itemblocks
         this.blocksList.forEach(block -> {
             IJsonBlock jsonBlock = block;
-            JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-            contentPackIn.getObjectsList().add(jsonBlockItem);
+            if (jsonBlock instanceof JsonCropsBlock) {
+                JsonNamedItem jsonNamedItem = new JsonNamedItem(new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
+                contentPackIn.getObjectsList().add(jsonNamedItem);
+            } else {
+                JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
+                contentPackIn.getObjectsList().add(jsonBlockItem);
+            }
         });
     }
 
