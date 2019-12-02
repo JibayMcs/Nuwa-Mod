@@ -10,20 +10,20 @@ public class BlockPropertiesObject {
      * Default Properties for a basic block if json file has no datas
      */
     @SerializedName("material")
-    private MaterialObject materialObject = MaterialObject.ROCK;
-    private float hardness = 0.0F;
-    private float resistance = 0.0F;
-    private int lightValue = 0;
+    private MaterialObject materialObject;
+    private float hardness;
+    private float resistance;
+    private int lightValue;
     @SerializedName("soundType")
-    private SoundTypeObject soundTypeObject = SoundTypeObject.STONE;
-    private boolean doesNotBlockMovement = true;
-    private int harvestLevel = -1;
-    private String harvestTool = ToolType.get("pickaxe").getName();
-    private float slipperiness = 0.6F;
-    private boolean hasVariableOpacity = false;
-    private boolean noDrops = false;
+    private SoundTypeObject soundTypeObject;
+    private boolean doesNotBlockMovement;
+    private int harvestLevel;
+    private String harvestTool;
+    private float slipperiness;
+    private boolean hasVariableOpacity;
+    private boolean noDrops;
 
-    private transient boolean tickingRandomly = false;
+    private transient boolean tickingRandomly;
 
     public Block.Properties getParsedProperties() {
         Block.Properties properties = Block.Properties.create(getMaterialObject().getMaterial());
@@ -45,57 +45,57 @@ public class BlockPropertiesObject {
             properties.doesNotBlockMovement();
         }
 
-        /*if (isTickingRandomly()) {
+        if (isTickingRandomly()) {
             properties.tickRandomly();
-        }*/
+        }
 
         return properties;
     }
 
-    public MaterialObject getMaterialObject() {
+    private MaterialObject getMaterialObject() {
         return materialObject;
     }
 
-    public float getHardness() {
+    private float getHardness() {
         return hardness;
     }
 
-    public float getResistance() {
+    private float getResistance() {
         return resistance;
     }
 
 
-    public int getLightValue() {
+    private int getLightValue() {
         return this.lightValue;
     }
 
-    public SoundTypeObject getSoundTypeObject() {
+    private SoundTypeObject getSoundTypeObject() {
         return soundTypeObject;
     }
 
-    public boolean doesNotBlockMovement() {
+    private boolean doesNotBlockMovement() {
         return doesNotBlockMovement;
     }
 
 
-    public int getHarvestLevel() {
+    private int getHarvestLevel() {
         return harvestLevel;
     }
 
 
-    public ToolType getHarvestTool() {
+    private ToolType getHarvestTool() {
         return ToolType.get(this.harvestTool);
     }
 
-    public float getSlipperiness() {
+    private float getSlipperiness() {
         return slipperiness;
     }
 
-    public boolean hasVariableOpacity() {
+    private boolean hasVariableOpacity() {
         return hasVariableOpacity;
     }
 
-    public boolean hasNoDrops() {
+    private boolean hasNoDrops() {
         return noDrops;
     }
 

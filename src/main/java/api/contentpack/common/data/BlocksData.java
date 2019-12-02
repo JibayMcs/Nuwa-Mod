@@ -10,7 +10,6 @@ import api.contentpack.common.minecraft.blocks.IJsonBlock;
 import api.contentpack.common.minecraft.items.JsonBlockItem;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -45,14 +44,15 @@ public class BlocksData implements IPackData {
 
         if (blocksType != null && blocksList != null) {
             blocksList.forEach(blocksObject -> {
-                ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
+                IJsonBlock parsedBlock;
 
-                Block.Properties properties = blocksObject.getProperties() != null ?
-                        blocksObject.getProperties().getParsedProperties() : Block.Properties.create(Material.ROCK);
+                ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
 
                 BlockType blockType = blocksObject.getBlockType() != null ? blocksObject.getBlockType() : BlockType.DEFAULT;
 
-                IJsonBlock parsedBlock;
+                Block.Properties properties = blocksObject.getProperties() != null ?
+                        blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
+
                 try {
                     parsedBlock = (IJsonBlock) blockType.getBlockType()
                             .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)

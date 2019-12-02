@@ -1,19 +1,19 @@
 package api.contentpack.common.minecraft.blocks;
 
 import api.contentpack.common.minecraft.RegistryUtil;
-import net.minecraft.block.TallGrassBlock;
+import net.minecraft.block.PaneBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
-public class JsonGrassBlock extends TallGrassBlock implements IJsonBlock {
+public class JsonPaneBlock extends PaneBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
 
-    public JsonGrassBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
+    public JsonPaneBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }
