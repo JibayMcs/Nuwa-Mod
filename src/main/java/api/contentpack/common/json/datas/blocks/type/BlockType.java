@@ -20,7 +20,8 @@ public enum BlockType {
     TALL_PLANT(JsonTallFlowerBlock.class, Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT)),
     GRASS(JsonGrassBlock.class, Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT)),
     GLASS(JsonGlassBlock.class, Block.Properties.from(Blocks.GLASS)),
-    PANE(JsonPaneBlock.class, Block.Properties.from(Blocks.IRON_BARS));
+    PANE(JsonPaneBlock.class, Block.Properties.from(Blocks.IRON_BARS)),
+    CARPET(JsonCarpetBlock.class, Block.Properties.from(Blocks.WHITE_CARPET));
 
     private Class<? extends Block> blockType;
     private Block.Properties defaultProperties;
