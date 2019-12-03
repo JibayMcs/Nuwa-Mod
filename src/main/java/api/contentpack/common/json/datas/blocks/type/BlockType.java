@@ -27,7 +27,8 @@ public enum BlockType {
     CARPET(JsonCarpetBlock.class, Block.Properties.from(Blocks.WHITE_CARPET)),
     CROPS(JsonCropsBlock.class, Block.Properties.from(Blocks.WHEAT)),
     SLOW_BLOCK(JsonSlowBlock.class, Block.Properties.from(Blocks.STONE).doesNotBlockMovement()),
-    BIOME_COLOR(JsonBiomeColorBlock.class, Block.Properties.from(Blocks.STONE));
+    BIOME_COLOR(JsonBiomeColorBlock.class, Block.Properties.from(Blocks.STONE)),
+    INVISIBLE(JsonInvisibleBlock.class, Block.Properties.from(Blocks.BARRIER));
 
     private Class<? extends Block> blockType;
     private Block.Properties defaultProperties;
