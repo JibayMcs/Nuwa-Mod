@@ -1,4 +1,4 @@
-package api.contentpack.common.minecraft.blocks;
+package api.contentpack.common.minecraft.blocks.base;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;

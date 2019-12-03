@@ -1,6 +1,7 @@
 package api.contentpack.common.minecraft.blocks;
 
 import api.contentpack.common.minecraft.RegistryUtil;
+import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
@@ -37,7 +38,6 @@ public class JsonDoorBlock extends DoorBlock implements IJsonBlock {
     public void setCollisionShape(VoxelShape collisionShape) {
         this.collisionShape = collisionShape;
     }
-
 
     @Override
     public ItemGroup getItemGroup() {

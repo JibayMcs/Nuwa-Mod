@@ -1,8 +1,11 @@
 package api.contentpack.common.minecraft.blocks;
 
+import api.contentpack.common.minecraft.RegistryUtil;
+import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -14,18 +17,50 @@ import net.minecraft.world.IWorldReader;
 
 import javax.annotation.Nonnull;
 
-public class JsonCarpetBlock extends JsonBlock implements IJsonBlock {
+public class JsonCarpetBlock extends Block implements IJsonBlock {
 
-    private static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+
+    private static final VoxelShape DEFAULT_CARPET_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+    private ItemGroup itemGroup;
 
     public JsonCarpetBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
-        super(properties, registryNameIn);
+        super(properties);
+        RegistryUtil.forceRegistryName(this, registryNameIn);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape() {
+        return DEFAULT_CARPET_SHAPE;
+    }
+
+    @Override
+    public void setCollisionShape(VoxelShape collisionShape) {
     }
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPE;
+        return this.getShape();
     }
+
+    @Override
+    public VoxelShape getShape() {
+        return DEFAULT_CARPET_SHAPE;
+    }
+
+    @Override
+    public void setShape(VoxelShape shape) {
+    }
+
+    @Override
+    public ItemGroup getItemGroup() {
+        return itemGroup;
+    }
+
+    @Override
+    public void setItemGroup(ItemGroup itemGroup) {
+        this.itemGroup = itemGroup;
+    }
+
 
     /**
      * Update the provided state given the provided neighbor facing and neighbor state, returning a new state.
@@ -42,4 +77,5 @@ public class JsonCarpetBlock extends JsonBlock implements IJsonBlock {
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         return !worldIn.isAirBlock(pos.down());
     }
+
 }

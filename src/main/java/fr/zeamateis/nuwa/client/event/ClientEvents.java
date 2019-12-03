@@ -1,11 +1,12 @@
 package fr.zeamateis.nuwa.client.event;
 
-import api.contentpack.common.minecraft.blocks.IJsonBlock;
-import api.contentpack.common.minecraft.blocks.JsonGrassBlock;
+import api.contentpack.common.minecraft.blocks.base.IBiomeColor;
+import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackButton;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPacksScreen;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
@@ -42,13 +43,14 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void registerBlockColourHandlers(ColorHandlerEvent.Block event) {
+            BlockColors blockcolors = event.getBlockColors();
+
             NuwaMod.getPackManager().getPacks().forEach(contentPack -> contentPack.getObjectsList().forEach(registry -> {
                 if (registry instanceof IJsonBlock) {
                     IJsonBlock jsonBlock = (IJsonBlock) registry;
-                    if (jsonBlock instanceof JsonGrassBlock) {
-                        JsonGrassBlock jsonGrassBlock = (JsonGrassBlock) jsonBlock;
-                        BlockColors blockcolors = event.getBlockColors();
-                        blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getGrassColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), jsonGrassBlock);
+                    if (jsonBlock instanceof IBiomeColor) {
+                        IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
+                        blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getGrassColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), (Block) biomeColorBlock);
                     }
                 }
             }));
@@ -62,12 +64,12 @@ public class ClientEvents {
             NuwaMod.getPackManager().getPacks().forEach(contentPack -> contentPack.getObjectsList().forEach(registry -> {
                 if (registry instanceof IJsonBlock) {
                     IJsonBlock jsonBlock = (IJsonBlock) registry;
-                    if (jsonBlock instanceof JsonGrassBlock) {
-                        JsonGrassBlock jsonGrassBlock = (JsonGrassBlock) jsonBlock;
+                    if (jsonBlock instanceof IBiomeColor) {
+                        IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
                         itemColors.register((p_210235_1_, p_210235_2_) -> {
                             BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
                             return blockColors.getColor(blockstate, null, null, p_210235_2_);
-                        }, jsonGrassBlock);
+                        }, (Block) biomeColorBlock);
                     }
                 }
             }));

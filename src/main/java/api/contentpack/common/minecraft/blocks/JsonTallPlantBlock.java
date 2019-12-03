@@ -1,6 +1,7 @@
 package api.contentpack.common.minecraft.blocks;
 
 import api.contentpack.common.minecraft.RegistryUtil;
+import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
@@ -8,12 +9,12 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
-public class JsonTallFlowerBlock extends TallFlowerBlock implements IJsonBlock {
+public class JsonTallPlantBlock extends TallFlowerBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
 
-    public JsonTallFlowerBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
+    public JsonTallPlantBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }

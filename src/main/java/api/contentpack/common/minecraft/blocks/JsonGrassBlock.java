@@ -1,6 +1,8 @@
 package api.contentpack.common.minecraft.blocks;
 
 import api.contentpack.common.minecraft.RegistryUtil;
+import api.contentpack.common.minecraft.blocks.base.IBiomeColor;
+import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import net.minecraft.block.TallGrassBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
@@ -8,7 +10,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
-public class JsonGrassBlock extends TallGrassBlock implements IJsonBlock {
+public class JsonGrassBlock extends TallGrassBlock implements IJsonBlock, IBiomeColor {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
