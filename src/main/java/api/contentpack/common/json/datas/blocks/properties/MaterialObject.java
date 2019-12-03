@@ -2,7 +2,7 @@ package api.contentpack.common.json.datas.blocks.properties;
 
 import net.minecraft.block.material.Material;
 
-enum MaterialObject {
+public enum MaterialObject {
     AIR(Material.AIR),
     STRUCTURE_VOID(Material.STRUCTURE_VOID),
     PORTAL(Material.PORTAL),

@@ -22,7 +22,6 @@ public class BlockPropertiesObject {
     private float slipperiness;
     private boolean hasVariableOpacity;
     private boolean noDrops;
-
     private transient boolean tickingRandomly;
 
     public Block.Properties getParsedProperties() {

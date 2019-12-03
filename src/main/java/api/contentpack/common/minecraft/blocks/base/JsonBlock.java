@@ -19,7 +19,7 @@ public class JsonBlock extends Block implements IJsonBlock {
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
 
-    protected JsonBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
+    public JsonBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }

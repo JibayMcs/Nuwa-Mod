@@ -2,7 +2,7 @@ package api.contentpack.common.json.datas.blocks.properties;
 
 import net.minecraft.block.SoundType;
 
-enum SoundTypeObject {
+public enum SoundTypeObject {
     WOOD(SoundType.WOOD),
     GROUND(SoundType.GROUND),
     PLANT(SoundType.PLANT),

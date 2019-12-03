@@ -2,7 +2,6 @@ package api.contentpack.common.json.datas.blocks;
 
 import api.contentpack.common.json.datas.blocks.properties.BlockPropertiesObject;
 import api.contentpack.common.json.datas.blocks.shape.VoxelShapeObject;
-import api.contentpack.common.json.datas.blocks.type.BlockType;
 
 public class BlocksObject {
 
@@ -10,7 +9,7 @@ public class BlocksObject {
     private String registryName;
     private String itemGroup;
     private VoxelShapeObject voxelShape;
-    private BlockType blockType;
+    private String blockType;
 
     public BlocksObject(String registryName, String itemGroup) {
         this.registryName = registryName;
@@ -33,7 +32,7 @@ public class BlocksObject {
         return voxelShape;
     }
 
-    public BlockType getBlockType() {
+    public String getBlockType() {
         return blockType;
     }
 }

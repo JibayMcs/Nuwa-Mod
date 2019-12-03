@@ -5,7 +5,7 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.blocks.BlocksObject;
-import api.contentpack.common.json.datas.blocks.type.EnumBlockType;
+import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.JsonBlockItem;
@@ -50,7 +50,7 @@ public class BlocksData implements IPackData {
 
                 ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
 
-                EnumBlockType blockType = blocksObject.getBlockType() != null ? blocksObject.getBlockType().getType() : EnumBlockType.DEFAULT;
+                BlockType blockType = blocksObject.getBlockType() != null ? BlockType.blockTypeOf(blockRegistryName, blocksObject.getBlockType()) : BlockType.DEFAULT;
 
                 Block.Properties properties = blocksObject.getProperties() != null ?
                         blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
