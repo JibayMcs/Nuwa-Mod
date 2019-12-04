@@ -51,8 +51,11 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
         PlayerEntity player = Minecraft.getInstance().player;
+        final BlockPos playerPos = new BlockPos(player);
         ItemStack itemstack = player.getHeldItemMainhand();
         World world = Minecraft.getInstance().world;
+
+        int radius = 5;
 
         boolean flag = Minecraft.getInstance().playerController.getCurrentGameType() == GameType.CREATIVE && !itemstack.isEmpty();
         ActiveRenderInfo activeRenderInfo = Minecraft.getInstance().getRenderManager().info;
@@ -60,33 +63,24 @@ public class ClientEvents {
         if (flag && itemstack.getItem() instanceof JsonBlockItem) {
             JsonBlockItem jsonBlockItem = (JsonBlockItem) itemstack.getItem();
             if (jsonBlockItem.getBlock() instanceof JsonInvisibleBlock) {
-                for (int x = -2; x < 3; x++) {
-                    for (int y = -2; y < 3; y++) {
-                        //Check in z-axis
-                        for (int z = -2; z < 3; z++) {
-                            //Only get the blocks that are 2 blocks out (For loop -can- be used here instead)
-                            if (x != -1 || x != 0 || x != 1 || y != -1 || y != 0 || y != 1 || z != -1 || z != 0 || z != 1) {
-                                //Create a new BlockPos based on our offsets
-                                BlockPos blockpos = new BlockPos(player.posZ + x, player.posY + y, player.posZ + z);
-
-                                if (world.getBlockState(blockpos).getBlock() instanceof JsonInvisibleBlock) {
-
-                                    GlStateManager.pushMatrix();
-                                    GlStateManager.scalef(1.0F, 1.0F, 1.0F);
-
-                                    double d0 = activeRenderInfo.getProjectedView().x;
-                                    double d1 = activeRenderInfo.getProjectedView().y;
-                                    double d2 = activeRenderInfo.getProjectedView().z;
-
-                                    GlStateManager.translated(
-                                            (double) blockpos.getX() - d0 + 0.5,
-                                            (double) blockpos.getY() - d1 + 0.5,
-                                            (double) blockpos.getZ() - d2 + 0.5);
-                                    GlStateManager.rotatef(-player.rotationYaw, 0, 1, 0);
-                                    GlStateManager.rotatef(player.rotationPitch, 1, 0, 0);
-                                    Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.GROUND);
-                                    GlStateManager.popMatrix();
-                                }
+                for (int x = -radius; x <= radius; x++) {
+                    for (int y = -radius; y <= radius; y++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            if (x == 0 && y == 0 && z == 0) {
+                                continue;
+                            }
+                            BlockPos blockpos = playerPos.add(x, y, z);
+                            if (world.getBlockState(blockpos).getBlock() instanceof JsonInvisibleBlock) {
+                                GlStateManager.pushMatrix();
+                                GlStateManager.scalef(1.0F, 1.0F, 1.0F);
+                                double d0 = activeRenderInfo.getProjectedView().x;
+                                double d1 = activeRenderInfo.getProjectedView().y;
+                                double d2 = activeRenderInfo.getProjectedView().z;
+                                GlStateManager.translated((double) blockpos.getX() - d0 + 0.5, (double) blockpos.getY() - d1 + 0.5, (double) blockpos.getZ() - d2 + 0.5);
+                                GlStateManager.rotatef(-player.rotationYaw, 0, 1, 0);
+                                GlStateManager.rotatef(player.rotationPitch, 1, 0, 0);
+                                Minecraft.getInstance().getItemRenderer().renderItem(itemstack, ItemCameraTransforms.TransformType.GROUND);
+                                GlStateManager.popMatrix();
                             }
                         }
                     }
