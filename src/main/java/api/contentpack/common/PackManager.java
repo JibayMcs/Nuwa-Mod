@@ -107,6 +107,11 @@ public class PackManager {
                                                             packData.parseData(contentPack, zipFile, reader);
                                                             if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
                                                                 contentPack.getObjectsList().addAll(packData.getObjectsList());
+                                                                contentPack.getObjectsList().forEach(iForgeRegistryEntry -> {
+                                                                    if (packData.getRegistry().getRegistrySuperType().equals(iForgeRegistryEntry.getRegistryType())) {
+                                                                        packData.getRegistry().register(iForgeRegistryEntry);
+                                                                    }
+                                                                });
                                                             }
                                                         }
                                                     }

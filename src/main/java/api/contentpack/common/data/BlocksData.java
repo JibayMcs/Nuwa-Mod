@@ -9,12 +9,13 @@ import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.JsonBlockItem;
-import api.contentpack.common.minecraft.items.JsonNamedItem;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -56,9 +57,16 @@ public class BlocksData implements IPackData {
                         blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
 
                 try {
-                    parsedBlock = (IJsonBlock) blockType.getBlockType()
-                            .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
-                            .newInstance(properties, blockRegistryName);
+                    if (blockType.equals(BlockType.CROPS)) {
+                        parsedBlock = (IJsonBlock) blockType.getBlockType()
+                                .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
+                                .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation("mff", "leek_seeds")), properties, blockRegistryName);
+                        //System.out.println(parsedBlock.getRegistryName());
+                    } else {
+                        parsedBlock = (IJsonBlock) blockType.getBlockType()
+                                .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
+                                .newInstance(properties, blockRegistryName);
+                    }
 
                     parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
                     parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
@@ -84,16 +92,12 @@ public class BlocksData implements IPackData {
             });
         }
 
-        //Registering itemblocks
         this.blocksList.forEach(block -> {
-            IJsonBlock jsonBlock = block;
-            if (jsonBlock instanceof JsonCropsBlock) {
-                JsonNamedItem jsonNamedItem = new JsonNamedItem(new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                contentPackIn.getObjectsList().add(jsonNamedItem);
-            } else {
-                JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                contentPackIn.getObjectsList().add(jsonBlockItem);
+            if (block instanceof JsonCropsBlock) {
+                return;
             }
+            JsonBlockItem jsonBlockItem = new JsonBlockItem(block.getBlock(), new Item.Properties().group(block.getItemGroup()), Objects.requireNonNull(block.getRegistryName()));
+            contentPackIn.getObjectsList().add(jsonBlockItem);
         });
     }
 
@@ -102,5 +106,8 @@ public class BlocksData implements IPackData {
         return blocksList;
     }
 
-
+    @Override
+    public IForgeRegistry<Block> getRegistry() {
+        return ForgeRegistries.BLOCKS;
+    }
 }

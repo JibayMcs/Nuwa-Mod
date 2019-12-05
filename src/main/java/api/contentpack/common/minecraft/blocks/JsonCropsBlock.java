@@ -3,6 +3,7 @@ package api.contentpack.common.minecraft.blocks;
 import api.contentpack.common.minecraft.RegistryUtil;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import net.minecraft.block.*;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
@@ -16,19 +17,19 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class JsonCropsBlock extends CropsBlock implements IJsonBlock, IGrowable {
     private static final IntegerProperty CROPS_AGE = BlockStateProperties.AGE_0_7;
-
+    private final Item seedItem;
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
 
-    public JsonCropsBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
+    public JsonCropsBlock(Item jsonNamedItem, Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
+        this.seedItem = jsonNamedItem;
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }
 
@@ -67,7 +68,7 @@ public class JsonCropsBlock extends CropsBlock implements IJsonBlock, IGrowable 
     @Override
     @OnlyIn(Dist.CLIENT)
     protected IItemProvider getSeedsItem() {
-        return ForgeRegistries.ITEMS.getValue(new ResourceLocation("mff", "leek_seeds"));
+        return this.seedItem;
     }
 
     @Override

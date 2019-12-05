@@ -8,8 +8,11 @@ import api.contentpack.common.json.datas.items.ItemsObject;
 import api.contentpack.common.json.datas.items.type.ItemType;
 import api.contentpack.common.minecraft.items.IJsonItem;
 import com.google.common.reflect.TypeToken;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -48,9 +51,17 @@ public class ItemsData implements IPackData {
                 Item.Properties properties = itemsObject.getProperties() != null ? itemsObject.getProperties().getParsedProperties() : new Item.Properties();
 
                 try {
-                    parsedItem = (IJsonItem) itemType.getItemType()
-                            .getDeclaredConstructor(Item.Properties.class, ResourceLocation.class)
-                            .newInstance(properties, itemRegistryName);
+                    if (itemType.equals(ItemType.SEEDS)) {
+                        parsedItem = (IJsonItem) itemType.getItemType()
+                                .getDeclaredConstructor(Block.class, Item.Properties.class, ResourceLocation.class)
+                                .newInstance(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")), properties, itemRegistryName);
+                        //contentPackIn.getObjectsList().forEach(iForgeRegistryEntry -> System.out.println(iForgeRegistryEntry.getRegistryName()));
+                        System.out.println(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")).getRegistryName());
+                    } else {
+                        parsedItem = (IJsonItem) itemType.getItemType()
+                                .getDeclaredConstructor(Item.Properties.class, ResourceLocation.class)
+                                .newInstance(properties, itemRegistryName);
+                    }
 
                     if (itemsObject.getItemGroup() != null) {
                         ResourceLocation parsedItemGroup = new ResourceLocation(itemsObject.getItemGroup());
@@ -75,5 +86,10 @@ public class ItemsData implements IPackData {
     @Override
     public LinkedList<IJsonItem> getObjectsList() {
         return itemList;
+    }
+
+    @Override
+    public IForgeRegistry<Item> getRegistry() {
+        return ForgeRegistries.ITEMS;
     }
 }

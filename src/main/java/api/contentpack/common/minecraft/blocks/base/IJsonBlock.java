@@ -4,8 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraftforge.common.extensions.IForgeBlock;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public interface IJsonBlock extends net.minecraftforge.registries.IForgeRegistryEntry<Block>, IForgeBlock {
+public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
     VoxelShape getShape();
 
     void setShape(VoxelShape shape);
@@ -17,4 +18,5 @@ public interface IJsonBlock extends net.minecraftforge.registries.IForgeRegistry
     ItemGroup getItemGroup();
 
     void setItemGroup(ItemGroup itemGroup);
+
 }

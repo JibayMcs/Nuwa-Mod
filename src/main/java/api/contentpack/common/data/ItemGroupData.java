@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -44,6 +45,11 @@ public class ItemGroupData implements IPackData {
 
     @Override
     public LinkedList<? extends ForgeRegistryEntry> getObjectsList() {
+        return null;
+    }
+
+    @Override
+    public IForgeRegistry getRegistry() {
         return null;
     }
 }
