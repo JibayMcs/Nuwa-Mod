@@ -17,6 +17,12 @@ public class ContentPackFinder implements IPackFinder {
         this.contentPack = contentPackIn;
     }
 
+    /**
+     * Add Content Pack to the Vanilla Resource Pack system to load assets from it
+     *
+     * @param nameToPackMap
+     * @param packInfoFactory
+     */
     @Override
     public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> nameToPackMap, ResourcePackInfo.IFactory<T> packInfoFactory) {
         File contentPackFile = contentPack.getFile();

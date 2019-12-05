@@ -89,7 +89,7 @@ public class ItemsData implements IPackData {
     }
 
     @Override
-    public IForgeRegistry<Item> getRegistry() {
+    public IForgeRegistry<Item> getObjectsRegistry() {
         return ForgeRegistries.ITEMS;
     }
 }

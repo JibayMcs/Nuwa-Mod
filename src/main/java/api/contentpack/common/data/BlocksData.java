@@ -107,7 +107,7 @@ public class BlocksData implements IPackData {
     }
 
     @Override
-    public IForgeRegistry<Block> getRegistry() {
+    public IForgeRegistry<Block> getObjectsRegistry() {
         return ForgeRegistries.BLOCKS;
     }
 }

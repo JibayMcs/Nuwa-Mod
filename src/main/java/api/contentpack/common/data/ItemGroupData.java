@@ -49,7 +49,7 @@ public class ItemGroupData implements IPackData {
     }
 
     @Override
-    public IForgeRegistry getRegistry() {
+    public IForgeRegistry getObjectsRegistry() {
         return null;
     }
 }

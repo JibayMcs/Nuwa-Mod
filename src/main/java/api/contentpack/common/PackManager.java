@@ -25,6 +25,14 @@ public class PackManager {
     private final List<ContentPack> packs;
     private final Map<ResourceLocation, Class<? extends IPackData>> packDataMap;
 
+
+    /**
+     * Define a {@link PackManager#contentPackPath} where {@link PackManager#loadPacks()} walk into it
+     * <br>You need to figure out the {@link net.minecraft.client.Minecraft#gameDir} was not the same in Client and Server<br>
+     * Use Proxies instead !
+     *
+     * @param contentPackPathIn
+     */
     public PackManager(Path contentPackPathIn) {
         packs = new ArrayList<>();
         packDataMap = new HashMap<>();
@@ -62,6 +70,10 @@ public class PackManager {
         return packs;
     }
 
+    /**
+     * Main method to load packs from {@link PackManager#contentPackPath}
+     * read zip content and inject {@link PackManager#packDataMap} into game
+     */
     public void loadPacks() {
         if (this.contentPackPath != null) {
             try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
@@ -108,8 +120,8 @@ public class PackManager {
                                                             if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
                                                                 contentPack.getObjectsList().addAll(packData.getObjectsList());
                                                                 contentPack.getObjectsList().forEach(iForgeRegistryEntry -> {
-                                                                    if (packData.getRegistry().getRegistrySuperType().equals(iForgeRegistryEntry.getRegistryType())) {
-                                                                        packData.getRegistry().register(iForgeRegistryEntry);
+                                                                    if (packData.getObjectsRegistry().getRegistrySuperType().equals(iForgeRegistryEntry.getRegistryType())) {
+                                                                        packData.getObjectsRegistry().register(iForgeRegistryEntry);
                                                                     }
                                                                 });
                                                             }
@@ -146,10 +158,22 @@ public class PackManager {
         }
     }
 
+
+    /**
+     * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
+     *
+     * @param entryName
+     * @param packDataIn
+     */
     public void registerDataEntry(ResourceLocation entryName, Class<? extends IPackData> packDataIn) {
         this.packDataMap.put(entryName, packDataIn);
     }
 
+    /**
+     * Remove {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
+     *
+     * @param entryNameIn
+     */
     public void removePackDataEntry(ResourceLocation entryNameIn) {
         this.packDataMap.remove(entryNameIn);
     }
