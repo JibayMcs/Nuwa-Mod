@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,11 +120,9 @@ public class PackManager {
                                                             packData.parseData(contentPack, zipFile, reader);
                                                             if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
                                                                 contentPack.getObjectsList().addAll(packData.getObjectsList());
-                                                                contentPack.getObjectsList().forEach(iForgeRegistryEntry -> {
-                                                                    if (packData.getObjectsRegistry().getRegistrySuperType().equals(iForgeRegistryEntry.getRegistryType())) {
-                                                                        packData.getObjectsRegistry().register(iForgeRegistryEntry);
-                                                                    }
-                                                                });
+                                                                contentPack.getObjectsList().stream()
+                                                                        .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
+                                                                        .forEach(iForgeRegistryEntry -> packData.getObjectsRegistry().register(iForgeRegistryEntry));
                                                             }
                                                         }
                                                     }
@@ -165,8 +164,27 @@ public class PackManager {
      * @param entryName
      * @param packDataIn
      */
-    public void registerDataEntry(ResourceLocation entryName, Class<? extends IPackData> packDataIn) {
+    public void registerData(ResourceLocation entryName, Class<? extends IPackData> packDataIn) {
         this.packDataMap.put(entryName, packDataIn);
+    }
+
+
+    /**
+     * Register {@link IPackDataEvent} entry if you need to hook on {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent} or
+     * {@link net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent}
+     *
+     * @param packDataEventIn
+     */
+    public void registerDataEvent(Class<? extends IPackDataEvent> packDataEventIn) {
+        try {
+            IPackDataEvent packDataEvent = packDataEventIn.newInstance();
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(packDataEvent::onCommonSetup);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(packDataEvent::onClientSetup);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

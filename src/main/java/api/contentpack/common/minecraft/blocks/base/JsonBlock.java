@@ -4,6 +4,7 @@ package api.contentpack.common.minecraft.blocks.base;
 import api.contentpack.common.minecraft.RegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -11,6 +12,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -64,5 +66,8 @@ public class JsonBlock extends Block implements IJsonBlock {
         this.itemGroup = itemGroup;
     }
 
-
+    @Override
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        super.onEntityCollision(state, worldIn, pos, entityIn);
+    }
 }
