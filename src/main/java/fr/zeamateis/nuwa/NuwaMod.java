@@ -4,10 +4,7 @@ import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.client.minecraft.assets.ContentPackFinder;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.data.BlocksData;
-import api.contentpack.common.data.ItemGroupData;
-import api.contentpack.common.data.ItemsData;
-import api.contentpack.common.data.OresGenerationData;
+import api.contentpack.common.data.*;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -60,6 +57,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
+        packManager.registerData(new ResourceLocation(Constant.MODID, "trees_generation_data"), TreesGenerationData.class);
 
         packManager.loadPacks();
 

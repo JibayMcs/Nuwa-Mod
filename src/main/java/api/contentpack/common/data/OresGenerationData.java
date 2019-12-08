@@ -3,7 +3,7 @@ package api.contentpack.common.data;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.json.datas.oresGeneration.OresGenerationObject;
+import api.contentpack.common.json.datas.generations.oresGeneration.OresGenerationObject;
 import com.google.common.reflect.TypeToken;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.block.Block;
@@ -34,9 +34,8 @@ public class OresGenerationData implements IPackData {
      */
     @Override
     public String getEntryName() {
-        return "objects/oresgeneration.json";
+        return "objects/generations/ores.json";
     }
-
 
     /**
      * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}

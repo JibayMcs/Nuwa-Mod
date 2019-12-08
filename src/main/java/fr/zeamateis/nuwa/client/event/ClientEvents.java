@@ -3,6 +3,7 @@ package fr.zeamateis.nuwa.client.event;
 import api.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
 import api.contentpack.common.minecraft.blocks.base.IBiomeColor;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
+import api.contentpack.common.minecraft.blocks.base.ILeavesColor;
 import api.contentpack.common.minecraft.items.JsonBlockItem;
 import com.mojang.blaze3d.platform.GlStateManager;
 import fr.zeamateis.nuwa.Constant;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GameType;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
@@ -102,6 +104,9 @@ public class ClientEvents {
                     if (jsonBlock instanceof IBiomeColor) {
                         IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
                         blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getGrassColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), (Block) biomeColorBlock);
+                    } else if (jsonBlock instanceof ILeavesColor) {
+                        ILeavesColor biomeColorBlock = (ILeavesColor) jsonBlock;
+                        blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : FoliageColors.getDefault(), (Block) biomeColorBlock);
                     }
                 }
             }));
@@ -117,6 +122,12 @@ public class ClientEvents {
                     IJsonBlock jsonBlock = (IJsonBlock) registry;
                     if (jsonBlock instanceof IBiomeColor) {
                         IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
+                        itemColors.register((p_210235_1_, p_210235_2_) -> {
+                            BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
+                            return blockColors.getColor(blockstate, null, null, p_210235_2_);
+                        }, (Block) biomeColorBlock);
+                    } else if (jsonBlock instanceof ILeavesColor) {
+                        ILeavesColor biomeColorBlock = (ILeavesColor) jsonBlock;
                         itemColors.register((p_210235_1_, p_210235_2_) -> {
                             BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
                             return blockColors.getColor(blockstate, null, null, p_210235_2_);

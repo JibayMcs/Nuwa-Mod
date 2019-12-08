@@ -1,4 +1,4 @@
-package api.contentpack.common.json.datas.oresGeneration;
+package api.contentpack.common.json.datas.generations.oresGeneration;
 
 import com.google.gson.annotations.SerializedName;
 
