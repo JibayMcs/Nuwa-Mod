@@ -2,9 +2,14 @@ package api.contentpack.common.json.datas.oresGeneration;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OresGenerationObject {
 
     private DimensionType dimensionType;
+
+    private List<String> genInBiomes = new ArrayList<>();
 
     @SerializedName("ore")
     private String oreBlock;
@@ -14,6 +19,10 @@ public class OresGenerationObject {
 
     public DimensionType getDimensionType() {
         return dimensionType;
+    }
+
+    public List<String> getGenInBiomes() {
+        return genInBiomes;
     }
 
     public String getOreBlock() {
