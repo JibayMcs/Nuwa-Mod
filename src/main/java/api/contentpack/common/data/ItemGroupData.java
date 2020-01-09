@@ -21,8 +21,8 @@ import java.util.zip.ZipFile;
 public class ItemGroupData implements IPackData {
 
     @Override
-    public String getEntryName() {
-        return "objects/itemgroup.json";
+    public String getEntryFolder() {
+        return "objects/itemgroup/index.json";
     }
 
     @Override

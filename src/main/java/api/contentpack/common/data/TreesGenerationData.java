@@ -7,7 +7,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.Placement;
@@ -26,7 +25,7 @@ public class TreesGenerationData implements IPackData {
      * @return String
      */
     @Override
-    public String getEntryName() {
+    public String getEntryFolder() {
         return "objects/generations/trees.json";
     }
 
@@ -40,15 +39,20 @@ public class TreesGenerationData implements IPackData {
      */
     @Override
     public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        final Feature testTreeFeature = new TestTreeFeature(NoFeatureConfig::deserialize, false, false);
+        final Feature testTreeFeature = new TestTreeFeature(NoFeatureConfig::deserialize, false);
         testTreeFeature.setRegistryName("mff:test_tree");
         ForgeRegistries.FEATURES.register(testTreeFeature);
-        {
-            for (final Biome biome : ForgeRegistries.BIOMES) {
-                biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Biome.createDecoratedFeature(Feature.RANDOM_SELECTOR, new MultipleRandomFeatureConfig(new Feature[]{testTreeFeature}, new IFeatureConfig[]{IFeatureConfig.NO_FEATURE_CONFIG, IFeatureConfig.NO_FEATURE_CONFIG}, new float[]{0.2F, 0.1F}, Feature.NORMAL_TREE, IFeatureConfig.NO_FEATURE_CONFIG), Placement.COUNT_EXTRA_HEIGHTMAP, new AtSurfaceWithExtraConfig(10, 0.1F, 1)));
-            }
-
+        for (final Biome biome : ForgeRegistries.BIOMES) {
+            biome.addFeature(
+                    GenerationStage.Decoration.VEGETAL_DECORATION,
+                    Biome.createDecoratedFeature(
+                            testTreeFeature,
+                            IFeatureConfig.NO_FEATURE_CONFIG,
+                            Placement.COUNT_EXTRA_HEIGHTMAP,
+                            new AtSurfaceWithExtraConfig(10, 10, 1))
+            );
         }
+
     }
 
     /**

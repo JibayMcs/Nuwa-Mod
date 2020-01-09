@@ -10,6 +10,8 @@ public class PackInfoObject {
 
     private String version;
 
+    private int nuwaDataVersion;
+
     private List<String> description, authors, credits;
 
     private String license;
@@ -27,6 +29,10 @@ public class PackInfoObject {
 
     public String getVersion() {
         return version;
+    }
+
+    public int getNuwaDataVersion() {
+        return nuwaDataVersion;
     }
 
     public List<String> getDescription() {
@@ -51,13 +57,15 @@ public class PackInfoObject {
                 "packName='" + packName + '\'' +
                 ", namespace='" + namespace + '\'' +
                 ", version='" + version + '\'' +
+                ", nuwaDataVersion=" + nuwaDataVersion +
                 ", description=" + description +
                 ", authors=" + authors +
                 ", credits=" + credits +
                 ", license='" + license + '\'' +
+                ", totalBlocks=" + totalBlocks +
+                ", totalItems=" + totalItems +
                 '}';
     }
-
 
     public int getTotalBlocks() {
         return totalBlocks;

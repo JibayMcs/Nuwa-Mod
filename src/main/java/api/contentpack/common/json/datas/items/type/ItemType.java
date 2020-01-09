@@ -1,7 +1,7 @@
 package api.contentpack.common.json.datas.items.type;
 
-import api.contentpack.common.minecraft.items.JsonBlockItem;
-import api.contentpack.common.minecraft.items.JsonItem;
+import api.contentpack.common.minecraft.items.base.JsonBlockItem;
+import api.contentpack.common.minecraft.items.base.JsonItem;
 import net.minecraft.item.Item;
 
 public enum ItemType {

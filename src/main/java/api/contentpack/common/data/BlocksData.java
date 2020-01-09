@@ -8,7 +8,7 @@ import api.contentpack.common.json.datas.blocks.BlocksObject;
 import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
-import api.contentpack.common.minecraft.items.JsonBlockItem;
+import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,8 +34,8 @@ public class BlocksData implements IPackData {
     }
 
     @Override
-    public String getEntryName() {
-        return "objects/blocks.json";
+    public String getEntryFolder() {
+        return "objects/blocks/";
     }
 
     @Override
@@ -77,7 +77,7 @@ public class BlocksData implements IPackData {
                             if (ItemGroups.contains(parsedItemGroup)) {
                                 parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
                             } else {
-                                PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryName(), parsedItemGroup);
+                                PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
                             }
                         } else {
                             parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));

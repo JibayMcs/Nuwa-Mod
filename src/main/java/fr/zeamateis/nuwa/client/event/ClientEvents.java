@@ -4,7 +4,7 @@ import api.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
 import api.contentpack.common.minecraft.blocks.base.IBiomeColor;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.blocks.base.ILeavesColor;
-import api.contentpack.common.minecraft.items.JsonBlockItem;
+import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.mojang.blaze3d.platform.GlStateManager;
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;

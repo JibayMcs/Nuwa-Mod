@@ -1,6 +1,8 @@
 package api.contentpack.common;
 
 import api.contentpack.common.json.PackInfoObject;
+import api.contentpack.common.json.datas.generations.oresGeneration.OresGenerationObject;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.zeamateis.nuwa.NuwaMod;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -76,6 +79,8 @@ public class PackManager {
      * read zip content and inject {@link PackManager#packDataMap} into game
      */
     public void loadPacks() {
+        Type objectType = new TypeToken<List<String>>() {
+        }.getType();
         if (this.contentPackPath != null) {
             try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
                 walk.map(Path::toFile)
@@ -108,27 +113,35 @@ public class PackManager {
                                                 contentPack = new ContentPack(files, packInfoObject, files.length());
                                             }
 
+                                            if (packInfoObject.getNuwaDataVersion() == NuwaMod.DATA_VERSION) {
+                                                if (!this.packDataMap.isEmpty()) {
+                                                    for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
+                                                        IPackData packData = packDataEntry.getValue().newInstance();
+                                                        if (!packData.getEntryFolder().isEmpty()) {
+                                                            ZipEntry zipEntry = zipFile.getEntry(packData.getEntryFolder());
+                                                            if (zipEntry != null) {
+                                                                stream = zipFile.getInputStream(zipFile.getEntry("objects/index.json"));
+                                                                reader = new InputStreamReader(stream);
 
-                                            if (!this.packDataMap.isEmpty()) {
-                                                for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
-                                                    IPackData packData = packDataEntry.getValue().newInstance();
-                                                    if (!packData.getEntryName().isEmpty()) {
-                                                        ZipEntry zipEntry = zipFile.getEntry(packData.getEntryName());
-                                                        if (zipEntry != null) {
-                                                            stream = zipFile.getInputStream(zipEntry);
-                                                            reader = new InputStreamReader(stream);
-                                                            packData.parseData(contentPack, zipFile, reader);
-                                                            if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                                                                contentPack.getObjectsList().addAll(packData.getObjectsList());
-                                                                contentPack.getObjectsList().stream()
-                                                                        .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
-                                                                        .forEach(iForgeRegistryEntry -> packData.getObjectsRegistry().register(iForgeRegistryEntry));
+
+                                                                List<OresGenerationObject> objects = PackManager.GSON.fromJson(reader, objectType);
+                                                                System.out.println(objects.get(1));
+
+                                                                /*packData.parseData(contentPack, zipFile, reader);
+                                                                if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
+                                                                    contentPack.getObjectsList().addAll(packData.getObjectsList());
+                                                                    contentPack.getObjectsList().stream()
+                                                                            .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
+                                                                            .forEach(iForgeRegistryEntry -> packData.getObjectsRegistry().register(iForgeRegistryEntry));
+                                                                }*/
                                                             }
                                                         }
                                                     }
                                                 }
+                                                packs.add(contentPack);
+                                            } else {
+                                                NuwaMod.getLogger().error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", packInfoObject.getPackName(), NuwaMod.DATA_VERSION);
                                             }
-                                            packs.add(contentPack);
                                         }
                                     }
                                 }

@@ -33,8 +33,8 @@ public class OresGenerationData implements IPackData {
      * @return String
      */
     @Override
-    public String getEntryName() {
-        return "objects/generations/ores.json";
+    public String getEntryFolder() {
+        return "objects/generations/ores/";
     }
 
     /**

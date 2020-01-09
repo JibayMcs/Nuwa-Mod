@@ -6,7 +6,7 @@ import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.items.ItemsObject;
 import api.contentpack.common.json.datas.items.type.ItemType;
-import api.contentpack.common.minecraft.items.IJsonItem;
+import api.contentpack.common.minecraft.items.base.IJsonItem;
 import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -30,8 +30,8 @@ public class ItemsData implements IPackData {
     }
 
     @Override
-    public String getEntryName() {
-        return "objects/items.json";
+    public String getEntryFolder() {
+        return "objects/items/";
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ItemsData implements IPackData {
                         if (ItemGroups.contains(parsedItemGroup)) {
                             properties.group(ItemGroups.get(parsedItemGroup));
                         } else {
-                            PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryName(), parsedItemGroup);
+                            PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
                         }
                     } else {
                         properties.group(ItemGroups.get(new ResourceLocation("minecraft:misc")));

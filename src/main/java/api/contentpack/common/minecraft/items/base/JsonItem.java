@@ -1,4 +1,4 @@
-package api.contentpack.common.minecraft.items;
+package api.contentpack.common.minecraft.items.base;
 
 import api.contentpack.common.minecraft.RegistryUtil;
 import net.minecraft.item.Item;

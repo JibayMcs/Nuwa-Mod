@@ -4,7 +4,10 @@ import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.client.minecraft.assets.ContentPackFinder;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.data.*;
+import api.contentpack.common.data.BlocksData;
+import api.contentpack.common.data.ItemGroupData;
+import api.contentpack.common.data.ItemsData;
+import api.contentpack.common.data.OresGenerationData;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -35,15 +38,14 @@ import java.util.function.Predicate;
 //TODO Fix content packs not closed after loading.
 @Mod(Constant.MODID)
 public class NuwaMod implements ISelectiveResourceReloadListener {
+    public static final int DATA_VERSION = 2;
     private static final String PROTOCOL_VERSION = String.valueOf(1);
-
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(Constant.MODID, "nuwa_channel"))
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .simpleChannel();
-
     private static final Logger LOGGER = LogManager.getLogger();
     private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     private static PackManager packManager;
@@ -57,7 +59,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "trees_generation_data"), TreesGenerationData.class);
+        //packManager.registerData(new ResourceLocation(Constant.MODID, "trees_generation_data"), TreesGenerationData.class);
 
         packManager.loadPacks();
 

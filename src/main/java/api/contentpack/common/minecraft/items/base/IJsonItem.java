@@ -1,4 +1,4 @@
-package api.contentpack.common.minecraft.items;
+package api.contentpack.common.minecraft.items.base;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.common.extensions.IForgeItem;
