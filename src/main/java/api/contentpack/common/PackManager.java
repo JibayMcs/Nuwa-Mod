@@ -1,11 +1,17 @@
 package api.contentpack.common;
 
 import api.contentpack.common.json.PackInfoObject;
+import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
+import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
+import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.zeamateis.nuwa.NuwaMod;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -121,23 +127,34 @@ public class PackManager {
                                                         try {
                                                             stream.set(finalZipFile.getInputStream(o));
                                                             reader.set(new InputStreamReader(stream.get()));
-
-                                                            System.out.println(o.getName());
-
                                                             packData.parseData(contentPack, finalZipFile, reader.get());
-                                                            if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                                                                contentPack.getObjectsList().addAll(packData.getObjectsList());
-                                                                contentPack.getObjectsList().stream()
-                                                                        .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
-                                                                        .forEach(iForgeRegistryEntry -> {
-                                                                            packData.getObjectsRegistry().register(iForgeRegistryEntry);
-                                                                            System.out.println(iForgeRegistryEntry.getRegistryName());
-                                                                        });
-                                                            }
                                                         } catch (IOException ex) {
                                                             ex.printStackTrace();
                                                         }
                                                     });
+
+                                                    if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
+                                                        contentPack.getObjectsList().addAll(packData.getObjectsList());
+                                                        contentPack.getObjectsList().stream()
+                                                                .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
+                                                                .forEach(iForgeRegistryEntry -> {
+                                                                    packData.getObjectsRegistry().register(iForgeRegistryEntry);
+                                                                });
+
+                                                        //Register BlockItem
+                                                        contentPack.getObjectsList().stream()
+                                                                .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(Block.class))
+                                                                .forEach(iForgeRegistryEntry -> {
+                                                                    Block block = (Block) iForgeRegistryEntry;
+                                                                    if (block instanceof JsonCropsBlock) {
+                                                                        return;
+                                                                    } else if (block instanceof IJsonBlock) {
+                                                                        IJsonBlock jsonBlock = (IJsonBlock) block;
+                                                                        JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
+                                                                        ForgeRegistries.ITEMS.register(jsonBlockItem);
+                                                                    }
+                                                                });
+                                                    }
                                                 }
                                                 packs.add(contentPack);
                                             } else {

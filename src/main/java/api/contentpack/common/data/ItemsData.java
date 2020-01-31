@@ -36,7 +36,6 @@ public class ItemsData implements IPackData {
 
         ItemsObject itemsObject = PackManager.GSON.fromJson(readerIn, ItemsObject.class);
 
-
         ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());
 
         IJsonItem parsedItem;
@@ -70,7 +69,6 @@ public class ItemsData implements IPackData {
             }
 
             itemList.add(parsedItem);
-
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

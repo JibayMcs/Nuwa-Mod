@@ -8,7 +8,6 @@ import api.contentpack.common.json.datas.blocks.BlocksObject;
 import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
-import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -19,7 +18,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.zip.ZipFile;
 
 public class BlocksData implements IPackData {
@@ -82,13 +80,6 @@ public class BlocksData implements IPackData {
             e.printStackTrace();
         }
 
-        this.blocksList.forEach(block -> {
-            if (block instanceof JsonCropsBlock) {
-                return;
-            }
-            JsonBlockItem jsonBlockItem = new JsonBlockItem(block.getBlock(), new Item.Properties().group(block.getItemGroup()), Objects.requireNonNull(block.getRegistryName()));
-            contentPackIn.getObjectsList().add(jsonBlockItem);
-        });
     }
 
     @Override

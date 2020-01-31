@@ -22,7 +22,7 @@ public class ItemGroupData implements IPackData {
 
     @Override
     public String getEntryFolder() {
-        return "objects/itemgroup/index.json";
+        return "objects/itemgroup/";
     }
 
     @Override

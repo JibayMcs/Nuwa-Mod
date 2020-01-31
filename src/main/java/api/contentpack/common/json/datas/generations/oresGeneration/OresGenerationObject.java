@@ -33,7 +33,7 @@ public class OresGenerationObject {
         return veinObject;
     }
 
-    public static enum DimensionType {
+    public enum DimensionType {
         OVERWORLD,
         NETHER,
         END
