@@ -1,8 +1,6 @@
 package api.contentpack.common;
 
 import api.contentpack.common.json.PackInfoObject;
-import api.contentpack.common.json.datas.generations.oresGeneration.OresGenerationObject;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.zeamateis.nuwa.NuwaMod;
@@ -13,10 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -79,8 +77,8 @@ public class PackManager {
      * read zip content and inject {@link PackManager#packDataMap} into game
      */
     public void loadPacks() {
-        Type objectType = new TypeToken<List<String>>() {
-        }.getType();
+       /* Type objectType = new TypeToken<List<String>>() {
+        }.getType();*/
         if (this.contentPackPath != null) {
             try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
                 walk.map(Path::toFile)
@@ -88,8 +86,8 @@ public class PackManager {
                         .collect(Collectors.toList())
                         .forEach(files -> {
                             ZipFile zipFile = null;
-                            InputStream stream = null;
-                            InputStreamReader reader = null;
+                            AtomicReference<InputStream> stream = new AtomicReference<InputStream>();
+                            AtomicReference<InputStreamReader> reader = new AtomicReference<InputStreamReader>();
                             try {
                                 zipFile = new ZipFile(files);
                                 Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -102,41 +100,44 @@ public class PackManager {
                                         ContentPack contentPack;
 
                                         if (contentPackEntry != null) {
-                                            stream = zipFile.getInputStream(contentPackEntry);
-                                            reader = new InputStreamReader(stream);
-                                            PackInfoObject packInfoObject = GSON.fromJson(reader, PackInfoObject.class);
+                                            stream.set(zipFile.getInputStream(contentPackEntry));
+                                            reader.set(new InputStreamReader(stream.get()));
+                                            PackInfoObject packInfoObject = GSON.fromJson(reader.get(), PackInfoObject.class);
 
                                             if (packIconEntry != null) {
-                                                stream = zipFile.getInputStream(packIconEntry);
-                                                contentPack = new ContentPack(stream, files, packInfoObject, files.length());
+                                                stream.set(zipFile.getInputStream(packIconEntry));
+                                                contentPack = new ContentPack(stream.get(), files, packInfoObject, files.length());
                                             } else {
                                                 contentPack = new ContentPack(files, packInfoObject, files.length());
                                             }
 
                                             if (packInfoObject.getNuwaDataVersion() == NuwaMod.DATA_VERSION) {
-                                                if (!this.packDataMap.isEmpty()) {
-                                                    for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
-                                                        IPackData packData = packDataEntry.getValue().newInstance();
-                                                        if (!packData.getEntryFolder().isEmpty()) {
-                                                            ZipEntry zipEntry = zipFile.getEntry(packData.getEntryFolder());
-                                                            if (zipEntry != null) {
-                                                                stream = zipFile.getInputStream(zipFile.getEntry("objects/index.json"));
-                                                                reader = new InputStreamReader(stream);
+                                                ZipFile finalZipFile = zipFile;
 
+                                                for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
+                                                    IPackData packData = packDataEntry.getValue().newInstance();
 
-                                                                List<OresGenerationObject> objects = PackManager.GSON.fromJson(reader, objectType);
-                                                                System.out.println(objects.get(1));
+                                                    zipFile.stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
+                                                        try {
+                                                            stream.set(finalZipFile.getInputStream(o));
+                                                            reader.set(new InputStreamReader(stream.get()));
 
-                                                                /*packData.parseData(contentPack, zipFile, reader);
-                                                                if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                                                                    contentPack.getObjectsList().addAll(packData.getObjectsList());
-                                                                    contentPack.getObjectsList().stream()
-                                                                            .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
-                                                                            .forEach(iForgeRegistryEntry -> packData.getObjectsRegistry().register(iForgeRegistryEntry));
-                                                                }*/
+                                                            System.out.println(o.getName());
+
+                                                            packData.parseData(contentPack, finalZipFile, reader.get());
+                                                            if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
+                                                                contentPack.getObjectsList().addAll(packData.getObjectsList());
+                                                                contentPack.getObjectsList().stream()
+                                                                        .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
+                                                                        .forEach(iForgeRegistryEntry -> {
+                                                                            packData.getObjectsRegistry().register(iForgeRegistryEntry);
+                                                                            System.out.println(iForgeRegistryEntry.getRegistryName());
+                                                                        });
                                                             }
+                                                        } catch (IOException ex) {
+                                                            ex.printStackTrace();
                                                         }
-                                                    }
+                                                    });
                                                 }
                                                 packs.add(contentPack);
                                             } else {
@@ -152,11 +153,11 @@ public class PackManager {
                                     if (zipFile != null) {
                                         zipFile.close();
                                     }
-                                    if (stream != null) {
-                                        stream.close();
+                                    if (stream.get() != null) {
+                                        stream.get().close();
                                     }
-                                    if (reader != null) {
-                                        reader.close();
+                                    if (reader.get() != null) {
+                                        reader.get().close();
                                     }
                                     walk.close();
                                 } catch (IOException e) {

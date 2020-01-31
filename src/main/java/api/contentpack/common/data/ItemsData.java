@@ -7,7 +7,6 @@ import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.items.ItemsObject;
 import api.contentpack.common.json.datas.items.type.ItemType;
 import api.contentpack.common.minecraft.items.base.IJsonItem;
-import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -16,9 +15,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.zip.ZipFile;
 
 public class ItemsData implements IPackData {
@@ -36,50 +33,46 @@ public class ItemsData implements IPackData {
 
     @Override
     public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        Type itemsType = new TypeToken<List<ItemsObject>>() {
-        }.getType();
-        List<ItemsObject> itemsList = PackManager.GSON.fromJson(readerIn, itemsType);
 
-        if (itemsType != null && itemsList != null) {
-            itemsList.forEach(itemsObject -> {
-                ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());
+        ItemsObject itemsObject = PackManager.GSON.fromJson(readerIn, ItemsObject.class);
 
-                IJsonItem parsedItem;
 
-                ItemType itemType = itemsObject.getItemType() != null ? itemsObject.getItemType() : ItemType.DEFAULT;
+        ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());
 
-                Item.Properties properties = itemsObject.getProperties() != null ? itemsObject.getProperties().getParsedProperties() : new Item.Properties();
+        IJsonItem parsedItem;
 
-                try {
-                    if (itemType.equals(ItemType.SEEDS)) {
-                        parsedItem = (IJsonItem) itemType.getItemType()
-                                .getDeclaredConstructor(Block.class, Item.Properties.class, ResourceLocation.class)
-                                .newInstance(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")), properties, itemRegistryName);
-                        //contentPackIn.getObjectsList().forEach(iForgeRegistryEntry -> System.out.println(iForgeRegistryEntry.getRegistryName()));
-                        System.out.println(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")).getRegistryName());
-                    } else {
-                        parsedItem = (IJsonItem) itemType.getItemType()
-                                .getDeclaredConstructor(Item.Properties.class, ResourceLocation.class)
-                                .newInstance(properties, itemRegistryName);
-                    }
+        ItemType itemType = itemsObject.getItemType() != null ? itemsObject.getItemType() : ItemType.DEFAULT;
 
-                    if (itemsObject.getItemGroup() != null) {
-                        ResourceLocation parsedItemGroup = new ResourceLocation(itemsObject.getItemGroup());
-                        if (ItemGroups.contains(parsedItemGroup)) {
-                            properties.group(ItemGroups.get(parsedItemGroup));
-                        } else {
-                            PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
-                        }
-                    } else {
-                        properties.group(ItemGroups.get(new ResourceLocation("minecraft:misc")));
-                    }
+        Item.Properties properties = itemsObject.getProperties() != null ? itemsObject.getProperties().getParsedProperties() : new Item.Properties();
 
-                    itemList.add(parsedItem);
+        try {
+            if (itemType.equals(ItemType.SEEDS)) {
+                parsedItem = (IJsonItem) itemType.getItemType()
+                        .getDeclaredConstructor(Block.class, Item.Properties.class, ResourceLocation.class)
+                        .newInstance(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")), properties, itemRegistryName);
+                //contentPackIn.getObjectsList().forEach(iForgeRegistryEntry -> System.out.println(iForgeRegistryEntry.getRegistryName()));
+                System.out.println(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")).getRegistryName());
+            } else {
+                parsedItem = (IJsonItem) itemType.getItemType()
+                        .getDeclaredConstructor(Item.Properties.class, ResourceLocation.class)
+                        .newInstance(properties, itemRegistryName);
+            }
 
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
+            if (itemsObject.getItemGroup() != null) {
+                ResourceLocation parsedItemGroup = new ResourceLocation(itemsObject.getItemGroup());
+                if (ItemGroups.contains(parsedItemGroup)) {
+                    properties.group(ItemGroups.get(parsedItemGroup));
+                } else {
+                    PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
                 }
-            });
+            } else {
+                properties.group(ItemGroups.get(new ResourceLocation("minecraft:misc")));
+            }
+
+            itemList.add(parsedItem);
+
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
         }
     }
 

@@ -9,7 +9,6 @@ import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.base.JsonBlockItem;
-import com.google.common.reflect.TypeToken;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -19,9 +18,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipFile;
 
@@ -40,56 +37,49 @@ public class BlocksData implements IPackData {
 
     @Override
     public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+        BlocksObject blocksObject = PackManager.GSON.fromJson(readerIn, BlocksObject.class);
 
-        Type blocksType = new TypeToken<List<BlocksObject>>() {
-        }.getType();
-        List<BlocksObject> blocksList = PackManager.GSON.fromJson(readerIn, blocksType);
+        IJsonBlock parsedBlock;
 
-        if (blocksType != null && blocksList != null) {
-            blocksList.forEach(blocksObject -> {
-                IJsonBlock parsedBlock;
+        ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
 
-                ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
+        BlockType blockType = blocksObject.getBlockType() != null ? BlockType.blockTypeOf(blockRegistryName, blocksObject.getBlockType()) : BlockType.DEFAULT;
 
-                BlockType blockType = blocksObject.getBlockType() != null ? BlockType.blockTypeOf(blockRegistryName, blocksObject.getBlockType()) : BlockType.DEFAULT;
+        Block.Properties properties = blocksObject.getProperties() != null ?
+                blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
 
-                Block.Properties properties = blocksObject.getProperties() != null ?
-                        blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
+        try {
+            if (blockType.equals(BlockType.CROPS)) {
+                parsedBlock = (IJsonBlock) blockType.getBlockType()
+                        .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
+                        .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation("mff", "leek_seeds")), properties, blockRegistryName);
+                //System.out.println(parsedBlock.getRegistryName());
+            } else {
+                parsedBlock = (IJsonBlock) blockType.getBlockType()
+                        .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
+                        .newInstance(properties, blockRegistryName);
+            }
 
-                try {
-                    if (blockType.equals(BlockType.CROPS)) {
-                        parsedBlock = (IJsonBlock) blockType.getBlockType()
-                                .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
-                                .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation("mff", "leek_seeds")), properties, blockRegistryName);
-                        //System.out.println(parsedBlock.getRegistryName());
+            parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
+            parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
+
+            if (!(parsedBlock instanceof JsonCropsBlock)) {
+                if (blocksObject.getItemGroup() != null) {
+                    ResourceLocation parsedItemGroup = new ResourceLocation(blocksObject.getItemGroup());
+                    if (ItemGroups.contains(parsedItemGroup)) {
+                        parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
                     } else {
-                        parsedBlock = (IJsonBlock) blockType.getBlockType()
-                                .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
-                                .newInstance(properties, blockRegistryName);
+                        PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
                     }
-
-                    parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
-                    parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
-
-                    if (!(parsedBlock instanceof JsonCropsBlock)) {
-                        if (blocksObject.getItemGroup() != null) {
-                            ResourceLocation parsedItemGroup = new ResourceLocation(blocksObject.getItemGroup());
-                            if (ItemGroups.contains(parsedItemGroup)) {
-                                parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
-                            } else {
-                                PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
-                            }
-                        } else {
-                            parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
-                        }
-                    }
-
-                    this.blocksList.add(parsedBlock);
-
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
+                } else {
+                    parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
                 }
-            });
+            }
+
+            this.blocksList.add(parsedBlock);
+
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
         }
 
         this.blocksList.forEach(block -> {
