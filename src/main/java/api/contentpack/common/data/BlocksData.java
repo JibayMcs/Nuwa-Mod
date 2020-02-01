@@ -18,6 +18,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipFile;
 
 public class BlocksData implements IPackData {
@@ -37,7 +38,7 @@ public class BlocksData implements IPackData {
     public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         BlocksObject blocksObject = PackManager.GSON.fromJson(readerIn, BlocksObject.class);
 
-        IJsonBlock parsedBlock;
+        AtomicReference<IJsonBlock> parsedBlock = new AtomicReference<>();
 
         ResourceLocation blockRegistryName = new ResourceLocation(contentPackIn.getNamespace(), blocksObject.getRegistryName());
 
@@ -47,39 +48,77 @@ public class BlocksData implements IPackData {
                 blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
 
         try {
-            if (blockType.equals(BlockType.CROPS)) {
-                parsedBlock = (IJsonBlock) blockType.getBlockType()
-                        .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
-                        .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation("mff", "leek_seeds")), properties, blockRegistryName);
-                //System.out.println(parsedBlock.getRegistryName());
-            } else {
-                parsedBlock = (IJsonBlock) blockType.getBlockType()
-                        .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
-                        .newInstance(properties, blockRegistryName);
+            switch (blockType) {
+                case STAIRS:
+                    break;
+                case SLABS:
+                    break;
+                case WALL:
+                    break;
+                case FALLING_BLOCK:
+                    break;
+                case FENCE:
+                    break;
+                case FENCE_GATE:
+                    break;
+                case TRAPDOOR:
+                    break;
+                case DOOR:
+                    break;
+                case FLOWER:
+                    break;
+                case TALL_PLANT:
+                    break;
+                case GRASS:
+                    break;
+                case GLASS:
+                    break;
+                case PANE:
+                    break;
+                case CARPET:
+                    break;
+                case CROPS: {
+                    parsedBlock.set((IJsonBlock) blockType.getBlockType()
+                            .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
+                            .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation(blocksObject.getCropSeed())), properties, blockRegistryName));
+                }
+                break;
+                case SLOW_BLOCK:
+                    break;
+                case BIOME_COLOR:
+                    break;
+                case INVISIBLE:
+                    break;
+                case LEAVES:
+                    break;
+                case DEFAULT:
+                    parsedBlock.set((IJsonBlock) blockType.getBlockType()
+                            .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
+                            .newInstance(properties, blockRegistryName));
+                    break;
             }
 
-            parsedBlock.setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
-            parsedBlock.setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
+            parsedBlock.get().setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
+            parsedBlock.get().setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
 
-            if (!(parsedBlock instanceof JsonCropsBlock)) {
+            if (!(parsedBlock.get() instanceof JsonCropsBlock)) {
                 if (blocksObject.getItemGroup() != null) {
                     ResourceLocation parsedItemGroup = new ResourceLocation(blocksObject.getItemGroup());
                     if (ItemGroups.contains(parsedItemGroup)) {
-                        parsedBlock.setItemGroup(ItemGroups.get(parsedItemGroup));
+                        parsedBlock.get().setItemGroup(ItemGroups.get(parsedItemGroup));
                     } else {
                         PackManager.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
                     }
                 } else {
-                    parsedBlock.setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
+                    parsedBlock.get().setItemGroup(ItemGroups.get(new ResourceLocation("minecraft:misc")));
                 }
             }
 
-            this.blocksList.add(parsedBlock);
+            this.blocksList.add(parsedBlock.get());
 
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

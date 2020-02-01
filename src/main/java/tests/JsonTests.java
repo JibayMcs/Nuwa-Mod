@@ -1,7 +1,7 @@
 package tests;
 
-import api.contentpack.common.json.datas.items.armor.ArmorMaterialProperties;
-import api.contentpack.common.json.datas.items.tool.ToolMaterialProperties;
+import api.contentpack.common.json.datas.items.properties.ArmorMaterialProperties;
+import api.contentpack.common.json.datas.items.properties.ToolMaterialProperties;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.inventory.EquipmentSlotType;

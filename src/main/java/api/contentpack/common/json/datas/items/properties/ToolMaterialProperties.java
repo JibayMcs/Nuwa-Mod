@@ -1,4 +1,4 @@
-package api.contentpack.common.json.datas.items.tool;
+package api.contentpack.common.json.datas.items.properties;
 
 import api.contentpack.common.json.datas.materials.ToolMaterialObject;
 import fr.zeamateis.nuwa.NuwaMod;

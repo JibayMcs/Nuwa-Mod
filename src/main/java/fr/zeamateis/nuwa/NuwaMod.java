@@ -7,11 +7,12 @@ import api.contentpack.common.PackManager;
 import api.contentpack.common.data.*;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
+import fr.zeamateis.nuwa.common.registries.ArmorMaterialType;
+import fr.zeamateis.nuwa.common.registries.ContainerType;
+import fr.zeamateis.nuwa.common.registries.ToolMaterialType;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
 import fr.zeamateis.nuwa.proxy.CommonProxy;
 import fr.zeamateis.nuwa.proxy.ServerProxy;
-import fr.zeamateis.nuwa.registries.ArmorMaterialType;
-import fr.zeamateis.nuwa.registries.ToolMaterialType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.resources.IReloadableResourceManager;
@@ -39,7 +40,6 @@ import java.util.function.Predicate;
 //TODO Fix content packs not closed after loading.
 @Mod(Constant.MODID)
 public class NuwaMod implements ISelectiveResourceReloadListener {
-    public static final int DATA_VERSION = 2;
     private static final String PROTOCOL_VERSION = String.valueOf(1);
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(Constant.MODID, "nuwa_channel"))
@@ -47,10 +47,12 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .simpleChannel();
-    private static final Logger LOGGER = LogManager.getLogger();
-    private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
-    private static PackManager packManager;
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+
+    private static PackManager packManager;
 
     public NuwaMod() {
         packManager = new PackManager(PROXY.getPackDir().toPath());
@@ -157,6 +159,12 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         public static final IForgeRegistry<ToolMaterialType> TOOL_MATERIAL = new RegistryBuilder<ToolMaterialType>()
                 .setName(new ResourceLocation(Constant.MODID, "tool_material"))
                 .setType(ToolMaterialType.class)
+                .setIDRange(0, Integer.MAX_VALUE)
+                .create();
+
+        public static final IForgeRegistry<ContainerType> CONTAINER = new RegistryBuilder<ContainerType>()
+                .setName(new ResourceLocation(Constant.MODID, "container"))
+                .setType(ContainerType.class)
                 .setIDRange(0, Integer.MAX_VALUE)
                 .create();
     }

@@ -1,23 +1,23 @@
-package fr.zeamateis.nuwa.registries;
+package fr.zeamateis.nuwa.common.registries;
 
-import api.contentpack.common.json.datas.materials.ToolMaterialObject;
+import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
+public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType> {
 
-    private final ToolMaterialObject toolMaterialObject;
+    private final ArmorMaterialObject armorMaterialObject;
     private ResourceLocation registryName;
 
-    public ToolMaterialType(ToolMaterialObject toolMaterialObject) {
-        this.setRegistryName(new ResourceLocation(toolMaterialObject.getRegistryName()));
-        this.toolMaterialObject = toolMaterialObject;
+    public ArmorMaterialType(ArmorMaterialObject armorMaterialObject) {
+        this.setRegistryName(new ResourceLocation(armorMaterialObject.getRegistryName()));
+        this.armorMaterialObject = armorMaterialObject;
     }
 
-    public ToolMaterialObject getToolMaterialObject() {
-        return toolMaterialObject;
+    public ArmorMaterialObject getArmorMaterialObject() {
+        return armorMaterialObject;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
      * @return This instance
      */
     @Override
-    public ToolMaterialType setRegistryName(ResourceLocation name) {
+    public ArmorMaterialType setRegistryName(ResourceLocation name) {
         this.registryName = name;
         return this;
     }
@@ -61,7 +61,7 @@ public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
      * @return Root registry type.
      */
     @Override
-    public Class<ToolMaterialType> getRegistryType() {
-        return ToolMaterialType.class;
+    public Class<ArmorMaterialType> getRegistryType() {
+        return ArmorMaterialType.class;
     }
 }

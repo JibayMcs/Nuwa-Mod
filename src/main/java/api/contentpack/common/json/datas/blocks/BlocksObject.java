@@ -1,6 +1,7 @@
 package api.contentpack.common.json.datas.blocks;
 
 import api.contentpack.common.json.datas.blocks.properties.BlockPropertiesObject;
+import api.contentpack.common.json.datas.blocks.properties.ContainerPropertiesObject;
 import api.contentpack.common.json.datas.blocks.shape.VoxelShapeObject;
 
 public class BlocksObject {
@@ -10,6 +11,10 @@ public class BlocksObject {
     private String itemGroup;
     private VoxelShapeObject voxelShape;
     private String blockType;
+
+    private String cropSeed;
+
+    private ContainerPropertiesObject containerProperties;
 
     public BlocksObject(String registryName, String itemGroup) {
         this.registryName = registryName;
@@ -34,5 +39,13 @@ public class BlocksObject {
 
     public String getBlockType() {
         return blockType;
+    }
+
+    public String getCropSeed() {
+        return cropSeed;
+    }
+
+    public ContainerPropertiesObject getContainerProperties() {
+        return containerProperties;
     }
 }

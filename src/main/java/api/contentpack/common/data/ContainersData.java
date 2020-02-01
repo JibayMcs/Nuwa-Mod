@@ -2,15 +2,24 @@ package api.contentpack.common.data;
 
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
+import api.contentpack.common.PackManager;
+import api.contentpack.common.json.datas.containers.ContainersObject;
+import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.common.registries.ContainerType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class SmeltingData implements IPackData {
+public class ContainersData implements IPackData {
+
+    private final LinkedList<ContainerType> containerTypes;
+
+    public ContainersData(LinkedList<ContainerType> containerTypes) {
+        this.containerTypes = containerTypes;
+    }
 
     /**
      * Define entry to {@link IPackData#parseData} from it
@@ -19,7 +28,7 @@ public class SmeltingData implements IPackData {
      */
     @Override
     public String getEntryFolder() {
-        return "data/smelting/trees.json";
+        return "objects/containers/";
     }
 
     /**
@@ -32,7 +41,8 @@ public class SmeltingData implements IPackData {
      */
     @Override
     public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-
+        ContainersObject containersObject = PackManager.GSON.fromJson(readerIn, ContainersObject.class);
+        containerTypes.add(new ContainerType(containersObject));
     }
 
     /**
@@ -43,8 +53,8 @@ public class SmeltingData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public LinkedList<? extends IForgeRegistryEntry> getObjectsList() {
-        return null;
+    public LinkedList<ContainerType> getObjectsList() {
+        return containerTypes;
     }
 
     /**
@@ -54,7 +64,7 @@ public class SmeltingData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public IForgeRegistry getObjectsRegistry() {
-        return null;
+    public IForgeRegistry<ContainerType> getObjectsRegistry() {
+        return NuwaMod.Registries.CONTAINER;
     }
 }

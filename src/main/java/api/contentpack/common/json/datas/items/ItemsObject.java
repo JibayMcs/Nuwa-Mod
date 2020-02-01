@@ -1,8 +1,8 @@
 package api.contentpack.common.json.datas.items;
 
-import api.contentpack.common.json.datas.items.armor.ArmorMaterialProperties;
+import api.contentpack.common.json.datas.items.properties.ArmorMaterialProperties;
 import api.contentpack.common.json.datas.items.properties.ItemsPropertiesObject;
-import api.contentpack.common.json.datas.items.tool.ToolMaterialProperties;
+import api.contentpack.common.json.datas.items.properties.ToolMaterialProperties;
 import api.contentpack.common.json.datas.items.type.ItemType;
 
 public class ItemsObject {
@@ -11,6 +11,8 @@ public class ItemsObject {
     private String registryName;
     private String itemGroup;
     private ItemType itemType;
+
+    private String cropsBlock;
 
     private ArmorMaterialProperties armorProperties;
     private ToolMaterialProperties toolProperties;
@@ -29,6 +31,10 @@ public class ItemsObject {
 
     public ItemType getItemType() {
         return itemType;
+    }
+
+    public String getCropsBlock() {
+        return cropsBlock;
     }
 
     public ArmorMaterialProperties getArmorProperties() {

@@ -1,23 +1,23 @@
-package fr.zeamateis.nuwa.registries;
+package fr.zeamateis.nuwa.common.registries;
 
-import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
+import api.contentpack.common.json.datas.materials.ToolMaterialObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType> {
+public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
 
-    private final ArmorMaterialObject armorMaterialObject;
+    private final ToolMaterialObject toolMaterialObject;
     private ResourceLocation registryName;
 
-    public ArmorMaterialType(ArmorMaterialObject armorMaterialObject) {
-        this.setRegistryName(new ResourceLocation(armorMaterialObject.getRegistryName()));
-        this.armorMaterialObject = armorMaterialObject;
+    public ToolMaterialType(ToolMaterialObject toolMaterialObject) {
+        this.setRegistryName(new ResourceLocation(toolMaterialObject.getRegistryName()));
+        this.toolMaterialObject = toolMaterialObject;
     }
 
-    public ArmorMaterialObject getArmorMaterialObject() {
-        return armorMaterialObject;
+    public ToolMaterialObject getToolMaterialObject() {
+        return toolMaterialObject;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType>
      * @return This instance
      */
     @Override
-    public ArmorMaterialType setRegistryName(ResourceLocation name) {
+    public ToolMaterialType setRegistryName(ResourceLocation name) {
         this.registryName = name;
         return this;
     }
@@ -61,7 +61,7 @@ public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType>
      * @return Root registry type.
      */
     @Override
-    public Class<ArmorMaterialType> getRegistryType() {
-        return ArmorMaterialType.class;
+    public Class<ToolMaterialType> getRegistryType() {
+        return ToolMaterialType.class;
     }
 }

@@ -5,8 +5,8 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.items.ItemsObject;
-import api.contentpack.common.json.datas.items.armor.ArmorMaterialProperties;
-import api.contentpack.common.json.datas.items.tool.ToolMaterialProperties;
+import api.contentpack.common.json.datas.items.properties.ArmorMaterialProperties;
+import api.contentpack.common.json.datas.items.properties.ToolMaterialProperties;
 import api.contentpack.common.json.datas.items.type.ItemType;
 import api.contentpack.common.minecraft.items.base.IJsonItem;
 import net.minecraft.block.Block;
@@ -21,6 +21,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipFile;
 
 public class ItemsData implements IPackData {
@@ -43,7 +44,7 @@ public class ItemsData implements IPackData {
 
         ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());
 
-        IJsonItem parsedItem;
+        AtomicReference<IJsonItem> parsedItem = new AtomicReference<>();
 
         ItemType itemType = itemsObject.getItemType() != null ? itemsObject.getItemType() : ItemType.DEFAULT;
 
@@ -66,30 +67,27 @@ public class ItemsData implements IPackData {
 
             switch (itemType) {
                 case SEEDS: {
-                    parsedItem = (IJsonItem) itemType.getItemType()
+                    parsedItem.set((IJsonItem) itemType.getItemType()
                             .getDeclaredConstructor(Block.class, Item.Properties.class, ResourceLocation.class)
-                            .newInstance(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")), properties, itemRegistryName);
-                    //contentPackIn.getObjectsList().forEach(iForgeRegistryEntry -> System.out.println(iForgeRegistryEntry.getRegistryName()));
-                    System.out.println(ForgeRegistries.BLOCKS.getValue(new ResourceLocation("mff", "leek")).getRegistryName());
-                    itemList.add(parsedItem);
+                            .newInstance(ForgeRegistries.BLOCKS.getValue(new ResourceLocation(itemsObject.getCropsBlock())), properties, itemRegistryName));
                 }
                 break;
                 case ARMOR: {
                     if (armorMaterialProperties != null) {
                         IArmorMaterial armorMaterial = armorMaterialProperties.getArmorMaterial().getMaterial();
                         EquipmentSlotType equipmentSlotType = armorMaterialProperties.getEquipmentSlotType();
-                        parsedItem = (IJsonItem) itemType.getItemType().getDeclaredConstructor(IArmorMaterial.class, EquipmentSlotType.class, Item.Properties.class, ResourceLocation.class)
-                                .newInstance(armorMaterial, equipmentSlotType, properties, itemRegistryName);
-                        itemList.add(parsedItem);
+                        parsedItem.set((IJsonItem) itemType.getItemType()
+                                .getDeclaredConstructor(IArmorMaterial.class, EquipmentSlotType.class, Item.Properties.class, ResourceLocation.class)
+                                .newInstance(armorMaterial, equipmentSlotType, properties, itemRegistryName));
                     }
                 }
                 break;
                 case AXE:
                 case SWORD: {
                     if (toolMaterialProperties != null) {
-                        parsedItem = (IJsonItem) itemType.getItemType().getDeclaredConstructor(IItemTier.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
-                                .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName);
-                        itemList.add(parsedItem);
+                        parsedItem.set((IJsonItem) itemType.getItemType()
+                                .getDeclaredConstructor(IItemTier.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
+                                .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
                     }
                 }
                 break;
@@ -97,19 +95,20 @@ public class ItemsData implements IPackData {
                 case PICKAXE:
                 case SHOVEL: {
                     if (toolMaterialProperties != null) {
-                        parsedItem = (IJsonItem) itemType.getItemType().getDeclaredConstructor(IItemTier.class, float.class, Item.Properties.class, ResourceLocation.class)
-                                .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName);
-                        itemList.add(parsedItem);
+                        parsedItem.set((IJsonItem) itemType.getItemType()
+                                .getDeclaredConstructor(IItemTier.class, float.class, Item.Properties.class, ResourceLocation.class)
+                                .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
                     }
                 }
                 break;
-                default:
-                    parsedItem = (IJsonItem) itemType.getItemType()
+                case DEFAULT:
+                    parsedItem.set((IJsonItem) itemType.getItemType()
                             .getDeclaredConstructor(Item.Properties.class, ResourceLocation.class)
-                            .newInstance(properties, itemRegistryName);
-                    itemList.add(parsedItem);
-            }
+                            .newInstance(properties, itemRegistryName));
+                    break;
 
+            }
+            itemList.add(parsedItem.get());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

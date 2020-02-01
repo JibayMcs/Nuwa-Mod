@@ -5,7 +5,7 @@ import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
 import fr.zeamateis.nuwa.NuwaMod;
-import fr.zeamateis.nuwa.registries.ArmorMaterialType;
+import fr.zeamateis.nuwa.common.registries.ArmorMaterialType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 

@@ -1,4 +1,4 @@
-package api.contentpack.common.json.datas.items.armor;
+package api.contentpack.common.json.datas.items.properties;
 
 import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
 import fr.zeamateis.nuwa.NuwaMod;

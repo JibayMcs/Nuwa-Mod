@@ -5,6 +5,7 @@ import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -118,7 +119,7 @@ public class PackManager {
                                                 contentPack = new ContentPack(files, packInfoObject, files.length());
                                             }
 
-                                            if (packInfoObject.getNuwaDataVersion() == NuwaMod.DATA_VERSION) {
+                                            if (packInfoObject.getNuwaDataVersion() == Constant.DATA_VERSION) {
                                                 ZipFile finalZipFile = zipFile;
 
                                                 for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
@@ -153,7 +154,7 @@ public class PackManager {
 
                                                 packs.add(contentPack);
                                             } else {
-                                                NuwaMod.getLogger().error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", packInfoObject.getPackName(), NuwaMod.DATA_VERSION);
+                                                NuwaMod.getLogger().error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", packInfoObject.getPackName(), Constant.DATA_VERSION);
                                             }
                                         }
                                     }
@@ -206,9 +207,7 @@ public class PackManager {
             IPackDataEvent packDataEvent = packDataEventIn.newInstance();
             FMLJavaModLoadingContext.get().getModEventBus().addListener(packDataEvent::onCommonSetup);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(packDataEvent::onClientSetup);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
