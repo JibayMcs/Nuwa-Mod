@@ -1,7 +1,6 @@
 package api.contentpack.common;
 
 import api.contentpack.common.json.PackInfoObject;
-import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.google.gson.Gson;
@@ -78,13 +77,15 @@ public class PackManager {
         return packs;
     }
 
+    public Map<ResourceLocation, Class<? extends IPackData>> getPackDataMap() {
+        return packDataMap;
+    }
+
     /**
      * Main method to load packs from {@link PackManager#contentPackPath}
      * read zip content and inject {@link PackManager#packDataMap} into game
      */
     public void loadPacks() {
-       /* Type objectType = new TypeToken<List<String>>() {
-        }.getType();*/
         if (this.contentPackPath != null) {
             try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
                 walk.map(Path::toFile)
@@ -134,28 +135,22 @@ public class PackManager {
                                                     });
 
                                                     if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                                                        contentPack.getObjectsList().addAll(packData.getObjectsList());
-                                                        contentPack.getObjectsList().stream()
-                                                                .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(registryEntry.getRegistryType()))
+                                                        packData.getObjectsList().stream()
+                                                                .filter(registryEntry -> registryEntry.getRegistryType().equals(registryEntry.getRegistryType()))
                                                                 .forEach(iForgeRegistryEntry -> {
                                                                     packData.getObjectsRegistry().register(iForgeRegistryEntry);
                                                                 });
-
                                                         //Register BlockItem
-                                                        contentPack.getObjectsList().stream()
-                                                                .filter(registryEntry -> packData.getObjectsRegistry().getRegistrySuperType().equals(Block.class))
-                                                                .forEach(iForgeRegistryEntry -> {
-                                                                    Block block = (Block) iForgeRegistryEntry;
-                                                                    if (block instanceof JsonCropsBlock) {
-                                                                        return;
-                                                                    } else if (block instanceof IJsonBlock) {
-                                                                        IJsonBlock jsonBlock = (IJsonBlock) block;
-                                                                        JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                                                                        ForgeRegistries.ITEMS.register(jsonBlockItem);
-                                                                    }
+                                                        packData.getObjectsList().stream()
+                                                                .filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
+                                                                .forEach(o -> {
+                                                                    IJsonBlock jsonBlock = (IJsonBlock) o;
+                                                                    JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
+                                                                    ForgeRegistries.ITEMS.register(jsonBlockItem);
                                                                 });
                                                     }
                                                 }
+
                                                 packs.add(contentPack);
                                             } else {
                                                 NuwaMod.getLogger().error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", packInfoObject.getPackName(), NuwaMod.DATA_VERSION);

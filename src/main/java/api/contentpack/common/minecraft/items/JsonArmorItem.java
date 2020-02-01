@@ -9,9 +9,9 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class JsonArmor extends ArmorItem implements IJsonItem {
+public class JsonArmorItem extends ArmorItem implements IJsonItem {
 
-    public JsonArmor(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder, @Nonnull ResourceLocation registryNameIn) {
+    public JsonArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder, @Nonnull ResourceLocation registryNameIn) {
         super(materialIn, slot, builder);
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }

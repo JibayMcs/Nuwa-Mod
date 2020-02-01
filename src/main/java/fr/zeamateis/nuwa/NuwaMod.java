@@ -4,15 +4,14 @@ import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.client.minecraft.assets.ContentPackFinder;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.data.BlocksData;
-import api.contentpack.common.data.ItemGroupData;
-import api.contentpack.common.data.ItemsData;
-import api.contentpack.common.data.OresGenerationData;
+import api.contentpack.common.data.*;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
 import fr.zeamateis.nuwa.proxy.CommonProxy;
 import fr.zeamateis.nuwa.proxy.ServerProxy;
+import fr.zeamateis.nuwa.registries.ArmorMaterialType;
+import fr.zeamateis.nuwa.registries.ToolMaterialType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.resources.IReloadableResourceManager;
@@ -28,6 +27,8 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +51,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     private static PackManager packManager;
 
+
     public NuwaMod() {
         packManager = new PackManager(PROXY.getPackDir().toPath());
 
@@ -59,6 +61,8 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
+        packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material"), ArmorMaterialData.class);
+        packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material"), ToolMaterialData.class);
         //packManager.registerData(new ResourceLocation(Constant.MODID, "trees_generation_data"), TreesGenerationData.class);
 
         packManager.loadPacks();
@@ -141,5 +145,19 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
                 .decoder(C2SContentPackInfoPacket::decode)
                 .consumer(C2SContentPackInfoPacket::handle)
                 .add();
+    }
+
+    public static class Registries {
+        public static final IForgeRegistry<ArmorMaterialType> ARMOR_MATERIAL = new RegistryBuilder<ArmorMaterialType>()
+                .setName(new ResourceLocation(Constant.MODID, "armor_material"))
+                .setType(ArmorMaterialType.class)
+                .setIDRange(0, Integer.MAX_VALUE)
+                .create();
+
+        public static final IForgeRegistry<ToolMaterialType> TOOL_MATERIAL = new RegistryBuilder<ToolMaterialType>()
+                .setName(new ResourceLocation(Constant.MODID, "tool_material"))
+                .setType(ToolMaterialType.class)
+                .setIDRange(0, Integer.MAX_VALUE)
+                .create();
     }
 }
