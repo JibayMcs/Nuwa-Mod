@@ -84,10 +84,21 @@ public class ItemsData implements IPackData {
                     }
                 }
                 break;
-                case AXE: {
+                case AXE:
+                case SWORD: {
                     if (toolMaterialProperties != null) {
                         parsedItem = (IJsonItem) itemType.getItemType().getDeclaredConstructor(IItemTier.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
                                 .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName);
+                        itemList.add(parsedItem);
+                    }
+                }
+                break;
+                case HOE:
+                case PICKAXE:
+                case SHOVEL: {
+                    if (toolMaterialProperties != null) {
+                        parsedItem = (IJsonItem) itemType.getItemType().getDeclaredConstructor(IItemTier.class, float.class, Item.Properties.class, ResourceLocation.class)
+                                .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName);
                         itemList.add(parsedItem);
                     }
                 }
