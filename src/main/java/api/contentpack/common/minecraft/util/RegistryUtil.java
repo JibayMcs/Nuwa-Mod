@@ -1,4 +1,4 @@
-package api.contentpack.common.minecraft;
+package api.contentpack.common.minecraft.util;
 
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.util.ResourceLocation;

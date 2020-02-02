@@ -36,7 +36,7 @@ public class BlocksData implements IPackData {
     }
 
     @Override
-    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         BlocksObject blocksObject = PackManager.GSON.fromJson(readerIn, BlocksObject.class);
 
         AtomicReference<IJsonBlock> parsedBlock = new AtomicReference<>();
@@ -125,8 +125,17 @@ public class BlocksData implements IPackData {
                 }
             }
 
-            this.blocksList.add(parsedBlock.get());
-
+            if (packManagerIn.getWhitelist() != null) {
+                if (!packManagerIn.getWhitelist().getBlocks().isEmpty()) {
+                    packManagerIn.getWhitelist().getBlocks().stream()
+                            .filter(s -> !s.equals(parsedBlock.get().getRegistryName().toString()))
+                            .forEach(s -> blocksList.add(parsedBlock.get()));
+                } else {
+                    blocksList.add(parsedBlock.get());
+                }
+            } else {
+                blocksList.add(parsedBlock.get());
+            }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

@@ -2,6 +2,7 @@ package api.contentpack.common.data;
 
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
+import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.generations.treeGeneration.TestTreeFeature;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
@@ -38,7 +39,7 @@ public class TreesGenerationData implements IPackData {
      * @param readerIn
      */
     @Override
-    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         final Feature testTreeFeature = new TestTreeFeature(NoFeatureConfig::deserialize, false);
         testTreeFeature.setRegistryName("mff:test_tree");
         ForgeRegistries.FEATURES.register(testTreeFeature);

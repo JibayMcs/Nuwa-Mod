@@ -42,7 +42,7 @@ public class ItemsData implements IPackData {
     }
 
     @Override
-    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
 
         ItemsObject itemsObject = PackManager.GSON.fromJson(readerIn, ItemsObject.class);
 
@@ -126,7 +126,17 @@ public class ItemsData implements IPackData {
                     break;
 
             }
-            itemList.add(parsedItem.get());
+            if (packManagerIn.getWhitelist() != null) {
+                if (!packManagerIn.getWhitelist().getItems().isEmpty()) {
+                    packManagerIn.getWhitelist().getItems().stream()
+                            .filter(s -> !s.equals(parsedItem.get().getRegistryName().toString()))
+                            .forEach(s -> itemList.add(parsedItem.get()));
+                } else {
+                    itemList.add(parsedItem.get());
+                }
+            } else {
+                itemList.add(parsedItem.get());
+            }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }

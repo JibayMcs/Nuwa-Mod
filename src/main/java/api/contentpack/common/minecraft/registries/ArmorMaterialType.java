@@ -1,4 +1,4 @@
-package fr.zeamateis.nuwa.common.registries;
+package api.contentpack.common.minecraft.registries;
 
 import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
 import net.minecraft.util.ResourceLocation;

@@ -4,8 +4,8 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.containers.ContainersObject;
+import api.contentpack.common.minecraft.registries.ContainerType;
 import fr.zeamateis.nuwa.NuwaMod;
-import fr.zeamateis.nuwa.common.registries.ContainerType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -40,7 +40,7 @@ public class ContainersData implements IPackData {
      * @param readerIn
      */
     @Override
-    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         ContainersObject containersObject = PackManager.GSON.fromJson(readerIn, ContainersObject.class);
         containerTypes.add(new ContainerType(containersObject));
     }

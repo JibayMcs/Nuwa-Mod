@@ -1,7 +1,7 @@
 package api.contentpack.common.minecraft.blocks;
 
-import api.contentpack.common.minecraft.RegistryUtil;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
+import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;

@@ -1,6 +1,6 @@
 package api.contentpack.common.minecraft.items.base;
 
-import api.contentpack.common.minecraft.RegistryUtil;
+import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.util.ResourceLocation;

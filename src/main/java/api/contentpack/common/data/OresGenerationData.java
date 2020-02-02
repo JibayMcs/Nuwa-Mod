@@ -45,7 +45,7 @@ public class OresGenerationData implements IPackData {
      */
     //TODO Check if it's a correct check of nonnull/empty and list contain object from other.
     @Override
-    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         OresGenerationObject generationObject = PackManager.GSON.fromJson(readerIn, OresGenerationObject.class);
 
         if (generationObject.getOreBlock() != null) {

@@ -1,7 +1,7 @@
 package api.contentpack.common.minecraft.items.tool;
 
-import api.contentpack.common.minecraft.RegistryUtil;
 import api.contentpack.common.minecraft.items.base.IJsonItem;
+import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;

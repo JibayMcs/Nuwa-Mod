@@ -1,23 +1,23 @@
-package fr.zeamateis.nuwa.common.registries;
+package api.contentpack.common.minecraft.registries;
 
-import api.contentpack.common.json.datas.containers.ContainersObject;
+import api.contentpack.common.json.datas.materials.ToolMaterialObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ContainerType implements IForgeRegistryEntry<ContainerType> {
+public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
 
-    private final ContainersObject containersObject;
+    private final ToolMaterialObject toolMaterialObject;
     private ResourceLocation registryName;
 
-    public ContainerType(ContainersObject containersObject) {
-        this.setRegistryName(new ResourceLocation(containersObject.getRegistryName()));
-        this.containersObject = containersObject;
+    public ToolMaterialType(ToolMaterialObject toolMaterialObject) {
+        this.setRegistryName(new ResourceLocation(toolMaterialObject.getRegistryName()));
+        this.toolMaterialObject = toolMaterialObject;
     }
 
-    public ContainersObject getContainersObject() {
-        return containersObject;
+    public ToolMaterialObject getToolMaterialObject() {
+        return toolMaterialObject;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ContainerType implements IForgeRegistryEntry<ContainerType> {
      * @return This instance
      */
     @Override
-    public ContainerType setRegistryName(ResourceLocation name) {
+    public ToolMaterialType setRegistryName(ResourceLocation name) {
         this.registryName = name;
         return this;
     }
@@ -61,7 +61,7 @@ public class ContainerType implements IForgeRegistryEntry<ContainerType> {
      * @return Root registry type.
      */
     @Override
-    public Class<ContainerType> getRegistryType() {
-        return ContainerType.class;
+    public Class<ToolMaterialType> getRegistryType() {
+        return ToolMaterialType.class;
     }
 }

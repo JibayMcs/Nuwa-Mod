@@ -1,6 +1,7 @@
 package api.contentpack.common;
 
 import api.contentpack.common.json.PackInfoObject;
+import api.contentpack.common.json.datas.WhitelistObject;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ public class PackManager {
     private final List<ContentPack> packs;
     private final Map<ResourceLocation, Class<? extends IPackData>> packDataMap;
 
+    private WhitelistObject whitelistObject;
 
     /**
      * Define a {@link PackManager#contentPackPath} where {@link PackManager#loadPacks()} walk into it
@@ -122,6 +124,17 @@ public class PackManager {
                                             if (packInfoObject.getNuwaDataVersion() == Constant.DATA_VERSION) {
                                                 ZipFile finalZipFile = zipFile;
 
+                                                //Whitelist
+                                                zipFile.stream().filter(o -> o.getName().equals("objects/whitelist.json")).forEach(o -> {
+                                                    try {
+                                                        stream.set(finalZipFile.getInputStream(o));
+                                                        reader.set(new InputStreamReader(stream.get()));
+                                                        whitelistObject = GSON.fromJson(reader.get(), WhitelistObject.class);
+                                                    } catch (IOException ex) {
+                                                        ex.printStackTrace();
+                                                    }
+                                                });
+
                                                 for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packDataEntry : packDataMap.entrySet()) {
                                                     IPackData packData = packDataEntry.getValue().newInstance();
 
@@ -129,7 +142,7 @@ public class PackManager {
                                                         try {
                                                             stream.set(finalZipFile.getInputStream(o));
                                                             reader.set(new InputStreamReader(stream.get()));
-                                                            packData.parseData(contentPack, finalZipFile, reader.get());
+                                                            packData.parseData(this, contentPack, finalZipFile, reader.get());
                                                         } catch (IOException ex) {
                                                             ex.printStackTrace();
                                                         }
@@ -147,7 +160,17 @@ public class PackManager {
                                                                 .forEach(o -> {
                                                                     IJsonBlock jsonBlock = (IJsonBlock) o;
                                                                     JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                                                                    ForgeRegistries.ITEMS.register(jsonBlockItem);
+                                                                    if (whitelistObject != null) {
+                                                                        if (!whitelistObject.getBlocks().isEmpty()) {
+                                                                            whitelistObject.getBlocks().stream()
+                                                                                    .filter(s -> !s.equals(jsonBlock.getRegistryName().toString()))
+                                                                                    .forEach(s -> ForgeRegistries.ITEMS.register(jsonBlockItem));
+                                                                        } else {
+                                                                            ForgeRegistries.ITEMS.register(jsonBlockItem);
+                                                                        }
+                                                                    } else {
+                                                                        ForgeRegistries.ITEMS.register(jsonBlockItem);
+                                                                    }
                                                                 });
                                                     }
                                                 }
@@ -221,4 +244,7 @@ public class PackManager {
         this.packDataMap.remove(entryNameIn);
     }
 
+    public WhitelistObject getWhitelist() {
+        return whitelistObject;
+    }
 }

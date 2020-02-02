@@ -14,7 +14,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class ServerEvents {
 
     @SubscribeEvent
-    public static void onPlayerLoggin(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getPlayer() != null) {
             NuwaMod.getNetwork().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new S2CContentPackInfoPacket(event.getPlayer().getUniqueID()));
         }

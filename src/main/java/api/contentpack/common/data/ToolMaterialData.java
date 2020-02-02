@@ -4,8 +4,8 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.materials.ToolMaterialObject;
+import api.contentpack.common.minecraft.registries.ToolMaterialType;
 import fr.zeamateis.nuwa.NuwaMod;
-import fr.zeamateis.nuwa.common.registries.ToolMaterialType;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -40,7 +40,7 @@ public class ToolMaterialData implements IPackData {
      * @param readerIn
      */
     @Override
-    public void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         ToolMaterialObject toolMaterialObject = PackManager.GSON.fromJson(readerIn, ToolMaterialObject.class);
         toolMaterialTypes.add(new ToolMaterialType(toolMaterialObject));
     }
