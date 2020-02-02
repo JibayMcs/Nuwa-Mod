@@ -1,10 +1,13 @@
 package api.contentpack.common;
 
+import fr.zeamateis.nuwa.NuwaMod;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.zip.ZipFile;
 
 public interface IPackData {
@@ -26,6 +29,10 @@ public interface IPackData {
      * @param readerIn
      */
     void parseData(ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn);
+
+    default Map<ResourceLocation, Class<? extends IPackData>> getPackDataMap() {
+        return NuwaMod.getPackManager().getPackDataMap();
+    }
 
 
     /**

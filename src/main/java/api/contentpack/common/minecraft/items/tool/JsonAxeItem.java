@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+//TODO Check if it's necessary to replace the effective_on set
 public class JsonAxeItem extends AxeItem implements IJsonItem {
 
     public JsonAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {

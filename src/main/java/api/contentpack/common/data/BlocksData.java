@@ -5,6 +5,7 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.blocks.BlocksObject;
+import api.contentpack.common.json.datas.blocks.properties.OreProperties;
 import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
@@ -46,6 +47,8 @@ public class BlocksData implements IPackData {
 
         Block.Properties properties = blocksObject.getProperties() != null ?
                 blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
+
+        OreProperties oreProperties = blocksObject.getOreProperties();
 
         try {
             switch (blockType) {
@@ -91,6 +94,14 @@ public class BlocksData implements IPackData {
                     break;
                 case LEAVES:
                     break;
+                case ORE: {
+                    if (oreProperties != null) {
+                        parsedBlock.set((IJsonBlock) blockType.getBlockType()
+                                .getDeclaredConstructor(int.class, int.class, Block.Properties.class, ResourceLocation.class)
+                                .newInstance(oreProperties.getMinExpDrop(), oreProperties.getMaxExpDrop(), properties, blockRegistryName));
+                    }
+                }
+                break;
                 case DEFAULT:
                     parsedBlock.set((IJsonBlock) blockType.getBlockType()
                             .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)

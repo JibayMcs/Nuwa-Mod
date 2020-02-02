@@ -10,8 +10,8 @@ import javax.annotation.Nonnull;
 
 public class JsonSwordItem extends SwordItem implements IJsonItem {
 
-    public JsonSwordItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {
-        super(tier, attackDamageIn, attackSpeedIn, builder);
+    public JsonSwordItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {
+        super(tier, (int) attackDamageIn, attackSpeedIn, builder);
         RegistryUtil.forceRegistryName(this, registryNameIn);
     }
 }

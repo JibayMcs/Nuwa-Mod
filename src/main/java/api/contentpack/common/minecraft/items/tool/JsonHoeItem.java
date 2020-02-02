@@ -8,6 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+//TODO Check if it's necessary to replace the hoe_lookup map
 public class JsonHoeItem extends HoeItem implements IJsonItem {
 
     public JsonHoeItem(IItemTier tier, float attackSpeedIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {

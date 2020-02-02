@@ -29,7 +29,8 @@ public enum BlockType {
     SLOW_BLOCK(JsonSlowBlock.class, Block.Properties.from(Blocks.STONE).doesNotBlockMovement()),
     BIOME_COLOR(JsonBiomeColorBlock.class, Block.Properties.from(Blocks.STONE)),
     INVISIBLE(JsonInvisibleBlock.class, Block.Properties.from(Blocks.BARRIER)),
-    LEAVES(JsonLeavesBlock.class, Block.Properties.from(Blocks.ACACIA_LEAVES));
+    LEAVES(JsonLeavesBlock.class, Block.Properties.from(Blocks.ACACIA_LEAVES)),
+    ORE(JsonOreBlock.class, Block.Properties.from(Blocks.STONE));
 
     private Class<? extends Block> blockType;
     private Block.Properties defaultProperties;
