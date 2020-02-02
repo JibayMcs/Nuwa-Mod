@@ -1,6 +1,6 @@
 package api.contentpack.common.minecraft.registries;
 
-import api.contentpack.common.json.datas.containers.ContainersObject;
+import api.contentpack.common.json.datas.containers.ContainerObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -8,15 +8,15 @@ import javax.annotation.Nullable;
 
 public class ContainerType implements IForgeRegistryEntry<ContainerType> {
 
-    private final ContainersObject containersObject;
+    private final ContainerObject containersObject;
     private ResourceLocation registryName;
 
-    public ContainerType(ContainersObject containersObject) {
+    public ContainerType(ContainerObject containersObject) {
         this.setRegistryName(new ResourceLocation(containersObject.getRegistryName()));
         this.containersObject = containersObject;
     }
 
-    public ContainersObject getContainersObject() {
+    public ContainerObject getContainersObject() {
         return containersObject;
     }
 

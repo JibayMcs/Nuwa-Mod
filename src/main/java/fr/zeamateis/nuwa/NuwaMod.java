@@ -69,8 +69,9 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
         packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material"), ArmorMaterialData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material"), ToolMaterialData.class);
+        packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class);
+        packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class);
+        packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class);
         //packManager.registerData(new ResourceLocation(Constant.MODID, "trees_generation_data"), TreesGenerationData.class);
 
         packManager.loadPacks();

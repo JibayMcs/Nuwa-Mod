@@ -2,10 +2,11 @@ package api.contentpack.common.json.datas.items;
 
 import api.contentpack.common.json.datas.items.properties.ArmorMaterialProperties;
 import api.contentpack.common.json.datas.items.properties.ItemsPropertiesObject;
+import api.contentpack.common.json.datas.items.properties.SoundProperties;
 import api.contentpack.common.json.datas.items.properties.ToolMaterialProperties;
 import api.contentpack.common.json.datas.items.type.ItemType;
 
-public class ItemsObject {
+public class ItemObject {
 
     private ItemsPropertiesObject properties;
     private String registryName;
@@ -16,6 +17,7 @@ public class ItemsObject {
 
     private ArmorMaterialProperties armorProperties;
     private ToolMaterialProperties toolProperties;
+    private SoundProperties soundProperties;
 
     public ItemsPropertiesObject getProperties() {
         return properties;
@@ -43,5 +45,9 @@ public class ItemsObject {
 
     public ToolMaterialProperties getToolProperties() {
         return toolProperties;
+    }
+
+    public SoundProperties getSoundProperties() {
+        return soundProperties;
     }
 }

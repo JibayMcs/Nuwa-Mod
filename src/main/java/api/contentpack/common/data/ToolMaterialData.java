@@ -41,7 +41,7 @@ public class ToolMaterialData implements IPackData {
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        ToolMaterialObject toolMaterialObject = PackManager.GSON.fromJson(readerIn, ToolMaterialObject.class);
+        ToolMaterialObject toolMaterialObject = packManagerIn.getGson().fromJson(readerIn, ToolMaterialObject.class);
         toolMaterialTypes.add(new ToolMaterialType(toolMaterialObject));
     }
 

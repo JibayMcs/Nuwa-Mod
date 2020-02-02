@@ -29,7 +29,7 @@ import java.util.zip.ZipFile;
 
 public class PackManager {
 
-    public static final Gson GSON = new GsonBuilder().create();
+    private final Gson gson;
     private final Path contentPackPath;
     private final List<ContentPack> packs;
     private final Map<ResourceLocation, Class<? extends IPackData>> packDataMap;
@@ -44,6 +44,7 @@ public class PackManager {
      * @param contentPackPathIn
      */
     public PackManager(Path contentPackPathIn) {
+        gson = new GsonBuilder().setPrettyPrinting().create();
         packs = new ArrayList<>();
         packDataMap = new HashMap<>();
         contentPackPath = contentPackPathIn;
@@ -112,7 +113,7 @@ public class PackManager {
                                         if (contentPackEntry != null) {
                                             stream.set(zipFile.getInputStream(contentPackEntry));
                                             reader.set(new InputStreamReader(stream.get()));
-                                            PackInfoObject packInfoObject = GSON.fromJson(reader.get(), PackInfoObject.class);
+                                            PackInfoObject packInfoObject = gson.fromJson(reader.get(), PackInfoObject.class);
 
                                             if (packIconEntry != null) {
                                                 stream.set(zipFile.getInputStream(packIconEntry));
@@ -129,7 +130,7 @@ public class PackManager {
                                                     try {
                                                         stream.set(finalZipFile.getInputStream(o));
                                                         reader.set(new InputStreamReader(stream.get()));
-                                                        whitelistObject = GSON.fromJson(reader.get(), WhitelistObject.class);
+                                                        whitelistObject = gson.fromJson(reader.get(), WhitelistObject.class);
                                                     } catch (IOException ex) {
                                                         ex.printStackTrace();
                                                     }
@@ -246,5 +247,9 @@ public class PackManager {
 
     public WhitelistObject getWhitelist() {
         return whitelistObject;
+    }
+
+    public Gson getGson() {
+        return gson;
     }
 }

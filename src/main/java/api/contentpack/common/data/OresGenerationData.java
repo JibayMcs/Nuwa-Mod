@@ -46,7 +46,7 @@ public class OresGenerationData implements IPackData {
     //TODO Check if it's a correct check of nonnull/empty and list contain object from other.
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        OresGenerationObject generationObject = PackManager.GSON.fromJson(readerIn, OresGenerationObject.class);
+        OresGenerationObject generationObject = packManagerIn.getGson().fromJson(readerIn, OresGenerationObject.class);
 
         if (generationObject.getOreBlock() != null) {
             Block blockToGen = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(generationObject.getOreBlock()));

@@ -41,7 +41,7 @@ public class ArmorMaterialData implements IPackData {
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        ArmorMaterialObject armorMaterialObject = PackManager.GSON.fromJson(readerIn, ArmorMaterialObject.class);
+        ArmorMaterialObject armorMaterialObject = packManagerIn.getGson().fromJson(readerIn, ArmorMaterialObject.class);
         armorMaterialTypes.add(new ArmorMaterialType(armorMaterialObject));
     }
 

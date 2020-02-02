@@ -3,9 +3,10 @@ package api.contentpack.common.data;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.json.datas.containers.ContainerObject;
-import api.contentpack.common.minecraft.registries.ContainerType;
-import fr.zeamateis.nuwa.NuwaMod;
+import api.contentpack.common.json.datas.sounds.SoundObject;
+import api.contentpack.common.minecraft.util.RegistryUtil;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -13,12 +14,12 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class ContainersData implements IPackData {
+public class SoundsData implements IPackData {
 
-    private final LinkedList<ContainerType> containerTypes;
+    private LinkedList<SoundEvent> soundEvents;
 
-    public ContainersData(LinkedList<ContainerType> containerTypes) {
-        this.containerTypes = containerTypes;
+    public SoundsData() {
+        this.soundEvents = new LinkedList<>();
     }
 
     /**
@@ -28,21 +29,25 @@ public class ContainersData implements IPackData {
      */
     @Override
     public String getEntryFolder() {
-        return "objects/containers/";
+        return "objects/sounds/";
     }
 
     /**
      * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
+     * @param packManagerIn
      * @param contentPackIn
      * @param zipFileIn
      * @param readerIn
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        ContainerObject containersObject = packManagerIn.getGson().fromJson(readerIn, ContainerObject.class);
-        containerTypes.add(new ContainerType(containersObject));
+        SoundObject soundObject = packManagerIn.getGson().fromJson(readerIn, SoundObject.class);
+        ResourceLocation registryName = new ResourceLocation(soundObject.getRegistryName());
+        SoundEvent soundEvent = new SoundEvent(registryName);
+        RegistryUtil.forceRegistryName(soundEvent, registryName);
+        this.soundEvents.add(soundEvent);
     }
 
     /**
@@ -53,8 +58,8 @@ public class ContainersData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public LinkedList<ContainerType> getObjectsList() {
-        return containerTypes;
+    public LinkedList<SoundEvent> getObjectsList() {
+        return soundEvents;
     }
 
     /**
@@ -64,7 +69,7 @@ public class ContainersData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public IForgeRegistry<ContainerType> getObjectsRegistry() {
-        return NuwaMod.Registries.CONTAINER;
+    public IForgeRegistry<SoundEvent> getObjectsRegistry() {
+        return ForgeRegistries.SOUND_EVENTS;
     }
 }

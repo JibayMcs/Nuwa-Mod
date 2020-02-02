@@ -5,7 +5,7 @@ import api.contentpack.common.json.datas.blocks.properties.ContainerPropertiesOb
 import api.contentpack.common.json.datas.blocks.properties.OreProperties;
 import api.contentpack.common.json.datas.blocks.shape.VoxelShapeObject;
 
-public class BlocksObject {
+public class BlockObject {
 
     private BlockPropertiesObject properties;
     private String registryName;
@@ -19,7 +19,7 @@ public class BlocksObject {
 
     private OreProperties oreProperties;
 
-    public BlocksObject(String registryName, String itemGroup) {
+    public BlockObject(String registryName, String itemGroup) {
         this.registryName = registryName;
         this.itemGroup = itemGroup;
     }

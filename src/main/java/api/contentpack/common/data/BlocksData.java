@@ -4,7 +4,7 @@ import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.json.datas.blocks.BlocksObject;
+import api.contentpack.common.json.datas.blocks.BlockObject;
 import api.contentpack.common.json.datas.blocks.properties.OreProperties;
 import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
@@ -37,7 +37,7 @@ public class BlocksData implements IPackData {
 
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        BlocksObject blocksObject = PackManager.GSON.fromJson(readerIn, BlocksObject.class);
+        BlockObject blocksObject = packManagerIn.getGson().fromJson(readerIn, BlockObject.class);
 
         AtomicReference<IJsonBlock> parsedBlock = new AtomicReference<>();
 
@@ -52,48 +52,12 @@ public class BlocksData implements IPackData {
 
         try {
             switch (blockType) {
-                case STAIRS:
-                    break;
-                case SLABS:
-                    break;
-                case WALL:
-                    break;
-                case FALLING_BLOCK:
-                    break;
-                case FENCE:
-                    break;
-                case FENCE_GATE:
-                    break;
-                case TRAPDOOR:
-                    break;
-                case DOOR:
-                    break;
-                case FLOWER:
-                    break;
-                case TALL_PLANT:
-                    break;
-                case GRASS:
-                    break;
-                case GLASS:
-                    break;
-                case PANE:
-                    break;
-                case CARPET:
-                    break;
                 case CROPS: {
                     parsedBlock.set((IJsonBlock) blockType.getBlockType()
                             .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
                             .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation(blocksObject.getCropSeed())), properties, blockRegistryName));
                 }
                 break;
-                case SLOW_BLOCK:
-                    break;
-                case BIOME_COLOR:
-                    break;
-                case INVISIBLE:
-                    break;
-                case LEAVES:
-                    break;
                 case ORE: {
                     if (oreProperties != null) {
                         parsedBlock.set((IJsonBlock) blockType.getBlockType()

@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.0.5'
+version = '0.0.6'
 group = 'fr.zeamateis.nuwa'
 archivesBaseName = 'nuwa'
 
@@ -73,6 +73,9 @@ jar {
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+
+    exclude("tests/**")
+    exclude("assets/nuwa/models/**")
 }
 
 def reobfFile = file("$buildDir/reobfJar/output.jar")

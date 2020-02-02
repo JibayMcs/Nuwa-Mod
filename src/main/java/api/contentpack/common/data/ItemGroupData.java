@@ -27,7 +27,7 @@ public class ItemGroupData implements IPackData {
 
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        ItemGroupObject itemGroupObject = PackManager.GSON.fromJson(readerIn, ItemGroupObject.class);
+        ItemGroupObject itemGroupObject = packManagerIn.getGson().fromJson(readerIn, ItemGroupObject.class);
 
         if (itemGroupObject != null) {
             String formatedId = String.format("%s.%s", itemGroupObject.getId().getNamespace(), itemGroupObject.getId().getPath());

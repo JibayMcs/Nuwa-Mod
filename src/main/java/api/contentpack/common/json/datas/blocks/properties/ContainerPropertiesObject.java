@@ -1,6 +1,6 @@
 package api.contentpack.common.json.datas.blocks.properties;
 
-import api.contentpack.common.json.datas.containers.ContainersObject;
+import api.contentpack.common.json.datas.containers.ContainerObject;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.util.ResourceLocation;
 
@@ -9,7 +9,7 @@ public class ContainerPropertiesObject {
     private String container;
     private int totalSlots;
 
-    public ContainersObject getContainer() {
+    public ContainerObject getContainer() {
         return NuwaMod.Registries.CONTAINER.getValue(new ResourceLocation(container)).getContainersObject();
     }
 

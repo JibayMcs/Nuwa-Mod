@@ -1,6 +1,7 @@
 package api.contentpack.common.json.datas.items.type;
 
 import api.contentpack.common.minecraft.items.JsonArmorItem;
+import api.contentpack.common.minecraft.items.JsonMusicDiskItem;
 import api.contentpack.common.minecraft.items.JsonSwordItem;
 import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import api.contentpack.common.minecraft.items.base.JsonItem;
@@ -18,7 +19,8 @@ public enum ItemType {
     PICKAXE(JsonPixaxeItem.class),
     SEEDS(JsonBlockItem.class),
     SHOVEL(JsonShovelItem.class),
-    SWORD(JsonSwordItem.class);
+    SWORD(JsonSwordItem.class),
+    MUSIC_DISC(JsonMusicDiskItem.class);
 
     private Class<? extends Item> itemType;
 

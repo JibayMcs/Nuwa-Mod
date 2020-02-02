@@ -3,7 +3,7 @@ package api.contentpack.common.json.datas.containers;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContainersObject {
+public class ContainerObject {
 
     private String registryName;
 

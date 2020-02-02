@@ -4,7 +4,7 @@ import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.json.datas.items.ItemsObject;
+import api.contentpack.common.json.datas.items.ItemObject;
 import api.contentpack.common.json.datas.items.properties.ArmorMaterialProperties;
 import api.contentpack.common.json.datas.items.properties.ToolMaterialProperties;
 import api.contentpack.common.json.datas.items.type.ItemType;
@@ -18,6 +18,7 @@ import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -44,7 +45,7 @@ public class ItemsData implements IPackData {
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
 
-        ItemsObject itemsObject = PackManager.GSON.fromJson(readerIn, ItemsObject.class);
+        ItemObject itemsObject = packManagerIn.getGson().fromJson(readerIn, ItemObject.class);
 
         ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());
 
@@ -119,12 +120,21 @@ public class ItemsData implements IPackData {
                     }
                 }
                 break;
+                case MUSIC_DISC: {
+                    if (itemsObject.getSoundProperties() != null) {
+                        int comparatorValue = itemsObject.getSoundProperties().getComparatorValue();
+                        ResourceLocation soundEvent = new ResourceLocation(itemsObject.getSoundProperties().getSoundName());
+                        parsedItem.set((IJsonItem) itemType.getItemType()
+                                .getDeclaredConstructor(int.class, SoundEvent.class, Item.Properties.class, ResourceLocation.class)
+                                .newInstance(comparatorValue, ForgeRegistries.SOUND_EVENTS.getValue(soundEvent), properties, itemRegistryName));
+                    }
+                }
+                break;
                 case DEFAULT:
                     parsedItem.set((IJsonItem) itemType.getItemType()
                             .getDeclaredConstructor(Item.Properties.class, ResourceLocation.class)
                             .newInstance(properties, itemRegistryName));
                     break;
-
             }
             if (packManagerIn.getWhitelist() != null) {
                 if (!packManagerIn.getWhitelist().getItems().isEmpty()) {
