@@ -1,5 +1,6 @@
 package api.contentpack.common.minecraft.blocks;
 
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Blocks;
@@ -14,10 +15,21 @@ public class JsonStairsBlock extends StairsBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
+    private BlockEventProperties eventProperties;
 
     public JsonStairsBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(Blocks.STONE.getDefaultState(), properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
+    }
+
+    @Override
+    public BlockEventProperties getBlockEventProperties() {
+        return this.eventProperties;
+    }
+
+    @Override
+    public void setBlockEventProperties(BlockEventProperties eventProperties) {
+        this.eventProperties = eventProperties;
     }
 
     @Override

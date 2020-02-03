@@ -5,16 +5,22 @@ import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.blocks.BlockObject;
+import api.contentpack.common.json.datas.blocks.events.actions.AttackProcess;
+import api.contentpack.common.json.datas.blocks.events.actions.HealProcess;
+import api.contentpack.common.json.datas.blocks.events.actions.base.IProcess;
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import api.contentpack.common.json.datas.blocks.properties.OreProperties;
 import api.contentpack.common.json.datas.blocks.type.BlockType;
 import api.contentpack.common.minecraft.blocks.JsonCropsBlock;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
+import com.google.gson.GsonBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+import tests.JsonTests;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -37,7 +43,11 @@ public class BlocksData implements IPackData {
 
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        BlockObject blocksObject = packManagerIn.getGson().fromJson(readerIn, BlockObject.class);
+        BlockObject blocksObject = new GsonBuilder()
+                .registerTypeAdapter(IProcess.class, new JsonTests.InterfaceAdapter<AttackProcess>())
+                .registerTypeAdapter(IProcess.class, new JsonTests.InterfaceAdapter<HealProcess>())
+                .create()
+                .fromJson(readerIn, BlockObject.class);
 
         AtomicReference<IJsonBlock> parsedBlock = new AtomicReference<>();
 
@@ -49,6 +59,10 @@ public class BlocksData implements IPackData {
                 blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
 
         OreProperties oreProperties = blocksObject.getOreProperties();
+
+        BlockEventProperties blockEventProperties = blocksObject.getEventProperties();
+
+        //Events
 
         try {
             switch (blockType) {
@@ -73,9 +87,16 @@ public class BlocksData implements IPackData {
                     break;
             }
 
+            if (blockEventProperties != null) {
+                parsedBlock.get().setBlockEventProperties(blockEventProperties);
+            }
+
+
+            //Voxel Shapes
             parsedBlock.get().setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
             parsedBlock.get().setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
 
+            //ItemGroup
             if (!(parsedBlock.get() instanceof JsonCropsBlock)) {
                 if (blocksObject.getItemGroup() != null) {
                     ResourceLocation parsedItemGroup = new ResourceLocation(blocksObject.getItemGroup());
@@ -89,6 +110,7 @@ public class BlocksData implements IPackData {
                 }
             }
 
+            //Whitelisting
             if (packManagerIn.getWhitelist() != null) {
                 if (!packManagerIn.getWhitelist().getBlocks().isEmpty()) {
                     packManagerIn.getWhitelist().getBlocks().stream()

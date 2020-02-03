@@ -5,7 +5,7 @@ import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
 import api.contentpack.common.minecraft.registries.ArmorMaterialType;
-import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -65,6 +65,6 @@ public class ArmorMaterialData implements IPackData {
      */
     @Override
     public IForgeRegistry<ArmorMaterialType> getObjectsRegistry() {
-        return NuwaMod.Registries.ARMOR_MATERIAL;
+        return NuwaRegistries.ARMOR_MATERIAL;
     }
 }

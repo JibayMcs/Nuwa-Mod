@@ -1,5 +1,6 @@
 package api.contentpack.common.minecraft.blocks;
 
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Block;
@@ -19,13 +20,23 @@ import javax.annotation.Nonnull;
 
 public class JsonCarpetBlock extends Block implements IJsonBlock {
 
-
     private static final VoxelShape DEFAULT_CARPET_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
     private ItemGroup itemGroup;
+    private BlockEventProperties eventProperties;
 
     public JsonCarpetBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
+    }
+
+    @Override
+    public BlockEventProperties getBlockEventProperties() {
+        return this.eventProperties;
+    }
+
+    @Override
+    public void setBlockEventProperties(BlockEventProperties eventProperties) {
+        this.eventProperties = eventProperties;
     }
 
     @Override

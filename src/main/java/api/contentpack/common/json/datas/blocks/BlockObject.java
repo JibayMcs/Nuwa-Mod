@@ -1,5 +1,6 @@
 package api.contentpack.common.json.datas.blocks;
 
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import api.contentpack.common.json.datas.blocks.properties.BlockPropertiesObject;
 import api.contentpack.common.json.datas.blocks.properties.ContainerPropertiesObject;
 import api.contentpack.common.json.datas.blocks.properties.OreProperties;
@@ -18,6 +19,8 @@ public class BlockObject {
     private ContainerPropertiesObject containerProperties;
 
     private OreProperties oreProperties;
+
+    private BlockEventProperties eventProperties;
 
     public BlockObject(String registryName, String itemGroup) {
         this.registryName = registryName;
@@ -54,5 +57,9 @@ public class BlockObject {
 
     public OreProperties getOreProperties() {
         return oreProperties;
+    }
+
+    public BlockEventProperties getEventProperties() {
+        return eventProperties;
     }
 }

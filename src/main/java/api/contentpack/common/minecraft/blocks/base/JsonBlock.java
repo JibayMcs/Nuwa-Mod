@@ -1,6 +1,8 @@
 package api.contentpack.common.minecraft.blocks.base;
 
 
+import api.contentpack.common.json.datas.blocks.events.EntityCollideEvent;
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,9 +23,21 @@ public class JsonBlock extends Block implements IJsonBlock {
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
 
+    private BlockEventProperties eventProperties;
+
     public JsonBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
+    }
+
+    @Override
+    public BlockEventProperties getBlockEventProperties() {
+        return this.eventProperties;
+    }
+
+    @Override
+    public void setBlockEventProperties(BlockEventProperties eventProperties) {
+        this.eventProperties = eventProperties;
     }
 
     @Override
@@ -68,6 +82,17 @@ public class JsonBlock extends Block implements IJsonBlock {
 
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        super.onEntityCollision(state, worldIn, pos, entityIn);
+        EntityCollideEvent collideEvent = getBlockEventProperties().getEntityCollideEvent();
+
+        /*collideEvent.getActions().forEach(action -> {
+            collideEvent.getAffectedEntities().stream()
+                    .filter(entityType -> entityType.equals(entityIn.getType()))
+                    .forEach(entity -> {
+                        if (action.getProcess() != null) {
+                            action.getProcess().processAction(worldIn, pos, entityIn);
+                        }
+                    });
+        });*/
+
     }
 }

@@ -1,5 +1,6 @@
 package api.contentpack.common.minecraft.blocks.base;
 
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -19,4 +20,7 @@ public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
 
     void setItemGroup(ItemGroup itemGroup);
 
+    BlockEventProperties getBlockEventProperties();
+
+    void setBlockEventProperties(BlockEventProperties eventProperties);
 }

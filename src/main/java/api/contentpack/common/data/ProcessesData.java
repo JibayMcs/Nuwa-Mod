@@ -3,8 +3,8 @@ package api.contentpack.common.data;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
-import api.contentpack.common.json.datas.containers.ContainerObject;
-import api.contentpack.common.minecraft.registries.ContainerType;
+import api.contentpack.common.json.datas.events.processes.ProcessObject;
+import api.contentpack.common.minecraft.registries.ProcessType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -13,12 +13,12 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class ContainersData implements IPackData {
+public class ProcessesData implements IPackData {
 
-    private final LinkedList<ContainerType> containerTypes;
+    private LinkedList<ProcessType> processTypes;
 
-    public ContainersData(LinkedList<ContainerType> containerTypes) {
-        this.containerTypes = containerTypes;
+    public ProcessesData() {
+        this.processTypes = new LinkedList<>();
     }
 
     /**
@@ -28,21 +28,22 @@ public class ContainersData implements IPackData {
      */
     @Override
     public String getEntryFolder() {
-        return "objects/containers/";
+        return "objects/events/processes/";
     }
 
     /**
      * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
+     * @param packManagerIn
      * @param contentPackIn
      * @param zipFileIn
      * @param readerIn
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        ContainerObject containersObject = packManagerIn.getGson().fromJson(readerIn, ContainerObject.class);
-        containerTypes.add(new ContainerType(containersObject));
+        ProcessObject processObject = packManagerIn.getGson().fromJson(readerIn, ProcessObject.class);
+        this.processTypes.add(new ProcessType(processObject));
     }
 
     /**
@@ -53,8 +54,8 @@ public class ContainersData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public LinkedList<ContainerType> getObjectsList() {
-        return containerTypes;
+    public LinkedList<ProcessType> getObjectsList() {
+        return this.processTypes;
     }
 
     /**
@@ -64,7 +65,7 @@ public class ContainersData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public IForgeRegistry<ContainerType> getObjectsRegistry() {
-        return NuwaRegistries.CONTAINER;
+    public IForgeRegistry<ProcessType> getObjectsRegistry() {
+        return NuwaRegistries.PROCESS;
     }
 }

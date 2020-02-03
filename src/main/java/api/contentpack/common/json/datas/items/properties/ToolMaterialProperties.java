@@ -1,7 +1,7 @@
 package api.contentpack.common.json.datas.items.properties;
 
 import api.contentpack.common.json.datas.materials.ToolMaterialObject;
-import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraft.util.ResourceLocation;
 
 public class ToolMaterialProperties {
@@ -18,7 +18,7 @@ public class ToolMaterialProperties {
     }
 
     public ToolMaterialObject getToolMaterial() {
-        return NuwaMod.Registries.TOOL_MATERIAL.getValue(new ResourceLocation(toolMaterial)).getToolMaterialObject();
+        return NuwaRegistries.TOOL_MATERIAL.getValue(new ResourceLocation(toolMaterial)).getToolMaterialObject();
     }
 
 }

@@ -18,6 +18,16 @@ public class PackInfoObject {
 
     private transient int totalBlocks, totalItems;
 
+    public PackInfoObject(String packName, String namespace, String version, int nuwaDataVersion, List<String> description, List<String> authors, List<String> credits, String license) {
+        this.packName = packName;
+        this.namespace = namespace;
+        this.version = version;
+        this.nuwaDataVersion = nuwaDataVersion;
+        this.description = description;
+        this.authors = authors;
+        this.credits = credits;
+        this.license = license;
+    }
 
     public String getPackName() {
         return packName;

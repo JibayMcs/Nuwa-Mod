@@ -1,5 +1,6 @@
 package api.contentpack.common.minecraft.blocks;
 
+import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.TallFlowerBlock;
@@ -13,10 +14,21 @@ public class JsonTallPlantBlock extends TallFlowerBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
+    private BlockEventProperties eventProperties;
 
     public JsonTallPlantBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
         RegistryUtil.forceRegistryName(this, registryNameIn);
+    }
+
+    @Override
+    public BlockEventProperties getBlockEventProperties() {
+        return this.eventProperties;
+    }
+
+    @Override
+    public void setBlockEventProperties(BlockEventProperties eventProperties) {
+        this.eventProperties = eventProperties;
     }
 
     @Override

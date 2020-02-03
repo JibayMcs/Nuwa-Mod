@@ -1,7 +1,7 @@
 package api.contentpack.common.json.datas.items.properties;
 
 import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
-import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 
@@ -20,6 +20,6 @@ public class ArmorMaterialProperties {
     }
 
     public ArmorMaterialObject getArmorMaterial() {
-        return NuwaMod.Registries.ARMOR_MATERIAL.getValue(new ResourceLocation(armorMaterial)).getArmorMaterialObject();
+        return NuwaRegistries.ARMOR_MATERIAL.getValue(new ResourceLocation(armorMaterial)).getArmorMaterialObject();
     }
 }

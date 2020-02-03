@@ -1,0 +1,4 @@
+{
+  "registryName": "nuwa:heal_process",
+  "processClass": "api.contentpack.common.json.datas.blocks.events.actions.HealProcess"
+}

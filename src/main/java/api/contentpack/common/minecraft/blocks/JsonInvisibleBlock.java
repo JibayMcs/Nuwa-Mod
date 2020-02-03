@@ -13,6 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 public class JsonInvisibleBlock extends JsonBlock {
+
     public JsonInvisibleBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties, registryNameIn);
     }

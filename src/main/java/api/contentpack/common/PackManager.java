@@ -155,6 +155,7 @@ public class PackManager {
                                                                 .forEach(iForgeRegistryEntry -> {
                                                                     packData.getObjectsRegistry().register(iForgeRegistryEntry);
                                                                 });
+
                                                         //Register BlockItem
                                                         packData.getObjectsList().stream()
                                                                 .filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))

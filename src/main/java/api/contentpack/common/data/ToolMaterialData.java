@@ -5,7 +5,7 @@ import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.json.datas.materials.ToolMaterialObject;
 import api.contentpack.common.minecraft.registries.ToolMaterialType;
-import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -65,6 +65,6 @@ public class ToolMaterialData implements IPackData {
      */
     @Override
     public IForgeRegistry<ToolMaterialType> getObjectsRegistry() {
-        return NuwaMod.Registries.TOOL_MATERIAL;
+        return NuwaRegistries.TOOL_MATERIAL;
     }
 }
