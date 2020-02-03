@@ -35,6 +35,7 @@ import java.util.function.Predicate;
 //TODO Fix content packs not closed after loading.
 @Mod(Constant.MODID)
 public class NuwaMod implements ISelectiveResourceReloadListener {
+    public static final Logger LOGGER = LogManager.getLogger();
     private static final String PROTOCOL_VERSION = String.valueOf(1);
     private static final SimpleChannel CHANNEL = NetworkRegistry.ChannelBuilder
             .named(new ResourceLocation(Constant.MODID, "nuwa_channel"))
@@ -42,29 +43,26 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .simpleChannel();
-
-    private static final Logger LOGGER = LogManager.getLogger();
-
     private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
-
-    private static PackManager packManager;
+    private static NuwaMod instance;
+    private final PackManager packManager;
 
     public NuwaMod() {
-        packManager = new PackManager(PROXY.getPackDir().toPath());
+        instance = this;
+        this.packManager = new PackManager(LOGGER, PROXY.getPackDir().toPath());
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerVanillaItemGroups);
 
-        packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "item_group_data"), ItemGroupData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class);
-        packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class);
-        //packManager.registerData(new ResourceLocation(Constant.MODID, "trees_generation_data"), TreesGenerationData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_group_data"), ItemGroupData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class);
 
-        packManager.loadPacks();
+        this.packManager.loadPacks();
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerAboutToStart);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerAssetsManager);
@@ -72,16 +70,12 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     }
 
 
-    public static Logger getLogger() {
-        return LOGGER;
-    }
-
     static CommonProxy getProxy() {
         return PROXY;
     }
 
     public static PackManager getPackManager() {
-        return packManager;
+        return instance.packManager;
     }
 
     public static SimpleChannel getNetwork() {
@@ -91,14 +85,14 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     @OnlyIn(Dist.CLIENT)
     private void registerAssetsManager() {
         for (ContentPack contentPack : packManager.getPacks()) {
-            Minecraft.getInstance().getResourcePackList().addPackFinder(new ContentPackFinder(contentPack));
+            Minecraft.getInstance().getResourcePackList().addPackFinder(new ContentPackFinder(packManager, contentPack));
         }
         ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).addReloadListener(this);
     }
 
     private void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         for (ContentPack contentPack : getPackManager().getPacks()) {
-            event.getServer().getResourcePacks().addPackFinder(new ContentPackFinder(contentPack));
+            event.getServer().getResourcePacks().addPackFinder(new ContentPackFinder(packManager, contentPack));
         }
     }
 
@@ -115,7 +109,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
         for (ContentPack contentPack : getPackManager().getPacks()) {
-            Minecraft.getInstance().getResourcePackList().addPackFinder(new ContentPackFinder(contentPack));
+            Minecraft.getInstance().getResourcePackList().addPackFinder(new ContentPackFinder(packManager, contentPack));
         }
     }
 

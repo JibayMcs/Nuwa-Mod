@@ -1,24 +1,16 @@
-package api.contentpack.common.json.datas.blocks.events.actions;
+package api.contentpack.common.json.datas.blocks.events.processes;
 
-import api.contentpack.common.json.datas.blocks.events.actions.base.IProcess;
+import api.contentpack.common.json.datas.blocks.events.processes.base.IEntityProcess;
 import api.contentpack.common.json.datas.damageSources.type.DamageSourceType;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class AttackProcess implements IProcess {
+
+public class AttackProcess implements IEntityProcess {
 
     private float attackDamage;
     private DamageSourceType damageSource;
-
-    public AttackProcess() {
-    }
-
-    public AttackProcess(DamageSourceType damageSource, float attackDamage) {
-        this.attackDamage = attackDamage;
-        this.damageSource = damageSource;
-    }
 
     public float getAttackDamage() {
         return attackDamage;
@@ -29,7 +21,7 @@ public class AttackProcess implements IProcess {
     }
 
     @Override
-    public void processAction(World worldIn, BlockPos blockPosIn, Entity entityIn) {
+    public void process(World worldIn, Entity entityIn) {
         entityIn.attackEntityFrom(getDamageSource(), getAttackDamage());
     }
 

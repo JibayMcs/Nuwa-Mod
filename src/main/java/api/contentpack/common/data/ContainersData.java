@@ -1,8 +1,8 @@
 package api.contentpack.common.data;
 
 import api.contentpack.common.ContentPack;
-import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
+import api.contentpack.common.data.base.IPackData;
 import api.contentpack.common.json.datas.containers.ContainerObject;
 import api.contentpack.common.minecraft.registries.ContainerType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
@@ -32,9 +32,10 @@ public class ContainersData implements IPackData {
     }
 
     /**
-     * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
+     * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
+     * @param packManagerIn
      * @param contentPackIn
      * @param zipFileIn
      * @param readerIn

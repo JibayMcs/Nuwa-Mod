@@ -43,7 +43,6 @@ public class NuwaRegistries {
             .setIDRange(0, Integer.MAX_VALUE)
             .create();
 
-
     @SubscribeEvent
     public static void onMissingToolMaterial(RegistryEvent.MissingMappings<ToolMaterialType> event) {
         for (RegistryEvent.MissingMappings.Mapping<ToolMaterialType> mapping : event.getAllMappings()) {

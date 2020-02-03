@@ -1,8 +1,8 @@
 package api.contentpack.common.data;
 
 import api.contentpack.common.ContentPack;
-import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
+import api.contentpack.common.data.base.IPackData;
 import api.contentpack.common.json.datas.sounds.SoundObject;
 import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +33,7 @@ public class SoundsData implements IPackData {
     }
 
     /**
-     * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
+     * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
      * @param packManagerIn

@@ -2,14 +2,13 @@ package api.contentpack.common.json.datas.blocks.type;
 
 import api.contentpack.common.minecraft.blocks.*;
 import api.contentpack.common.minecraft.blocks.base.JsonBlock;
-import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ResourceLocation;
 
 public enum BlockType {
+    NULL(),
     DEFAULT(JsonBlock.class, Block.Properties.from(Blocks.STONE)),
     STAIRS(JsonStairsBlock.class, Block.Properties.from(Blocks.OAK_STAIRS)),
     SLABS(JsonSlabBlock.class, Block.Properties.from(Blocks.STONE_SLAB)),
@@ -35,17 +34,19 @@ public enum BlockType {
     private Class<? extends Block> blockType;
     private Block.Properties defaultProperties;
 
+    BlockType() {
+    }
+
     BlockType(Class<? extends Block> blockType, Block.Properties defaultProperties) {
         this.blockType = blockType;
         this.defaultProperties = defaultProperties;
     }
 
-    public static BlockType blockTypeOf(ResourceLocation blockRegistryNameIn, String valueIn) {
+    public static BlockType blockTypeOf(String valueIn) {
         try {
             return BlockType.valueOf(valueIn);
         } catch (IllegalArgumentException ex) {
-            NuwaMod.getLogger().error("BlockType {} for block {} doesn't exist ! That's an error !", valueIn, blockRegistryNameIn);
-            return DEFAULT;
+            return NULL;
         }
     }
 

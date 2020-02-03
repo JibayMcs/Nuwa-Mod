@@ -1,28 +1,20 @@
-package api.contentpack.common.json.datas.blocks.events.actions;
+package api.contentpack.common.json.datas.blocks.events.processes;
 
-import api.contentpack.common.json.datas.blocks.events.actions.base.IProcess;
+import api.contentpack.common.json.datas.blocks.events.processes.base.IEntityProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class HealProcess implements IProcess {
+public class HealProcess implements IEntityProcess {
 
     private float healAmount;
-
-    public HealProcess() {
-    }
-
-    public HealProcess(float healAmount) {
-        this.healAmount = healAmount;
-    }
 
     public float getHealAmount() {
         return healAmount;
     }
 
     @Override
-    public void processAction(World worldIn, BlockPos blockPosIn, Entity entityIn) {
+    public void process(World worldIn, Entity entityIn) {
         if (entityIn instanceof LivingEntity) {
             ((LivingEntity) entityIn).heal(getHealAmount());
         }

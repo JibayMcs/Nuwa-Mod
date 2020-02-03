@@ -12,6 +12,7 @@ import api.contentpack.common.minecraft.items.tool.JsonShovelItem;
 import net.minecraft.item.Item;
 
 public enum ItemType {
+    NULL(),
     DEFAULT(JsonItem.class),
     ARMOR(JsonArmorItem.class),
     AXE(JsonAxeItem.class),
@@ -24,8 +25,19 @@ public enum ItemType {
 
     private Class<? extends Item> itemType;
 
+    ItemType() {
+    }
+
     ItemType(Class<? extends Item> itemType) {
         this.itemType = itemType;
+    }
+
+    public static ItemType itemTypeOf(String valueIn) {
+        try {
+            return ItemType.valueOf(valueIn);
+        } catch (IllegalArgumentException ex) {
+            return NULL;
+        }
     }
 
     public Class<? extends Item> getItemType() {

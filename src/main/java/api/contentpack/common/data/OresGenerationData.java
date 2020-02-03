@@ -1,11 +1,10 @@
 package api.contentpack.common.data;
 
 import api.contentpack.common.ContentPack;
-import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
+import api.contentpack.common.data.base.IPackData;
 import api.contentpack.common.json.datas.generations.oresGeneration.OresGenerationObject;
 import api.contentpack.common.minecraft.blocks.JsonOreBlock;
-import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -36,9 +35,10 @@ public class OresGenerationData implements IPackData {
     }
 
     /**
-     * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
+     * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
+     * @param packManagerIn
      * @param contentPackIn
      * @param zipFileIn
      * @param readerIn
@@ -54,7 +54,7 @@ public class OresGenerationData implements IPackData {
                 if (generationObject.getGenInBiomes() != null && !generationObject.getGenInBiomes().isEmpty()) {
                     for (String biomeToGen : generationObject.getGenInBiomes()) {
                         if (ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeToGen)) == null) {
-                            NuwaMod.getLogger().warn("Biome \"{}\" doesn't exist or was not registered in the BiomeDictionnary, Ore \"{}\" was not generated in the world.", biomeToGen, blockToGen);
+                            packManagerIn.getLogger().warn("Biome \"{}\" doesn't exist or was not registered in the BiomeDictionnary, Ore \"{}\" was not generated in the world.", biomeToGen, blockToGen);
                         } else {
                             for (final Biome biome : ForgeRegistries.BIOMES) {
                                 if (biomeToGen.equals(biome.getRegistryName().toString())) {

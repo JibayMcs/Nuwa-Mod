@@ -1,6 +1,6 @@
 package api.contentpack.common.minecraft.blocks;
 
-import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
+import api.contentpack.common.json.datas.blocks.properties.BlockEventsObject;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.*;
@@ -27,7 +27,7 @@ public class JsonCropsBlock extends CropsBlock implements IJsonBlock, IGrowable 
     private final Item seedItem;
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
-    private BlockEventProperties eventProperties;
+    private BlockEventsObject eventProperties;
 
     public JsonCropsBlock(Item jsonNamedItem, Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
@@ -36,12 +36,12 @@ public class JsonCropsBlock extends CropsBlock implements IJsonBlock, IGrowable 
     }
 
     @Override
-    public BlockEventProperties getBlockEventProperties() {
+    public BlockEventsObject getBlockEventObject() {
         return this.eventProperties;
     }
 
     @Override
-    public void setBlockEventProperties(BlockEventProperties eventProperties) {
+    public void setBlockEventObject(BlockEventsObject eventProperties) {
         this.eventProperties = eventProperties;
     }
 

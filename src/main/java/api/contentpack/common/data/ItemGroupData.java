@@ -3,8 +3,8 @@ package api.contentpack.common.data;
 import api.contentpack.client.itemGroup.ItemGroups;
 import api.contentpack.client.itemGroup.JsonItemGroup;
 import api.contentpack.common.ContentPack;
-import api.contentpack.common.IPackData;
 import api.contentpack.common.PackManager;
+import api.contentpack.common.data.base.IPackData;
 import api.contentpack.common.json.datas.itemGroups.ItemGroupObject;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -25,6 +25,15 @@ public class ItemGroupData implements IPackData {
         return "objects/itemgroup/";
     }
 
+    /**
+     * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
+     * instances to parse datas from Content Pack zip file
+     *
+     * @param packManagerIn
+     * @param contentPackIn
+     * @param zipFileIn
+     * @param readerIn
+     */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         ItemGroupObject itemGroupObject = packManagerIn.getGson().fromJson(readerIn, ItemGroupObject.class);

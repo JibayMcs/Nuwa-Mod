@@ -1,7 +1,7 @@
 package fr.zeamateis.nuwa.client.event;
 
-import api.contentpack.common.IPackData;
 import api.contentpack.common.data.BlocksData;
+import api.contentpack.common.data.base.IData;
 import api.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
 import api.contentpack.common.minecraft.blocks.base.IBiomeColor;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
@@ -104,7 +104,7 @@ public class ClientEvents {
             BlockColors blockcolors = event.getBlockColors();
 
 
-            for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packData : NuwaMod.getPackManager().getPackDataMap().entrySet()) {
+            for (Map.Entry<ResourceLocation, Class<? extends IData>> packData : NuwaMod.getPackManager().getPackDataMap().entrySet()) {
                 try {
                     if (packData.getValue().equals(BlocksData.class)) {
                         packData.getValue().newInstance().getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
@@ -133,7 +133,7 @@ public class ClientEvents {
             final BlockColors blockColors = event.getBlockColors();
             final ItemColors itemColors = event.getItemColors();
 
-            for (Map.Entry<ResourceLocation, Class<? extends IPackData>> packData : NuwaMod.getPackManager().getPackDataMap().entrySet()) {
+            for (Map.Entry<ResourceLocation, Class<? extends IData>> packData : NuwaMod.getPackManager().getPackDataMap().entrySet()) {
                 try {
                     if (packData.getValue().equals(BlocksData.class)) {
                         packData.getValue().newInstance().getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))

@@ -79,6 +79,10 @@ public class ContentPack {
         return this.packInfoObject.getLicense();
     }
 
+    public PackInfoObject getPackInfo() {
+        return packInfoObject;
+    }
+
     @Override
     public String toString() {
         return "ContentPack{" +
@@ -88,5 +92,4 @@ public class ContentPack {
                 ", packIcon=" + packIcon +
                 '}';
     }
-
 }

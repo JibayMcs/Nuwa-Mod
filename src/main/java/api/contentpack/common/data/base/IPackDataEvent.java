@@ -1,4 +1,4 @@
-package api.contentpack.common;
+package api.contentpack.common.data.base;
 
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;

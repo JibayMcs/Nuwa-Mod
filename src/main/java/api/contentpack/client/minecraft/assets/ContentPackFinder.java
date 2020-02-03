@@ -1,7 +1,7 @@
 package api.contentpack.client.minecraft.assets;
 
 import api.contentpack.common.ContentPack;
-import fr.zeamateis.nuwa.NuwaMod;
+import api.contentpack.common.PackManager;
 import net.minecraft.resources.FilePack;
 import net.minecraft.resources.IPackFinder;
 import net.minecraft.resources.ResourcePackInfo;
@@ -12,8 +12,10 @@ import java.util.Map;
 public class ContentPackFinder implements IPackFinder {
 
     private final ContentPack contentPack;
+    private final PackManager packManager;
 
-    public ContentPackFinder(ContentPack contentPackIn) {
+    public ContentPackFinder(PackManager packManagerIn, ContentPack contentPackIn) {
+        this.packManager = packManagerIn;
         this.contentPack = contentPackIn;
     }
 
@@ -45,7 +47,7 @@ public class ContentPackFinder implements IPackFinder {
             }, packInfoFactory, ResourcePackInfo.Priority.TOP);
             if (t1 != null) {
                 nameToPackMap.put(contentPack.getNamespace(), t1);
-                NuwaMod.getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());
+                packManager.getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());
             }
         }
     }

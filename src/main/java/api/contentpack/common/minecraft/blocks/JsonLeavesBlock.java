@@ -1,6 +1,6 @@
 package api.contentpack.common.minecraft.blocks;
 
-import api.contentpack.common.json.datas.blocks.properties.BlockEventProperties;
+import api.contentpack.common.json.datas.blocks.properties.BlockEventsObject;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.blocks.base.ILeavesColor;
 import api.contentpack.common.minecraft.util.RegistryUtil;
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 public class JsonLeavesBlock extends LeavesBlock implements IJsonBlock, ILeavesColor {
 
     private ItemGroup itemGroup;
-    private BlockEventProperties eventProperties;
+    private BlockEventsObject eventProperties;
 
     public JsonLeavesBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
@@ -22,12 +22,12 @@ public class JsonLeavesBlock extends LeavesBlock implements IJsonBlock, ILeavesC
     }
 
     @Override
-    public BlockEventProperties getBlockEventProperties() {
+    public BlockEventsObject getBlockEventObject() {
         return this.eventProperties;
     }
 
     @Override
-    public void setBlockEventProperties(BlockEventProperties eventProperties) {
+    public void setBlockEventObject(BlockEventsObject eventProperties) {
         this.eventProperties = eventProperties;
     }
 
