@@ -7,22 +7,22 @@ import api.contentpack.common.json.PackInfoObject;
 import api.contentpack.common.json.adapter.IProcessAdapter;
 import api.contentpack.common.json.adapter.ItemStackAdapter;
 import api.contentpack.common.json.datas.WhitelistObject;
-import api.contentpack.common.json.datas.blocks.events.processes.AttackProcess;
-import api.contentpack.common.json.datas.blocks.events.processes.GiveItemProcess;
-import api.contentpack.common.json.datas.blocks.events.processes.HealProcess;
-import api.contentpack.common.json.datas.blocks.events.processes.TeleportProcess;
-import api.contentpack.common.json.datas.blocks.events.processes.base.IProcess;
+import api.contentpack.common.json.datas.events.processes.AttackProcess;
+import api.contentpack.common.json.datas.events.processes.GiveItemProcess;
+import api.contentpack.common.json.datas.events.processes.HealProcess;
+import api.contentpack.common.json.datas.events.processes.TeleportProcess;
+import api.contentpack.common.json.datas.events.processes.base.IProcess;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.base.JsonBlockItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.zeamateis.nuwa.Constant;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
@@ -43,10 +43,11 @@ public class PackManager {
     private final AtomicReference<InputStreamReader> reader;
     private final List<ContentPack> packs;
     private final Map<ResourceLocation, Class<? extends IData>> packDataMap;
+    private final Map<IForgeRegistry, Class<? extends IData>> dataRegistryMap;
     private final Logger logger;
+    private final int dataVersion;
     private ZipFile zipFile = null;
     private WhitelistObject whitelistObject;
-
 
     /**
      * Define a {@link PackManager#contentPackPath} where {@link PackManager#loadPacks()} walk into it
@@ -55,13 +56,15 @@ public class PackManager {
      *
      * @param contentPackPathIn
      */
-    public PackManager(Logger loggerIn, Path contentPackPathIn) {
+    public PackManager(int dataVersionIn, Logger loggerIn, Path contentPackPathIn) {
+        this.dataVersion = dataVersionIn;
         this.logger = loggerIn;
         this.gson = createGsonBuilder();
         this.stream = new AtomicReference<>();
         this.reader = new AtomicReference<>();
         this.packs = new ArrayList<>();
         this.packDataMap = new HashMap<>();
+        this.dataRegistryMap = new HashMap<>();
         this.contentPackPath = contentPackPathIn;
         if (!Files.exists(contentPackPath)) {
             try {
@@ -72,13 +75,17 @@ public class PackManager {
         }
     }
 
+    public Map<IForgeRegistry, Class<? extends IData>> getDataRegistryMap() {
+        return dataRegistryMap;
+    }
+
     private Gson createGsonBuilder() {
         return new GsonBuilder()
                 .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<AttackProcess>())
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<HealProcess>())
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<GiveItemProcess>())
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<TeleportProcess>())
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<AttackProcess>(this))
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<HealProcess>(this))
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<GiveItemProcess>(this))
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<TeleportProcess>(this))
                 .setPrettyPrinting()
                 .create();
     }
@@ -133,14 +140,16 @@ public class PackManager {
                                     ContentPack contentPack = createContentPack(files, entries);
 
                                     if (contentPack != null) {
-                                        if (contentPack.getPackInfo().getNuwaDataVersion() == Constant.DATA_VERSION) {
+                                        if (contentPack.getPackInfo().getNuwaDataVersion() == this.dataVersion) {
                                             //If exist
                                             this.parseWhitelist();
-                                            //Parse Hardcoded and Pack Data
+                                            //Parse Hardcoded Data
+                                            this.parseHardcodedData(contentPack);
+                                            //Parse Pack Data
                                             this.parseData(contentPack);
                                             packs.add(contentPack);
                                         } else {
-                                            this.logger.error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", contentPack.getPackInfo().getPackName(), Constant.DATA_VERSION);
+                                            this.logger.error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", contentPack.getPackInfo().getPackName(), this.dataVersion);
                                         }
                                     }
 
@@ -207,9 +216,31 @@ public class PackManager {
         return null;
     }
 
+    private void parseHardcodedData(ContentPack contentPackIn) throws IllegalAccessException, InstantiationException {
+        for (Map.Entry<ResourceLocation, Class<? extends IData>> packDataEntry : packDataMap.entrySet()) {
+            IData data = packDataEntry.getValue().newInstance();
+
+            //Hardcoded datas
+            data.parseData(this);
+            if (data.getObjectsList() != null && !data.getObjectsList().isEmpty())
+                data.getObjectsList().forEach(o -> {
+                    this.dataRegistryMap.entrySet().stream()
+                            .filter(Objects::nonNull)
+                            .forEach(registry -> {
+                                if (o.getRegistryType().equals(registry.getKey().getRegistrySuperType())) {
+                                    // System.out.println(registry.getKey().getRegistrySuperType());
+                                    // System.out.println(o.getRegistryName());
+                                    registry.getKey().register(o);
+                                }
+                            });
+                });
+        }
+    }
+
     private void parseData(ContentPack contentPackIn) throws IllegalAccessException, InstantiationException {
         for (Map.Entry<ResourceLocation, Class<? extends IData>> packDataEntry : packDataMap.entrySet()) {
             IData data = packDataEntry.getValue().newInstance();
+
             //Pack datas
             if (data instanceof IPackData) {
                 IPackData packData = (IPackData) data;
@@ -227,41 +258,41 @@ public class PackManager {
 
                 if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
                     packData.getObjectsList().stream()
-                            .filter(registryEntry -> registryEntry.getRegistryType().equals(registryEntry.getRegistryType()))
-                            .forEach(iForgeRegistryEntry -> {
-                                packData.getObjectsRegistry().register(iForgeRegistryEntry);
+                            .filter(Objects::nonNull)
+                            .forEach(object -> {
+                                this.dataRegistryMap.entrySet().stream()
+                                        .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
+                                        .filter(Objects::nonNull)
+                                        .forEach(registry -> {
+                                            registry.getKey().register(object);
+                                        });
                             });
 
                     //Register BlockItem
                     packData.getObjectsList().stream()
-                            .filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
-                            .forEach(o -> {
-                                IJsonBlock jsonBlock = (IJsonBlock) o;
-                                JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
-                                if (whitelistObject != null) {
-                                    if (!whitelistObject.getBlocks().isEmpty()) {
-                                        whitelistObject.getBlocks().stream()
-                                                .filter(s -> !s.equals(jsonBlock.getRegistryName().toString()))
-                                                .forEach(s -> ForgeRegistries.ITEMS.register(jsonBlockItem));
-                                    } else {
-                                        ForgeRegistries.ITEMS.register(jsonBlockItem);
-                                    }
-                                } else {
-                                    ForgeRegistries.ITEMS.register(jsonBlockItem);
-                                }
+                            .filter(Objects::nonNull)
+                            .filter(object -> object.getRegistryType().equals(Block.class))
+                            .forEach(object -> {
+                                this.dataRegistryMap.entrySet().stream()
+                                        .filter(Objects::nonNull)
+                                        .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(Block.class))
+                                        .forEach(registry -> {
+                                            IJsonBlock jsonBlock = (IJsonBlock) object;
+                                            JsonBlockItem jsonBlockItem = new JsonBlockItem(jsonBlock.getBlock(), new Item.Properties().group(jsonBlock.getItemGroup()), Objects.requireNonNull(jsonBlock.getRegistryName()));
+                                            if (whitelistObject != null) {
+                                                if (!whitelistObject.getBlocks().isEmpty()) {
+                                                    whitelistObject.getBlocks().stream()
+                                                            .filter(s -> !s.equals(jsonBlock.getRegistryName().toString()))
+                                                            .forEach(s -> ForgeRegistries.ITEMS.register(jsonBlockItem));
+                                                } else {
+                                                    ForgeRegistries.ITEMS.register(jsonBlockItem);
+                                                }
+                                            } else {
+                                                ForgeRegistries.ITEMS.register(jsonBlockItem);
+                                            }
+                                        });
                             });
                 }
-            } else {
-                //Hardcoded datas
-                data.parseData(this);
-                if (data.getObjectsList() != null && !data.getObjectsList().isEmpty()) {
-                    data.getObjectsList().stream()
-                            .filter(registryEntry -> registryEntry.getRegistryType().equals(registryEntry.getRegistryType()))
-                            .forEach(iForgeRegistryEntry -> {
-                                data.getObjectsRegistry().register(iForgeRegistryEntry);
-                            });
-                }
-
             }
         }
     }
@@ -270,13 +301,21 @@ public class PackManager {
     /**
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      *
-     * @param entryName
-     * @param packDataIn
+     * @param dataNameIn
+     * @param dataIn
      */
-    public void registerData(ResourceLocation entryName, Class<? extends IData> packDataIn) {
-        this.packDataMap.put(entryName, packDataIn);
+    public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn) {
+        this.packDataMap.put(dataNameIn, dataIn);
     }
 
+    public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn, IForgeRegistry registryIn) {
+        this.packDataMap.put(dataNameIn, dataIn);
+        this.dataRegistryMap.put(registryIn, dataIn);
+    }
+
+    public void attachDataRegistry(IForgeRegistry registryIn, Class<? extends IData> dataIn) {
+        this.dataRegistryMap.put(registryIn, dataIn);
+    }
 
     /**
      * Register {@link IPackDataEvent} entry if you need to hook on {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent} or

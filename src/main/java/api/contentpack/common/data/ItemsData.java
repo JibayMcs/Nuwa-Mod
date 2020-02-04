@@ -10,6 +10,8 @@ import api.contentpack.common.json.datas.items.properties.ToolMaterialProperties
 import api.contentpack.common.json.datas.items.type.ItemType;
 import api.contentpack.common.minecraft.blocks.JsonOreBlock;
 import api.contentpack.common.minecraft.items.base.IJsonItem;
+import api.contentpack.common.minecraft.registries.ArmorMaterialType;
+import api.contentpack.common.minecraft.registries.ToolMaterialType;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -20,7 +22,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -89,11 +90,22 @@ public class ItemsData implements IPackData {
                     break;
                     case ARMOR: {
                         if (armorMaterialProperties != null) {
-                            IArmorMaterial armorMaterial = armorMaterialProperties.getArmorMaterial().getMaterial();
-                            EquipmentSlotType equipmentSlotType = armorMaterialProperties.getEquipmentSlotType();
-                            parsedItem.set((IJsonItem) itemType.getItemType()
-                                    .getDeclaredConstructor(IArmorMaterial.class, EquipmentSlotType.class, Item.Properties.class, ResourceLocation.class)
-                                    .newInstance(armorMaterial, equipmentSlotType, properties, itemRegistryName));
+
+                            packManagerIn.getDataRegistryMap().entrySet().stream()
+                                    .filter(classEntry -> classEntry.getValue().equals(ArmorMaterialData.class))
+                                    .forEach(material -> {
+                                        IArmorMaterial armorMaterial = ((ArmorMaterialType) material.getKey().getValue(new ResourceLocation(armorMaterialProperties.getArmorMaterial()))).getArmorMaterialObject().getMaterial();
+                                        EquipmentSlotType equipmentSlotType = armorMaterialProperties.getEquipmentSlotType();
+                                        System.out.println(armorMaterial.getName() + " : " + armorMaterialProperties.getEquipmentSlotType().getName());
+
+                                        try {
+                                            parsedItem.set((IJsonItem) itemType.getItemType()
+                                                    .getDeclaredConstructor(IArmorMaterial.class, EquipmentSlotType.class, Item.Properties.class, ResourceLocation.class)
+                                                    .newInstance(armorMaterial, equipmentSlotType, properties, itemRegistryName));
+                                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
                         }
                     }
                     break;
@@ -101,9 +113,18 @@ public class ItemsData implements IPackData {
                     case SHOVEL:
                     case SWORD: {
                         if (toolMaterialProperties != null) {
-                            parsedItem.set((IJsonItem) itemType.getItemType()
-                                    .getDeclaredConstructor(IItemTier.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
-                                    .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
+                            packManagerIn.getDataRegistryMap().entrySet().stream()
+                                    .filter(classEntry -> classEntry.getValue().equals(ToolMaterialData.class))
+                                    .forEach(material -> {
+                                        ToolMaterialType toolMaterial = ((ToolMaterialType) material.getKey().getValue(new ResourceLocation(toolMaterialProperties.getToolMaterial())));
+                                        try {
+                                            parsedItem.set((IJsonItem) itemType.getItemType()
+                                                    .getDeclaredConstructor(IItemTier.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
+                                                    .newInstance(toolMaterial.getToolMaterialObject(), toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
+                                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
                         }
                     }
                     break;
@@ -116,17 +137,35 @@ public class ItemsData implements IPackData {
                                     .filter(block -> block instanceof JsonOreBlock)
                                     .forEach(effectiveOn::add);
 
-                            parsedItem.set((IJsonItem) itemType.getItemType()
-                                    .getDeclaredConstructor(IItemTier.class, Set.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
-                                    .newInstance(toolMaterialProperties.getToolMaterial(), effectiveOn, toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
+                            packManagerIn.getDataRegistryMap().entrySet().stream()
+                                    .filter(classEntry -> classEntry.getValue().equals(ToolMaterialData.class))
+                                    .forEach(material -> {
+                                        ToolMaterialType toolMaterial = ((ToolMaterialType) material.getKey().getValue(new ResourceLocation(toolMaterialProperties.getToolMaterial())));
+                                        try {
+                                            parsedItem.set((IJsonItem) itemType.getItemType()
+                                                    .getDeclaredConstructor(IItemTier.class, Set.class, float.class, float.class, Item.Properties.class, ResourceLocation.class)
+                                                    .newInstance(toolMaterial.getToolMaterialObject(), effectiveOn, toolMaterialProperties.getAttackDamage(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
+                                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
                         }
                     }
                     break;
                     case HOE: {
                         if (toolMaterialProperties != null) {
-                            parsedItem.set((IJsonItem) itemType.getItemType()
-                                    .getDeclaredConstructor(IItemTier.class, float.class, Item.Properties.class, ResourceLocation.class)
-                                    .newInstance(toolMaterialProperties.getToolMaterial(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
+                            packManagerIn.getDataRegistryMap().entrySet().stream()
+                                    .filter(classEntry -> classEntry.getValue().equals(ToolMaterialData.class))
+                                    .forEach(material -> {
+                                        ToolMaterialType toolMaterial = ((ToolMaterialType) material.getKey().getValue(new ResourceLocation(toolMaterialProperties.getToolMaterial())));
+                                        try {
+                                            parsedItem.set((IJsonItem) itemType.getItemType()
+                                                    .getDeclaredConstructor(IItemTier.class, float.class, Item.Properties.class, ResourceLocation.class)
+                                                    .newInstance(toolMaterial.getToolMaterialObject(), toolMaterialProperties.getAttackSpeed(), properties, itemRegistryName));
+                                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
                         }
                     }
                     break;
@@ -168,8 +207,4 @@ public class ItemsData implements IPackData {
         return itemList;
     }
 
-    @Override
-    public IForgeRegistry<Item> getObjectsRegistry() {
-        return ForgeRegistries.ITEMS;
-    }
 }

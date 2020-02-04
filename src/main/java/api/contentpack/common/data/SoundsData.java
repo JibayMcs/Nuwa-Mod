@@ -8,7 +8,6 @@ import api.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -62,14 +61,4 @@ public class SoundsData implements IPackData {
         return soundEvents;
     }
 
-    /**
-     * Link {@link IPackData#getObjectsList()} to the correct Forge Registry
-     *
-     * @return IForgeRegistry
-     * @see ForgeRegistries
-     */
-    @Override
-    public IForgeRegistry<SoundEvent> getObjectsRegistry() {
-        return ForgeRegistries.SOUND_EVENTS;
-    }
 }

@@ -1,4 +1,4 @@
-package api.contentpack.common.json.datas.blocks.events.processes.base;
+package api.contentpack.common.json.datas.events.processes.base;
 
 
 import net.minecraft.entity.Entity;

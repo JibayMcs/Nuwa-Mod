@@ -1,7 +1,7 @@
-package api.contentpack.common.json.datas.blocks.events.processes;
+package api.contentpack.common.json.datas.events.processes;
 
-import api.contentpack.common.json.datas.blocks.events.processes.base.IEntityProcess;
 import api.contentpack.common.json.datas.damageSources.type.DamageSourceType;
+import api.contentpack.common.json.datas.events.processes.base.IEntityProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;

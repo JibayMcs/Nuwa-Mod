@@ -16,7 +16,6 @@ import net.minecraft.world.gen.feature.ReplaceBlockConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
@@ -166,14 +165,4 @@ public class OresGenerationData implements IPackData {
         return null;
     }
 
-    /**
-     * Link {@link IPackData#getObjectsList()} to the correct Forge Registry
-     *
-     * @return IForgeRegistry
-     * @see ForgeRegistries
-     */
-    @Override
-    public IForgeRegistry getObjectsRegistry() {
-        return null;
-    }
 }

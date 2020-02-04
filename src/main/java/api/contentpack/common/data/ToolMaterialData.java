@@ -5,9 +5,7 @@ import api.contentpack.common.PackManager;
 import api.contentpack.common.data.base.IPackData;
 import api.contentpack.common.json.datas.materials.ToolMaterialObject;
 import api.contentpack.common.minecraft.registries.ToolMaterialType;
-import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -56,16 +54,5 @@ public class ToolMaterialData implements IPackData {
     @Override
     public LinkedList<ToolMaterialType> getObjectsList() {
         return this.toolMaterialTypes;
-    }
-
-    /**
-     * Link {@link IPackData#getObjectsList()} to the correct Forge Registry
-     *
-     * @return IForgeRegistry
-     * @see ForgeRegistries
-     */
-    @Override
-    public IForgeRegistry<ToolMaterialType> getObjectsRegistry() {
-        return NuwaRegistries.TOOL_MATERIAL;
     }
 }

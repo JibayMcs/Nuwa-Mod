@@ -1,4 +1,4 @@
-package api.contentpack.common.json.datas.events.processes;
+package api.contentpack.common.json.datas.events;
 
 public class ProcessObject {
 

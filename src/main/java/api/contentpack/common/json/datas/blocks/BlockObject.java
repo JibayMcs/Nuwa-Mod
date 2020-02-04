@@ -2,7 +2,6 @@ package api.contentpack.common.json.datas.blocks;
 
 import api.contentpack.common.json.datas.blocks.properties.BlockEventsObject;
 import api.contentpack.common.json.datas.blocks.properties.BlockPropertiesObject;
-import api.contentpack.common.json.datas.blocks.properties.ContainerPropertiesObject;
 import api.contentpack.common.json.datas.blocks.properties.OreProperties;
 import api.contentpack.common.json.datas.blocks.shape.VoxelShapeObject;
 
@@ -15,8 +14,6 @@ public class BlockObject {
     private String blockType;
 
     private String cropSeed;
-
-    private ContainerPropertiesObject containerProperties;
 
     private OreProperties oreProperties;
 
@@ -49,10 +46,6 @@ public class BlockObject {
 
     public String getCropSeed() {
         return cropSeed;
-    }
-
-    public ContainerPropertiesObject getContainerProperties() {
-        return containerProperties;
     }
 
     public OreProperties getOreProperties() {

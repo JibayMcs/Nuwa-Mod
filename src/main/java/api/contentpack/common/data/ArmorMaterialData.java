@@ -5,9 +5,7 @@ import api.contentpack.common.PackManager;
 import api.contentpack.common.data.base.IPackData;
 import api.contentpack.common.json.datas.materials.ArmorMaterialObject;
 import api.contentpack.common.minecraft.registries.ArmorMaterialType;
-import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -58,14 +56,4 @@ public class ArmorMaterialData implements IPackData {
         return this.armorMaterialTypes;
     }
 
-    /**
-     * Link {@link IPackData#getObjectsList()} to the correct Forge Registry
-     *
-     * @return IForgeRegistry
-     * @see ForgeRegistries
-     */
-    @Override
-    public IForgeRegistry<ArmorMaterialType> getObjectsRegistry() {
-        return NuwaRegistries.ARMOR_MATERIAL;
-    }
 }

@@ -1,6 +1,6 @@
 package api.contentpack.common.minecraft.registries;
 
-import api.contentpack.common.json.datas.events.processes.ProcessObject;
+import api.contentpack.common.json.datas.events.ProcessObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 

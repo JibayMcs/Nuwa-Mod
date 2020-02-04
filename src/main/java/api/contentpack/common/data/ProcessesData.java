@@ -3,12 +3,9 @@ package api.contentpack.common.data;
 import api.contentpack.common.ContentPack;
 import api.contentpack.common.PackManager;
 import api.contentpack.common.data.base.IData;
-import api.contentpack.common.data.base.IPackData;
-import api.contentpack.common.json.datas.events.processes.ProcessObject;
+import api.contentpack.common.json.datas.events.ProcessObject;
 import api.contentpack.common.minecraft.registries.ProcessType;
-import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -30,10 +27,10 @@ public class ProcessesData implements IData {
      */
     @Override
     public void parseData(PackManager packManagerIn) {
-        ProcessType attackProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.blocks.events.processes.AttackProcess", "nuwa:attack_process"));
-        ProcessType healProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.blocks.events.processes.HealProcess", "nuwa:heal_process"));
-        ProcessType giveItemProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.blocks.events.processes.GiveItemProcess", "nuwa:give_item_process"));
-        ProcessType teleportProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.blocks.events.processes.TeleportProcess", "nuwa:teleport_process"));
+        ProcessType attackProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.events.processes.AttackProcess", "nuwa:attack_process"));
+        ProcessType healProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.events.processes.HealProcess", "nuwa:heal_process"));
+        ProcessType giveItemProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.events.processes.GiveItemProcess", "nuwa:give_item_process"));
+        ProcessType teleportProcess = new ProcessType(new ProcessObject("api.contentpack.common.json.datas.events.processes.TeleportProcess", "nuwa:teleport_process"));
         this.processTypes.add(attackProcess);
         this.processTypes.add(healProcess);
         this.processTypes.add(giveItemProcess);
@@ -52,14 +49,4 @@ public class ProcessesData implements IData {
         return this.processTypes;
     }
 
-    /**
-     * Link {@link IPackData#getObjectsList()} to the correct Forge Registry
-     *
-     * @return IForgeRegistry
-     * @see ForgeRegistries
-     */
-    @Override
-    public IForgeRegistry<ProcessType> getObjectsRegistry() {
-        return NuwaRegistries.PROCESS;
-    }
 }

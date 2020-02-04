@@ -1,7 +1,7 @@
 package fr.zeamateis.nuwa.init;
 
-import api.contentpack.common.json.datas.blocks.events.base.ProcessEvent;
-import api.contentpack.common.json.datas.blocks.events.processes.base.IEntityProcess;
+import api.contentpack.common.json.datas.events.base.ProcessEvent;
+import api.contentpack.common.json.datas.events.processes.base.IEntityProcess;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.Constant;
 import net.minecraft.block.Block;

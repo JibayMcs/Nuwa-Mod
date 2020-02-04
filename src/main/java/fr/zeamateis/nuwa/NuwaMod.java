@@ -7,6 +7,7 @@ import api.contentpack.common.PackManager;
 import api.contentpack.common.data.*;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
+import fr.zeamateis.nuwa.init.NuwaRegistries;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
 import fr.zeamateis.nuwa.proxy.CommonProxy;
 import fr.zeamateis.nuwa.proxy.ServerProxy;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import org.apache.logging.log4j.LogManager;
@@ -49,18 +51,18 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
     public NuwaMod() {
         instance = this;
-        this.packManager = new PackManager(LOGGER, PROXY.getPackDir().toPath());
+        this.packManager = new PackManager(Constant.DATA_VERSION, LOGGER, PROXY.getPackDir().toPath());
 
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerVanillaItemGroups);
 
-        this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class, NuwaRegistries.PROCESS);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_group_data"), ItemGroupData.class);
-        this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class);
-        this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class, ForgeRegistries.BLOCKS);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class, ForgeRegistries.ITEMS);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
-        this.packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class);
-        this.packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class);
-        this.packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class, NuwaRegistries.ARMOR_MATERIAL);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class, NuwaRegistries.TOOL_MATERIAL);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class, ForgeRegistries.SOUND_EVENTS);
 
         this.packManager.loadPacks();
 

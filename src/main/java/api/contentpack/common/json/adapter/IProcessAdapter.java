@@ -1,12 +1,20 @@
 package api.contentpack.common.json.adapter;
 
+import api.contentpack.common.PackManager;
+import api.contentpack.common.data.ProcessesData;
+import api.contentpack.common.minecraft.registries.ProcessType;
 import com.google.gson.*;
-import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Type;
 
 public class IProcessAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
+
+    private final PackManager packManager;
+
+    public IProcessAdapter(PackManager packManagerIn) {
+        this.packManager = packManagerIn;
+    }
 
     @Override
     public final JsonElement serialize(final T object, final Type interfaceType, final JsonSerializationContext context) {
@@ -29,8 +37,11 @@ public class IProcessAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T
 
     private Type typeForName(final JsonElement typeElem) {
         try {
-            return Class.forName(String.format("%s",
-                    NuwaRegistries.PROCESS.getValue(new ResourceLocation(typeElem.getAsString())).getProcessObject().getProcessClass()));
+            //   className = Class.forName(String.format("%s", ((ProcessType)process.getKey().getValue(new ResourceLocation(typeElem.getAsString()))).getProcessObject().getProcessClass())));
+
+            return Class.forName(packManager.getDataRegistryMap().entrySet().stream()
+                    .filter(classEntry -> classEntry.getValue().equals(ProcessesData.class))
+                    .map(classEntry -> ((ProcessType) classEntry.getKey().getValue(new ResourceLocation(typeElem.getAsString()))).getProcessObject().getProcessClass()).findFirst().get());
         } catch (ClassNotFoundException e) {
             throw new JsonParseException(e);
         }

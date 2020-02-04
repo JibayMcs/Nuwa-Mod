@@ -1,4 +1,4 @@
-package api.contentpack.common.json.datas.blocks.events.base;
+package api.contentpack.common.json.datas.events.base;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;

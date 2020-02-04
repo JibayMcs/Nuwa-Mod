@@ -1,7 +1,7 @@
 package api.contentpack.common.json.datas.blocks.properties;
 
-import api.contentpack.common.json.datas.blocks.events.base.EntityBlockEvent;
-import api.contentpack.common.json.datas.blocks.events.base.ProcessEvent;
+import api.contentpack.common.json.datas.events.base.EntityBlockEvent;
+import api.contentpack.common.json.datas.events.base.ProcessEvent;
 
 public class BlockEventsObject {
 

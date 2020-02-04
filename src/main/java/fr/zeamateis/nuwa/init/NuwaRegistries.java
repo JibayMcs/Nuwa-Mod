@@ -4,7 +4,6 @@ package fr.zeamateis.nuwa.init;
 import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import api.contentpack.common.minecraft.items.base.IJsonItem;
 import api.contentpack.common.minecraft.registries.ArmorMaterialType;
-import api.contentpack.common.minecraft.registries.ContainerType;
 import api.contentpack.common.minecraft.registries.ProcessType;
 import api.contentpack.common.minecraft.registries.ToolMaterialType;
 import fr.zeamateis.nuwa.Constant;
@@ -31,11 +30,6 @@ public class NuwaRegistries {
             .setIDRange(0, Integer.MAX_VALUE)
             .create();
 
-    public static final IForgeRegistry<ContainerType> CONTAINER = new RegistryBuilder<ContainerType>()
-            .setName(new ResourceLocation(Constant.MODID, "container"))
-            .setType(ContainerType.class)
-            .setIDRange(0, Integer.MAX_VALUE)
-            .create();
 
     public static final IForgeRegistry<ProcessType> PROCESS = new RegistryBuilder<ProcessType>()
             .setName(new ResourceLocation(Constant.MODID, "process"))

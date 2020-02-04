@@ -1,6 +1,6 @@
-package api.contentpack.common.json.datas.blocks.events.base;
+package api.contentpack.common.json.datas.events.base;
 
-import api.contentpack.common.json.datas.blocks.events.processes.base.IProcess;
+import api.contentpack.common.json.datas.events.processes.base.IProcess;
 
 import java.util.List;
 

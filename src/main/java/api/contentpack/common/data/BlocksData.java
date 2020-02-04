@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -147,14 +146,4 @@ public class BlocksData implements IPackData {
         return this.blocksList;
     }
 
-    /**
-     * Link {@link IPackData#getObjectsList()} to the correct Forge Registry
-     *
-     * @return IForgeRegistry
-     * @see ForgeRegistries
-     */
-    @Override
-    public IForgeRegistry<Block> getObjectsRegistry() {
-        return ForgeRegistries.BLOCKS;
-    }
 }

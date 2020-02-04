@@ -1,8 +1,8 @@
 package api.contentpack.common.minecraft.blocks.base;
 
-import api.contentpack.common.json.datas.blocks.events.base.EntityBlockEvent;
-import api.contentpack.common.json.datas.blocks.events.processes.base.IEntityProcess;
 import api.contentpack.common.json.datas.blocks.properties.BlockEventsObject;
+import api.contentpack.common.json.datas.events.base.EntityBlockEvent;
+import api.contentpack.common.json.datas.events.processes.base.IEntityProcess;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;

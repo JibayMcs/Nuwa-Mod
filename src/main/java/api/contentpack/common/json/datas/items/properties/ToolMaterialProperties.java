@@ -1,9 +1,5 @@
 package api.contentpack.common.json.datas.items.properties;
 
-import api.contentpack.common.json.datas.materials.ToolMaterialObject;
-import fr.zeamateis.nuwa.init.NuwaRegistries;
-import net.minecraft.util.ResourceLocation;
-
 public class ToolMaterialProperties {
 
     private String toolMaterial;
@@ -17,8 +13,8 @@ public class ToolMaterialProperties {
         return attackSpeed;
     }
 
-    public ToolMaterialObject getToolMaterial() {
-        return NuwaRegistries.TOOL_MATERIAL.getValue(new ResourceLocation(toolMaterial)).getToolMaterialObject();
+    public String getToolMaterial() {
+        return toolMaterial;
     }
 
 }
