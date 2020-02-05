@@ -2,18 +2,18 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.events;
 
 import net.minecraft.util.ResourceLocation;
 
-public class ProcessObject {
+public class ConditionObject {
 
-    private String processClass;
+    private String conditionClass;
     private String registryName;
 
-    public ProcessObject(String processClass, String registryName) {
-        this.processClass = processClass;
+    public ConditionObject(String conditionClass, String registryName) {
+        this.conditionClass = conditionClass;
         this.registryName = registryName;
     }
 
-    public String getProcessClass() {
-        return processClass;
+    public String getConditionClass() {
+        return conditionClass;
     }
 
     public ResourceLocation getRegistryName() {

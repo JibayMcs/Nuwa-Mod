@@ -12,13 +12,14 @@ public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
     private ResourceLocation registryName;
 
     public ToolMaterialType(ToolMaterialObject toolMaterialObject) {
-        this.setRegistryName(new ResourceLocation(toolMaterialObject.getRegistryName()));
+        this.setRegistryName(toolMaterialObject.getRegistryName());
         this.toolMaterialObject = toolMaterialObject;
     }
 
-    public ToolMaterialObject getToolMaterialObject() {
+    public ToolMaterialObject getToolMaterial() {
         return toolMaterialObject;
     }
+
 
     /**
      * A unique identifier for this entry, if this entry is registered already it will return it's official registry name.

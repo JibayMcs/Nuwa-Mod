@@ -1,28 +1,23 @@
 package fr.zeamateis.nuwa.contentpack.common.minecraft.registries;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.materials.ArmorMaterialObject;
-import net.minecraft.item.IArmorMaterial;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.ConditionObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType> {
+public class ConditionType implements IForgeRegistryEntry<ConditionType> {
 
-    private final ArmorMaterialObject armorMaterialObject;
+    private final ConditionObject conditionObject;
     private ResourceLocation registryName;
 
-    public ArmorMaterialType(ArmorMaterialObject armorMaterialObject) {
-        this.setRegistryName(armorMaterialObject.getRegistryName());
-        this.armorMaterialObject = armorMaterialObject;
+    public ConditionType(ConditionObject conditionObject) {
+        this.setRegistryName(conditionObject.getRegistryName());
+        this.conditionObject = conditionObject;
     }
 
-    public ArmorMaterialObject getArmorMaterialObject() {
-        return armorMaterialObject;
-    }
-
-    public IArmorMaterial getArmorMaterial() {
-        return armorMaterialObject.getMaterial();
+    public ConditionObject getConditionObject() {
+        return conditionObject;
     }
 
     /**
@@ -54,7 +49,7 @@ public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType>
      * @return This instance
      */
     @Override
-    public ArmorMaterialType setRegistryName(ResourceLocation name) {
+    public ConditionType setRegistryName(ResourceLocation name) {
         this.registryName = name;
         return this;
     }
@@ -66,7 +61,7 @@ public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType>
      * @return Root registry type.
      */
     @Override
-    public Class<ArmorMaterialType> getRegistryType() {
-        return ArmorMaterialType.class;
+    public Class<ConditionType> getRegistryType() {
+        return ConditionType.class;
     }
 }

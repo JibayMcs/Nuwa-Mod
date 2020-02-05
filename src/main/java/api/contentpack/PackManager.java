@@ -2,13 +2,11 @@ package api.contentpack;
 
 import api.contentpack.data.IData;
 import api.contentpack.data.IPackData;
-import api.contentpack.data.IPackDataEvent;
 import api.contentpack.data.IRegistryData;
 import api.contentpack.json.PackInfoObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.logging.log4j.Logger;
 
@@ -191,7 +189,23 @@ public class PackManager {
             IData data = packDataEntry.getValue().newInstance();
 
             //Pack datas
-            if (data instanceof IPackData) {
+            if (data instanceof IRegistryData) {
+                IRegistryData packData = (IRegistryData) data;
+
+                packData.parseData(this);
+                if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
+                    packData.getObjectsList().stream()
+                            .filter(Objects::nonNull)
+                            .forEach(object -> {
+                                this.dataRegistryMap.entrySet().stream()
+                                        .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
+                                        .filter(Objects::nonNull)
+                                        .forEach(registry -> {
+                                            registry.getKey().register(object);
+                                        });
+                            });
+                }
+            } else if (data instanceof IPackData) {
                 IPackData packData = (IPackData) data;
 
                 zipFile.stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
@@ -217,23 +231,8 @@ public class PackManager {
                                         });
                             });
                 }
-            } else if (data instanceof IRegistryData) {
-                IRegistryData packData = (IRegistryData) data;
-
-                packData.parseData(this);
-                if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                    packData.getObjectsList().stream()
-                            .filter(Objects::nonNull)
-                            .forEach(object -> {
-                                this.dataRegistryMap.entrySet().stream()
-                                        .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
-                                        .filter(Objects::nonNull)
-                                        .forEach(registry -> {
-                                            registry.getKey().register(object);
-                                        });
-                            });
-                }
             }
+
         }
     }
 
@@ -248,29 +247,17 @@ public class PackManager {
         this.packDataMap.put(dataNameIn, dataIn);
     }
 
+    /**
+     * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
+     * Attach an {@link IForgeRegistry} if using {@link IRegistryData#getObjectsList()}
+     *
+     * @param dataNameIn
+     * @param dataIn
+     * @param registryIn
+     */
     public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn, IForgeRegistry registryIn) {
         this.packDataMap.put(dataNameIn, dataIn);
         this.dataRegistryMap.put(registryIn, dataIn);
-    }
-
-    public void attachDataRegistry(IForgeRegistry registryIn, Class<? extends IData> dataIn) {
-        this.dataRegistryMap.put(registryIn, dataIn);
-    }
-
-    /**
-     * Register {@link IPackDataEvent} entry if you need to hook on {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent} or
-     * {@link net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent}
-     *
-     * @param packDataEventIn
-     */
-    public void registerDataEvent(Class<? extends IPackDataEvent> packDataEventIn) {
-        try {
-            IPackDataEvent packDataEvent = packDataEventIn.newInstance();
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(packDataEvent::onCommonSetup);
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(packDataEvent::onClientSetup);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -281,7 +268,6 @@ public class PackManager {
     public void removePackDataEntry(ResourceLocation entryNameIn) {
         this.packDataMap.remove(entryNameIn);
     }
-
 
     public Gson getGson() {
         //Ensure Gson is never null

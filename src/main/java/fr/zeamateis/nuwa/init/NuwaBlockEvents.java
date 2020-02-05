@@ -62,6 +62,9 @@ public class NuwaBlockEvents {
                 ProcessEvent rightClickBlock = jsonBlock.getBlockEventObject().getRightClickBlockEvent();
                 if (rightClickBlock != null) {
                     rightClickBlock.getProcesses().stream().filter(iProcess -> iProcess instanceof IEntityProcess).forEach(process -> {
+                        process.conditions.stream().forEach(iCondition -> {
+                            System.out.println(iCondition.getRegistryName());
+                        });
                         ((IEntityProcess) process).process(event.getWorld(), event.getPlayer());
                     });
                 }

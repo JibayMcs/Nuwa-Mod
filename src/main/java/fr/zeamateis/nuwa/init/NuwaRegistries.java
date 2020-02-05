@@ -4,10 +4,7 @@ package fr.zeamateis.nuwa.init;
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.items.base.IJsonItem;
-import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ArmorMaterialType;
-import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ItemGroupType;
-import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ProcessType;
-import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ToolMaterialType;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -35,6 +32,12 @@ public class NuwaRegistries {
     public static final IForgeRegistry<ProcessType> PROCESS = new RegistryBuilder<ProcessType>()
             .setName(new ResourceLocation(Constant.MODID, "process"))
             .setType(ProcessType.class)
+            .setIDRange(0, Integer.MAX_VALUE)
+            .create();
+
+    public static final IForgeRegistry<ConditionType> CONDITION = new RegistryBuilder<ConditionType>()
+            .setName(new ResourceLocation(Constant.MODID, "condition"))
+            .setType(ConditionType.class)
             .setIDRange(0, Integer.MAX_VALUE)
             .create();
 

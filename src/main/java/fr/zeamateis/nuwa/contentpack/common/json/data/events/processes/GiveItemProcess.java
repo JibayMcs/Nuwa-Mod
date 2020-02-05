@@ -21,6 +21,7 @@ public class GiveItemProcess implements IEntityProcess {
             PlayerEntity playerEntity = (PlayerEntity) entityIn;
             ItemStack itemstack = getItemStack();
             boolean flag = playerEntity.inventory.addItemStackToInventory(itemstack);
+
             if (flag && itemstack.isEmpty()) {
                 itemstack.setCount(1);
                 ItemEntity itementity1 = playerEntity.dropItem(itemstack, false);

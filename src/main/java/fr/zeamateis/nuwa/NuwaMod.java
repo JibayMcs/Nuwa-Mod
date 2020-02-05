@@ -8,6 +8,7 @@ import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.contentpack.client.minecraft.assets.ContentPackFinder;
 import fr.zeamateis.nuwa.contentpack.common.data.*;
+import fr.zeamateis.nuwa.contentpack.common.json.adapter.IConditionAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.IProcessAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.ItemStackAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.AttackProcess;
@@ -15,6 +16,8 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.GiveItemP
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.HealProcess;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.TeleportProcess;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ItemGroupType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -62,16 +65,9 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
     public NuwaMod() {
         instance = this;
         this.packManager = new PackManager(Constant.DATA_VERSION, LOGGER, PROXY.getPackDir().toPath());
+        this.packManager.setGson(this.nuwaGsonInstance());
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<AttackProcess>(packManager))
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<HealProcess>(packManager))
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<GiveItemProcess>(packManager))
-                .registerTypeAdapter(IProcess.class, new IProcessAdapter<TeleportProcess>(packManager))
-                .create();
-        this.packManager.setGson(gson);
-
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "conditions_data"), ConditionsData.class, NuwaRegistries.CONDITION);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class, NuwaRegistries.PROCESS);
 
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_group_data"), ItemGroupData.class, NuwaRegistries.ITEM_GROUP);
@@ -101,6 +97,17 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
     public static SimpleChannel getNetwork() {
         return CHANNEL;
+    }
+
+    private Gson nuwaGsonInstance() {
+        return new GsonBuilder()
+                .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<AttackProcess>())
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<HealProcess>())
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<GiveItemProcess>())
+                .registerTypeAdapter(IProcess.class, new IProcessAdapter<TeleportProcess>())
+                .registerTypeAdapter(ICondition.class, new IConditionAdapter<PlayerHeldItemCondition>())
+                .create();
     }
 
     @OnlyIn(Dist.CLIENT)

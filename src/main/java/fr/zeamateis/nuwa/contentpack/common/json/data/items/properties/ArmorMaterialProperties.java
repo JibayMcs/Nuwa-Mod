@@ -1,6 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.items.properties;
 
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.ResourceLocation;
 
 public class ArmorMaterialProperties {
 
@@ -16,7 +17,7 @@ public class ArmorMaterialProperties {
         return this.equipmentSlotType;
     }
 
-    public String getArmorMaterial() {
-        return armorMaterial;
+    public ResourceLocation getArmorMaterial() {
+        return new ResourceLocation(armorMaterial);
     }
 }
