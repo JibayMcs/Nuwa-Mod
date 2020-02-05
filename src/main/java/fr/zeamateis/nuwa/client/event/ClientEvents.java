@@ -1,17 +1,18 @@
 package fr.zeamateis.nuwa.client.event;
 
-import api.contentpack.common.data.BlocksData;
-import api.contentpack.common.data.base.IData;
-import api.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
-import api.contentpack.common.minecraft.blocks.base.IBiomeColor;
-import api.contentpack.common.minecraft.blocks.base.IJsonBlock;
-import api.contentpack.common.minecraft.blocks.base.ILeavesColor;
-import api.contentpack.common.minecraft.items.base.JsonBlockItem;
+import api.contentpack.data.IData;
+import api.contentpack.data.IPackData;
 import com.mojang.blaze3d.platform.GlStateManager;
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackButton;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPacksScreen;
+import fr.zeamateis.nuwa.contentpack.common.data.BlocksData;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IBiomeColor;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.ILeavesColor;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.items.base.JsonBlockItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -96,7 +97,7 @@ public class ClientEvents {
         }
     }
 
-    @Mod.EventBusSubscriber(modid = Constant.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = Constant.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class NuwaColourManager {
 
         @SubscribeEvent
@@ -107,7 +108,7 @@ public class ClientEvents {
             for (Map.Entry<ResourceLocation, Class<? extends IData>> packData : NuwaMod.getPackManager().getPackDataMap().entrySet()) {
                 try {
                     if (packData.getValue().equals(BlocksData.class)) {
-                        packData.getValue().newInstance().getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
+                        ((IPackData) packData.getValue().newInstance()).getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
                                 .forEach(block -> {
                                     if (block instanceof IJsonBlock) {
                                         IJsonBlock jsonBlock = (IJsonBlock) block;
@@ -136,7 +137,7 @@ public class ClientEvents {
             for (Map.Entry<ResourceLocation, Class<? extends IData>> packData : NuwaMod.getPackManager().getPackDataMap().entrySet()) {
                 try {
                     if (packData.getValue().equals(BlocksData.class)) {
-                        packData.getValue().newInstance().getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
+                        ((IPackData) packData.getValue().newInstance()).getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
                                 .forEach(block -> {
                                     if (block instanceof IJsonBlock) {
                                         IJsonBlock jsonBlock = (IJsonBlock) block;

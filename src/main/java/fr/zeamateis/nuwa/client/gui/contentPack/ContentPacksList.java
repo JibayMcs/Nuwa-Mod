@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.client.gui.contentPack;
 
-import api.contentpack.common.ContentPack;
+import api.contentpack.ContentPack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;

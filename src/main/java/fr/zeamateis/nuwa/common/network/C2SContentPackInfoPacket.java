@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.common.network;
 
-import api.contentpack.common.ContentPack;
+import api.contentpack.ContentPack;
 import fr.zeamateis.nuwa.NuwaMod;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.TranslationTextComponent;
