@@ -11,7 +11,7 @@ import java.util.List;
 public class JsonTests {
 
     public static void main(String[] args) {
-        Gson gson = new GsonBuilder().registerTypeAdapter(ICondition.class, new IConditionAdapter<>()).create();
+        Gson gson = new GsonBuilder().registerTypeAdapter(ICondition.class, new IConditionAdapter()).create();
 
         String checkEmpty = "{\n" +
                 "  \"conditions\": [\n" +

@@ -1,6 +1,9 @@
 package api.contentpack.data;
 
 import api.contentpack.PackManager;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
+import java.util.LinkedList;
 
 public interface IData {
 
@@ -11,5 +14,15 @@ public interface IData {
      * @param packManagerIn
      */
     void parseData(PackManager packManagerIn);
+
+
+    /**
+     * Define objects list injectable in the Forge Registry System
+     * to register it
+     *
+     * @return LinkedList<? extends IForgeRegistryEntry>
+     * @see net.minecraftforge.registries.ForgeRegistries
+     */
+    LinkedList<? extends IForgeRegistryEntry> getObjectsList();
 
 }

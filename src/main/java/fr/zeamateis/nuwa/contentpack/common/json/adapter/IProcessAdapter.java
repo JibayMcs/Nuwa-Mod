@@ -2,45 +2,42 @@ package fr.zeamateis.nuwa.contentpack.common.json.adapter;
 
 import com.google.gson.*;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Type;
+import java.util.Objects;
 
-public class IProcessAdapter<T extends IProcess> implements JsonSerializer<T>, JsonDeserializer<T> {
-
-    @Override
-    public final JsonElement serialize(final T object, final Type interfaceType, final JsonSerializationContext context) {
-        final JsonObject member = new JsonObject();
-        member.addProperty("processName", object.getClass().getSimpleName());
-        member.add("parameters", context.serialize(object));
-        return member;
-    }
+public class IProcessAdapter implements JsonDeserializer<IProcess> {
 
     @Override
-    public final T deserialize(final JsonElement elem, final Type interfaceType, final JsonDeserializationContext context)
+    public final IProcess deserialize(final JsonElement elem, final Type interfaceType, final JsonDeserializationContext context)
             throws JsonParseException {
         final JsonObject member = (JsonObject) elem;
         final JsonElement process = get(member, "processName");
         final JsonElement parameters = get(member, "parameters");
         final Type actualType = processForName(process);
 
-        T deserializedProcess = ((T) context.deserialize(parameters, actualType));
+        IProcess deserializedProcess = context.deserialize(parameters, actualType);
 
         if (member.has("conditions")) {
             final JsonElement conditions = get(member, "conditions");
-            for (int i = 0; i < conditions.getAsJsonArray().size(); i++) {
-                JsonElement condition = conditions.getAsJsonArray().get(i).getAsJsonObject().get("condition");
-                //  ICondition parsedCondition = (ICondition) conditionForName(condition);
-                System.out.println(condition.getAsString());
-                System.out.println(NuwaRegistries.PROCESS.getValue(
-                        new ResourceLocation(
-                                condition.getAsString()))
-                        .getProcessObject()
-                        .getProcessClass());
-                // System.out.println(parsedCondition.getRegistryName());
-                //deserializedProcess.conditions.add();
+            final JsonElement test = get(member, "test");
 
+            for (int i = 0; i < conditions.getAsJsonArray().size(); i++) {
+                JsonElement conditionObj = conditions.getAsJsonArray().get(i).getAsJsonObject().get("condition");
+                NuwaRegistries.CONDITION.getValues().stream()
+                        .filter(Objects::nonNull)
+                        .filter(conditionType -> conditionType.getRegistryName().equals(new ResourceLocation(conditionObj.getAsString())))
+                        .forEach(conditionType -> {
+                            try {
+                                ICondition condition = (ICondition) Class.forName(conditionType.getConditionObject().getConditionClass()).newInstance();
+                                deserializedProcess.conditions.add(condition);
+                            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+                                e.printStackTrace();
+                            }
+                        });
             }
         }
 

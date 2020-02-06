@@ -1,14 +1,15 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.Condition;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.Check;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.IPlayerCondition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PlayerHeldItemCondition extends Condition implements IPlayerCondition {
+public class PlayerHeldItemCondition implements IPlayerCondition {
     private Hand hand;
+    private Check check;
 
     public Hand getHand() {
         return hand;

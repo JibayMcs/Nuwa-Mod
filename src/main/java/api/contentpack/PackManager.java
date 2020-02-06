@@ -2,7 +2,6 @@ package api.contentpack;
 
 import api.contentpack.data.IData;
 import api.contentpack.data.IPackData;
-import api.contentpack.data.IRegistryData;
 import api.contentpack.json.PackInfoObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -181,6 +180,19 @@ public class PackManager {
             IData data = packDataEntry.getValue().newInstance();
             //Hardcoded datas
             data.parseData(this);
+
+            if (data.getObjectsList() != null && !data.getObjectsList().isEmpty()) {
+                data.getObjectsList().stream()
+                        .filter(Objects::nonNull)
+                        .forEach(object -> {
+                            this.dataRegistryMap.entrySet().stream()
+                                    .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
+                                    .filter(Objects::nonNull)
+                                    .forEach(registry -> {
+                                        registry.getKey().register(object);
+                                    });
+                        });
+            }
         }
     }
 
@@ -189,23 +201,7 @@ public class PackManager {
             IData data = packDataEntry.getValue().newInstance();
 
             //Pack datas
-            if (data instanceof IRegistryData) {
-                IRegistryData packData = (IRegistryData) data;
-
-                packData.parseData(this);
-                if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                    packData.getObjectsList().stream()
-                            .filter(Objects::nonNull)
-                            .forEach(object -> {
-                                this.dataRegistryMap.entrySet().stream()
-                                        .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
-                                        .filter(Objects::nonNull)
-                                        .forEach(registry -> {
-                                            registry.getKey().register(object);
-                                        });
-                            });
-                }
-            } else if (data instanceof IPackData) {
+            if (data instanceof IPackData) {
                 IPackData packData = (IPackData) data;
 
                 zipFile.stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
@@ -217,7 +213,6 @@ public class PackManager {
                         ex.printStackTrace();
                     }
                 });
-
 
                 if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
                     packData.getObjectsList().stream()

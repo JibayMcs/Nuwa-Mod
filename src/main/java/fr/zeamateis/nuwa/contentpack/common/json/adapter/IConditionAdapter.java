@@ -7,18 +7,10 @@ import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Type;
 
-public class IConditionAdapter<T extends ICondition> implements JsonSerializer<T>, JsonDeserializer<T> {
+public class IConditionAdapter implements JsonDeserializer<ICondition> {
 
     @Override
-    public final JsonElement serialize(final T object, final Type interfaceType, final JsonSerializationContext context) {
-        final JsonObject member = new JsonObject();
-        member.addProperty("condition", object.getClass().getSimpleName());
-        member.add("test", context.serialize(object));
-        return member;
-    }
-
-    @Override
-    public final T deserialize(final JsonElement elem, final Type interfaceType, final JsonDeserializationContext context)
+    public final ICondition deserialize(final JsonElement elem, final Type interfaceType, final JsonDeserializationContext context)
             throws JsonParseException {
         final JsonObject member = (JsonObject) elem;
         final JsonElement typeString = get(member, "condition");

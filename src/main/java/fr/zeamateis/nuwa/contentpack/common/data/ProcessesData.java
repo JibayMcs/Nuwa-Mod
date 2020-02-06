@@ -2,7 +2,7 @@ package fr.zeamateis.nuwa.contentpack.common.data;
 
 import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
-import api.contentpack.data.IRegistryData;
+import api.contentpack.data.IData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.ProcessObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ProcessType;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class ProcessesData implements IRegistryData {
+public class ProcessesData implements IData {
 
     private LinkedList<ProcessType> processTypes;
 

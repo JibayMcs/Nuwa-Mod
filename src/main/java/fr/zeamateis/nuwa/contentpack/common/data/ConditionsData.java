@@ -1,15 +1,14 @@
 package fr.zeamateis.nuwa.contentpack.common.data;
 
 import api.contentpack.PackManager;
-import api.contentpack.data.IRegistryData;
+import api.contentpack.data.IData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.ConditionObject;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ConditionType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.LinkedList;
 
-public class ConditionsData implements IRegistryData {
+public class ConditionsData implements IData {
 
     private final LinkedList<ConditionType> conditionTypes;
 
@@ -25,9 +24,7 @@ public class ConditionsData implements IRegistryData {
      */
     @Override
     public void parseData(PackManager packManagerIn) {
-        ConditionType playerHeldItem = new ConditionType(new ConditionObject(PlayerHeldItemCondition.class.getName(), "nuwa:player_held_item"));
-        System.out.println(playerHeldItem.getConditionObject().getConditionClass());
-        System.out.println(playerHeldItem.getConditionObject().getRegistryName());
+        ConditionType playerHeldItem = new ConditionType(new ConditionObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition", "nuwa:player_held_item"));
         this.conditionTypes.add(playerHeldItem);
     }
 
