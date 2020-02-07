@@ -5,31 +5,36 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class GiveItemProcess implements IEntityProcess {
 
-    private ItemStack itemStack;
+    private List<ItemStack> itemStack;
 
-    public ItemStack getItemStack() {
+    public List<ItemStack> getItemStack() {
         return itemStack;
     }
 
     @Override
-    public void process(World worldIn, Entity entityIn) {
+    public void process(World worldIn, BlockPos posIn, Entity entityIn) {
         if (entityIn instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) entityIn;
-            ItemStack itemstack = getItemStack();
-            boolean flag = playerEntity.inventory.addItemStackToInventory(itemstack);
+            if (itemStack != null)
+                itemStack.stream().forEach(itemStack -> {
+                    boolean flag = playerEntity.inventory.addItemStackToInventory(itemStack);
+                    if (flag && itemStack.isEmpty()) {
+                        itemStack.setCount(1);
+                        ItemEntity itementity1 = playerEntity.dropItem(itemStack, false);
+                        if (itementity1 != null) {
+                            itementity1.makeFakeItem();
+                        }
+                        itemStack.setCount(1);
+                    }
+                });
 
-            if (flag && itemstack.isEmpty()) {
-                itemstack.setCount(1);
-                ItemEntity itementity1 = playerEntity.dropItem(itemstack, false);
-                if (itementity1 != null) {
-                    itementity1.makeFakeItem();
-                }
-                itemstack.setCount(1);
-            }
         }
     }
 

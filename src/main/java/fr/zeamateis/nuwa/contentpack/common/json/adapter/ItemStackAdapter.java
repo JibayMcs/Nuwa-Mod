@@ -40,7 +40,7 @@ public class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserial
         String itemName = stackObject.get("id").getAsString();
         tagCompound.putString("id", itemName);
 
-        byte count = stackObject.get("Count").getAsByte();
+        byte count = stackObject.has("Count") ? stackObject.get("Count").getAsByte() : 1;
         tagCompound.putByte("Count", count);
 
         if (stackObject.has("tag")) {

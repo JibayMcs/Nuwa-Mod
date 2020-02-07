@@ -31,10 +31,12 @@ public class ProcessesData implements IData {
         ProcessType healProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.HealProcess", "nuwa:heal_process"));
         ProcessType giveItemProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.GiveItemProcess", "nuwa:give_item_process"));
         ProcessType teleportProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.TeleportProcess", "nuwa:teleport_process"));
+        ProcessType summonProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.SummonProcess", "nuwa:summon_process"));
         this.processTypes.add(attackProcess);
         this.processTypes.add(healProcess);
         this.processTypes.add(giveItemProcess);
         this.processTypes.add(teleportProcess);
+        this.processTypes.add(summonProcess);
     }
 
     /**

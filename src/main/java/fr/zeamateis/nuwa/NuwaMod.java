@@ -8,11 +8,9 @@ import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.contentpack.client.minecraft.assets.ContentPackFinder;
 import fr.zeamateis.nuwa.contentpack.common.data.*;
-import fr.zeamateis.nuwa.contentpack.common.json.adapter.IConditionAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.IProcessAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.ItemStackAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ItemGroupType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -98,7 +96,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         return new GsonBuilder()
                 .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
                 .registerTypeAdapter(IProcess.class, new IProcessAdapter())
-                .registerTypeAdapter(ICondition.class, new IConditionAdapter())
+               // .registerTypeAdapter(ICondition.class, new IConditionAdapter())
                 .create();
     }
 

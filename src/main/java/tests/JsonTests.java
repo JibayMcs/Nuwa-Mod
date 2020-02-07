@@ -2,7 +2,6 @@ package tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.zeamateis.nuwa.contentpack.common.json.adapter.IConditionAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
 
@@ -11,7 +10,7 @@ import java.util.List;
 public class JsonTests {
 
     public static void main(String[] args) {
-        Gson gson = new GsonBuilder().registerTypeAdapter(ICondition.class, new IConditionAdapter()).create();
+        Gson gson = new GsonBuilder()/*.registerTypeAdapter(ICondition.class, new IConditionAdapter())*/.create();
 
         String checkEmpty = "{\n" +
                 "  \"conditions\": [\n" +

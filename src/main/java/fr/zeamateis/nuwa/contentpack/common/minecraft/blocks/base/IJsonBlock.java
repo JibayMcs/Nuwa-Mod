@@ -38,7 +38,7 @@ public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
                     entityBlockEvent.getAffectedEntities().stream().forEach(entityType -> {
                         entityBlockEvent.getProcesses().stream().filter(process -> process instanceof IEntityProcess).forEach(process -> {
                             if (entityIn.getType().equals(entityType)) {
-                                ((IEntityProcess) process).process(worldIn, entityIn);
+                                ((IEntityProcess) process).process(worldIn, pos, entityIn);
                             }
                         });
                     });

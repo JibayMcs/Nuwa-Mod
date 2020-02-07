@@ -2,12 +2,10 @@ package fr.zeamateis.nuwa.contentpack.common.json.adapter;
 
 import com.google.gson.*;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import net.minecraft.util.ResourceLocation;
 
 import java.lang.reflect.Type;
-import java.util.Objects;
 
 public class IProcessAdapter implements JsonDeserializer<IProcess> {
 
@@ -21,12 +19,12 @@ public class IProcessAdapter implements JsonDeserializer<IProcess> {
 
         IProcess deserializedProcess = context.deserialize(parameters, actualType);
 
-        if (member.has("conditions")) {
+       /* if (member.has("conditions")) {
             final JsonElement conditions = get(member, "conditions");
-            final JsonElement test = get(member, "test");
 
             for (int i = 0; i < conditions.getAsJsonArray().size(); i++) {
                 JsonElement conditionObj = conditions.getAsJsonArray().get(i).getAsJsonObject().get("condition");
+
                 NuwaRegistries.CONDITION.getValues().stream()
                         .filter(Objects::nonNull)
                         .filter(conditionType -> conditionType.getRegistryName().equals(new ResourceLocation(conditionObj.getAsString())))
@@ -39,7 +37,7 @@ public class IProcessAdapter implements JsonDeserializer<IProcess> {
                             }
                         });
             }
-        }
+        }*/
 
         return deserializedProcess;
     }
