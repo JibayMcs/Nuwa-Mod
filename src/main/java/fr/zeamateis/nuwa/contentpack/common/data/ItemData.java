@@ -29,11 +29,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipFile;
 
-public class ItemsData implements IPackData {
+public class ItemData implements IPackData {
 
     private final LinkedList<IJsonItem> itemList;
 
-    public ItemsData() {
+    public ItemData() {
         this.itemList = new LinkedList<>();
     }
 
@@ -53,7 +53,6 @@ public class ItemsData implements IPackData {
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-
         ItemObject itemsObject = packManagerIn.getGson().fromJson(readerIn, ItemObject.class);
 
         ResourceLocation itemRegistryName = new ResourceLocation(contentPackIn.getNamespace(), itemsObject.getRegistryName());

@@ -8,11 +8,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.LinkedList;
 
-public class ConditionsData implements IData {
+public class ConditionData implements IData {
 
     private final LinkedList<ConditionType> conditionTypes;
 
-    public ConditionsData() {
+    public ConditionData() {
         this.conditionTypes = new LinkedList<>();
     }
 

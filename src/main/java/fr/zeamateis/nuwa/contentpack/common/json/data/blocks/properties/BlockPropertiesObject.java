@@ -6,6 +6,7 @@ import net.minecraftforge.common.ToolType;
 
 public class BlockPropertiesObject {
 
+
     /**
      * Default Properties for a basic block if json file has no datas
      */
@@ -23,6 +24,21 @@ public class BlockPropertiesObject {
     private boolean hasVariableOpacity;
     private boolean noDrops;
     private transient boolean tickingRandomly;
+
+    public BlockPropertiesObject(MaterialObject materialObject, float hardness, float resistance, int lightValue, SoundTypeObject soundTypeObject, boolean doesNotBlockMovement, int harvestLevel, String harvestTool, float slipperiness, boolean hasVariableOpacity, boolean noDrops, boolean tickingRandomly) {
+        this.materialObject = materialObject;
+        this.hardness = hardness;
+        this.resistance = resistance;
+        this.lightValue = lightValue;
+        this.soundTypeObject = soundTypeObject;
+        this.doesNotBlockMovement = doesNotBlockMovement;
+        this.harvestLevel = harvestLevel;
+        this.harvestTool = harvestTool;
+        this.slipperiness = slipperiness;
+        this.hasVariableOpacity = hasVariableOpacity;
+        this.noDrops = noDrops;
+        this.tickingRandomly = tickingRandomly;
+    }
 
     public Block.Properties getParsedProperties() {
         Block.Properties properties = Block.Properties.create(getMaterialObject().getMaterial());
@@ -102,5 +118,6 @@ public class BlockPropertiesObject {
     public boolean isTickingRandomly() {
         return tickingRandomly;
     }
+
 
 }

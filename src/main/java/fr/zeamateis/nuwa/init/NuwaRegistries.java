@@ -35,12 +35,6 @@ public class NuwaRegistries {
             .setIDRange(0, Integer.MAX_VALUE)
             .create();
 
-    public static final IForgeRegistry<ConditionType> CONDITION = new RegistryBuilder<ConditionType>()
-            .setName(new ResourceLocation(Constant.MODID, "condition"))
-            .setType(ConditionType.class)
-            .setIDRange(0, Integer.MAX_VALUE)
-            .create();
-
     public static final IForgeRegistry<ItemGroupType> ITEM_GROUP = new RegistryBuilder<ItemGroupType>()
             .setName(new ResourceLocation(Constant.MODID, "item_group"))
             .setType(ItemGroupType.class)
@@ -50,6 +44,12 @@ public class NuwaRegistries {
     public static final IForgeRegistry<BlockEventType> BLOCK_EVENT = new RegistryBuilder<BlockEventType>()
             .setName(new ResourceLocation(Constant.MODID, "block_events"))
             .setType(BlockEventType.class)
+            .setIDRange(0, Integer.MAX_VALUE)
+            .create();
+
+    public static final IForgeRegistry<ContainerType> CONTAINER = new RegistryBuilder<ContainerType>()
+            .setName(new ResourceLocation(Constant.MODID, "container"))
+            .setType(ContainerType.class)
             .setIDRange(0, Integer.MAX_VALUE)
             .create();
 

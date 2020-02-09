@@ -11,11 +11,11 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class ProcessesData implements IData {
+public class ProcessData implements IData {
 
     private LinkedList<ProcessType> processTypes;
 
-    public ProcessesData() {
+    public ProcessData() {
         this.processTypes = new LinkedList<>();
     }
 

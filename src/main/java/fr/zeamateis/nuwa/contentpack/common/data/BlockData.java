@@ -24,11 +24,11 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipFile;
 
-public class BlocksData implements IPackData {
+public class BlockData implements IPackData {
 
     private final LinkedList<IJsonBlock> blocksList;
 
-    public BlocksData() {
+    public BlockData() {
         blocksList = new LinkedList<>();
     }
 

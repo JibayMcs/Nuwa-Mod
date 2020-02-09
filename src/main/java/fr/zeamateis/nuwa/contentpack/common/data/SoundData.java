@@ -13,11 +13,11 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class SoundsData implements IPackData {
+public class SoundData implements IPackData {
 
     private LinkedList<SoundEvent> soundEvents;
 
-    public SoundsData() {
+    public SoundData() {
         this.soundEvents = new LinkedList<>();
     }
 

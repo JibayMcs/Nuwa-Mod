@@ -48,6 +48,7 @@ public class ContentPackFinder implements IPackFinder {
             if (t1 != null) {
                 nameToPackMap.put(contentPack.getNamespace(), t1);
                 packManager.getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());
+                t1.close();
             }
         }
     }

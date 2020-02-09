@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class OresGenerationData implements IPackData {
+public class OreGenerationData implements IPackData {
     /**
      * Define entry to {@link IPackData#parseData} from it
      *

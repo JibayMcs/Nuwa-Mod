@@ -19,5 +19,7 @@ public class JsonSlowBlock extends JsonBlock {
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         entityIn.setMotionMultiplier(state, new Vec3d(0.25D, (double) 0.05F, 0.25D));
+        this.onEntityCollisionEvent(state, worldIn, pos, entityIn);
     }
+
 }

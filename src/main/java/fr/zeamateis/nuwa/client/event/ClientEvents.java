@@ -6,7 +6,7 @@ import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackButton;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPacksScreen;
-import fr.zeamateis.nuwa.contentpack.common.data.BlocksData;
+import fr.zeamateis.nuwa.contentpack.common.data.BlockData;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IBiomeColor;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
@@ -104,7 +104,7 @@ public class ClientEvents {
             NuwaMod.getPackManager().getPackDataMap().forEach((resourceLocation, data) -> {
                 if (data.getForgeRegistry() != null)
                     try {
-                        if (data.getForgeRegistry().getRegistrySuperType().equals(BlocksData.class)) {
+                        if (data.getForgeRegistry().getRegistrySuperType().equals(BlockData.class)) {
                             ((IPackData) data.getDataClass().newInstance()).getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
                                     .forEach(block -> {
                                         if (block instanceof IJsonBlock) {
@@ -134,7 +134,7 @@ public class ClientEvents {
             NuwaMod.getPackManager().getPackDataMap().forEach((resourceLocation, data) -> {
                 if (data.getForgeRegistry() != null)
                     try {
-                        if (data.getForgeRegistry().getRegistrySuperType().equals(BlocksData.class)) {
+                        if (data.getForgeRegistry().getRegistrySuperType().equals(BlockData.class)) {
                             ((IPackData) data.getDataClass().newInstance()).getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class)).forEach(block -> {
                                 if (block instanceof IJsonBlock) {
                                     IJsonBlock jsonBlock = (IJsonBlock) block;

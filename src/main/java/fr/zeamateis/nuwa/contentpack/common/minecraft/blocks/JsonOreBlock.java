@@ -2,6 +2,7 @@ package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks;
 
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.JsonBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -37,5 +38,10 @@ public class JsonOreBlock extends JsonBlock {
     @Override
     public int getExpDrop(BlockState state, net.minecraft.world.IWorldReader reader, BlockPos pos, int fortune, int silktouch) {
         return silktouch == 0 ? this.getDrops(RANDOM) : 0;
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        this.onEntityCollisionEvent(state, worldIn, pos, entityIn);
     }
 }

@@ -4,6 +4,7 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventOb
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -122,6 +123,11 @@ public class JsonCropsBlock extends CropsBlock implements IJsonBlock, IGrowable 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(CROPS_AGE);
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        this.onEntityCollisionEvent(state, worldIn, pos, entityIn);
     }
 
 }
