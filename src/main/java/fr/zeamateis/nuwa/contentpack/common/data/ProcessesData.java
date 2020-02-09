@@ -28,20 +28,14 @@ public class ProcessesData implements IData {
     @Override
     public void parseData(PackManager packManagerIn) {
         String processPackage = "fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.";
-        ProcessType attackProcess = new ProcessType(new ProcessObject(processPackage + "AttackProcess", "nuwa:attack_process"));
-        ProcessType healProcess = new ProcessType(new ProcessObject(processPackage + "HealProcess", "nuwa:heal_process"));
-        ProcessType teleportProcess = new ProcessType(new ProcessObject(processPackage + "TeleportProcess", "nuwa:teleport_process"));
-        ProcessType summonProcess = new ProcessType(new ProcessObject(processPackage + "SummonProcess", "nuwa:summon_process"));
-        ProcessType inventoryProcess = new ProcessType(new ProcessObject(processPackage + "InventoryProcess", "nuwa:inventory_process"));
-        ProcessType experienceProcess = new ProcessType(new ProcessObject(processPackage + "ExperienceProcess", "nuwa:experience_process"));
-        ProcessType playSoundProcess = new ProcessType(new ProcessObject(processPackage + "PlaySoundProcess", "nuwa:sound_process"));
-        this.processTypes.add(attackProcess);
-        this.processTypes.add(healProcess);
-        this.processTypes.add(teleportProcess);
-        this.processTypes.add(summonProcess);
-        this.processTypes.add(inventoryProcess);
-        this.processTypes.add(experienceProcess);
-        this.processTypes.add(playSoundProcess);
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "AttackProcess", "nuwa:attack_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "HealProcess", "nuwa:heal_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "TeleportProcess", "nuwa:teleport_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "SummonProcess", "nuwa:summon_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "InventoryProcess", "nuwa:inventory_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "ExperienceProcess", "nuwa:experience_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "PlaySoundProcess", "nuwa:sound_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "EffectProcess", "nuwa:effect_process")));
     }
 
     /**

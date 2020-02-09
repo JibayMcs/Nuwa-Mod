@@ -16,9 +16,9 @@ import java.util.List;
 public class InventoryProcess implements IProcess {
 
     @SerializedName("addItemToInventory")
-    private AddObject add;
+    private ItemStackObject add;
     @SerializedName("removeItemFromInventory")
-    private RemoveObject remove;
+    private ItemStackObject remove;
     private DamageArmorObject damageArmor;
     private DamageItemObject damageItem;
     private boolean dropAllItems;
@@ -49,16 +49,16 @@ public class InventoryProcess implements IProcess {
                 }
                 if (damageItem != null) {
                     if (damageItem.amount != -1) {
-                        if (damageItem.itemStackList != null)
-                            damageItem.itemStackList.forEach(itemStackName -> {
+                        if (damageItem.getItemStackList() != null)
+                            damageItem.getItemStackList().forEach(itemStackName -> {
                                 ItemStack parsedStack = getItemStack(itemStackName);
                                 parsedStack.damageItem(damageItem.amount, playerEntity, onBroken -> {
                                     if (playerEntity.getHeldItemMainhand().equals(parsedStack) || playerEntity.getHeldItemOffhand().equals(parsedStack))
                                         playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
                                 });
                             });
-                        else if (damageItem.itemStack != null) {
-                            ItemStack parsedStack = getItemStack(damageItem.itemStack);
+                        else if (damageItem.getItemStack() != null) {
+                            ItemStack parsedStack = getItemStack(damageItem.getItemStack());
                             if (playerEntity.inventory.hasItemStack(parsedStack)) {
                                 ItemStack damagableItem = playerEntity.inventory.getStackInSlot(playerEntity.inventory.getSlotFor(parsedStack));
 
@@ -104,7 +104,7 @@ public class InventoryProcess implements IProcess {
         return "nuwa:inventory_process";
     }
 
-    static class AddObject {
+    static class ItemStackObject {
         private List<String> itemStackList;
         private String itemStack;
 
@@ -117,19 +117,6 @@ public class InventoryProcess implements IProcess {
         }
     }
 
-    static class RemoveObject {
-        private List<String> itemStackList;
-        private String itemStack;
-
-        public List<String> getItemStackList() {
-            return itemStackList;
-        }
-
-        public String getItemStack() {
-            return itemStack;
-        }
-
-    }
 
     static class DamageArmorObject {
         private float amount;
@@ -139,21 +126,11 @@ public class InventoryProcess implements IProcess {
         }
     }
 
-    static class DamageItemObject {
-        private List<String> itemStackList;
-        private String itemStack;
+    static class DamageItemObject extends ItemStackObject {
         private int amount;
 
         public int getAmount() {
             return amount;
-        }
-
-        public List<String> getItemStackList() {
-            return itemStackList;
-        }
-
-        public String getItemStack() {
-            return itemStack;
         }
 
     }
