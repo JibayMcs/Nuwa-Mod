@@ -2,7 +2,6 @@ package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base;
 
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockEventsObject;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.EntityBlockEvent;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IEntityProcess;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -36,9 +35,9 @@ public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
             if (entityBlockEvent != null) {
                 if (!entityBlockEvent.getAffectedEntities().isEmpty()) {
                     entityBlockEvent.getAffectedEntities().stream().forEach(entityType -> {
-                        entityBlockEvent.getProcesses().stream().filter(process -> process instanceof IEntityProcess).forEach(process -> {
+                        entityBlockEvent.getProcesses().forEach(process -> {
                             if (entityIn.getType().equals(entityType)) {
-                                ((IEntityProcess) process).process(worldIn, pos, entityIn);
+                                process.process(worldIn, pos, entityIn);
                             }
                         });
                     });

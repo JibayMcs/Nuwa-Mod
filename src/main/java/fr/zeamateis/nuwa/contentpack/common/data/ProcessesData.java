@@ -27,16 +27,21 @@ public class ProcessesData implements IData {
      */
     @Override
     public void parseData(PackManager packManagerIn) {
-        ProcessType attackProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.AttackProcess", "nuwa:attack_process"));
-        ProcessType healProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.HealProcess", "nuwa:heal_process"));
-        ProcessType giveItemProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.GiveItemProcess", "nuwa:give_item_process"));
-        ProcessType teleportProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.TeleportProcess", "nuwa:teleport_process"));
-        ProcessType summonProcess = new ProcessType(new ProcessObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.SummonProcess", "nuwa:summon_process"));
+        String processPackage = "fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.";
+        ProcessType attackProcess = new ProcessType(new ProcessObject(processPackage + "AttackProcess", "nuwa:attack_process"));
+        ProcessType healProcess = new ProcessType(new ProcessObject(processPackage + "HealProcess", "nuwa:heal_process"));
+        ProcessType teleportProcess = new ProcessType(new ProcessObject(processPackage + "TeleportProcess", "nuwa:teleport_process"));
+        ProcessType summonProcess = new ProcessType(new ProcessObject(processPackage + "SummonProcess", "nuwa:summon_process"));
+        ProcessType inventoryProcess = new ProcessType(new ProcessObject(processPackage + "InventoryProcess", "nuwa:inventory_process"));
+        ProcessType experienceProcess = new ProcessType(new ProcessObject(processPackage + "ExperienceProcess", "nuwa:experience_process"));
+        ProcessType playSoundProcess = new ProcessType(new ProcessObject(processPackage + "PlaySoundProcess", "nuwa:sound_process"));
         this.processTypes.add(attackProcess);
         this.processTypes.add(healProcess);
-        this.processTypes.add(giveItemProcess);
         this.processTypes.add(teleportProcess);
         this.processTypes.add(summonProcess);
+        this.processTypes.add(inventoryProcess);
+        this.processTypes.add(experienceProcess);
+        this.processTypes.add(playSoundProcess);
     }
 
     /**

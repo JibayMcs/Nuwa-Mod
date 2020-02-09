@@ -1,12 +1,12 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IEntityProcess;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class HealProcess implements IEntityProcess {
+public class HealProcess implements IProcess {
 
     private float healAmount;
 

@@ -2,7 +2,6 @@ package fr.zeamateis.nuwa.init;
 
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.ProcessEvent;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IEntityProcess;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -26,9 +25,7 @@ public class NuwaBlockEvents {
                 ProcessEvent playerBreakBlock = jsonBlock.getBlockEventObject().getPlayerDestroyBlockEvent();
                 if (playerBreakBlock != null) {
                     playerBreakBlock.getProcesses().forEach(process -> {
-                        if (process instanceof IEntityProcess) {
-                            ((IEntityProcess) process).process(world, event.getPos(), event.getPlayer());
-                        }
+                            process.process(world, event.getPos(), event.getPlayer());
                     });
                 }
             }
@@ -44,8 +41,8 @@ public class NuwaBlockEvents {
             if (jsonBlock.getBlockEventObject() != null) {
                 ProcessEvent leftClickBlock = jsonBlock.getBlockEventObject().getLeftClickBlockEvent();
                 if (leftClickBlock != null) {
-                    leftClickBlock.getProcesses().stream().filter(iProcess -> iProcess instanceof IEntityProcess).forEach(process -> {
-                        ((IEntityProcess) process).process(event.getWorld(), event.getPos(), event.getPlayer());
+                    leftClickBlock.getProcesses().stream().forEach(process -> {
+                        process.process(event.getWorld(), event.getPos(), event.getPlayer());
                     });
                 }
             }
@@ -61,12 +58,12 @@ public class NuwaBlockEvents {
             if (jsonBlock.getBlockEventObject() != null) {
                 ProcessEvent rightClickBlock = jsonBlock.getBlockEventObject().getRightClickBlockEvent();
                 if (rightClickBlock != null) {
-                    rightClickBlock.getProcesses().stream().filter(iProcess -> iProcess instanceof IEntityProcess).forEach(process -> {
+                    rightClickBlock.getProcesses().forEach(process -> {
                       /*  process.conditions.stream().filter(iCondition -> iCondition instanceof IPlayerCondition).forEach(iCondition -> {
                             System.out.println(iCondition.getRegistryName());
                             System.out.println(((IPlayerCondition) iCondition).test(event.getPlayer()));
                         });*/
-                        ((IEntityProcess) process).process(event.getWorld(), event.getPos(), event.getPlayer());
+                        process.process(event.getWorld(), event.getPos(), event.getPlayer());
                     });
                 }
             }

@@ -1,13 +1,15 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public interface IProcess {
 
-    List<ICondition> conditions = new ArrayList<>();
+    // List<ICondition> conditions = new ArrayList<>();
+
+    void process(World worldIn, BlockPos posIn, Entity entityIn);
+
 
     String getRegistryName();
 }

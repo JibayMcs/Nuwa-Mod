@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IEntityProcess;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.PositionObject;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,7 +12,7 @@ import net.minecraft.world.server.ServerWorld;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class TeleportProcess implements IEntityProcess {
+public class TeleportProcess implements IProcess {
 
     private PositionObject position;
 
