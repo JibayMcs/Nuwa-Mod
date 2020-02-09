@@ -6,8 +6,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
@@ -28,16 +30,16 @@ public class InventoryProcess implements IProcess {
                 PlayerEntity playerEntity = (PlayerEntity) entityIn;
                 if (add != null) {
                     if (add.itemStackList != null)
-                        add.itemStackList.forEach(itemStack -> giveItemStack(playerEntity, itemStack));
+                        add.itemStackList.forEach(itemStack -> giveItemStack(playerEntity, getItemStack(itemStack)));
                     else if (add.itemStack != null) {
-                        giveItemStack(playerEntity, add.itemStack);
+                        giveItemStack(playerEntity, getItemStack(add.itemStack));
                     }
                 }
                 if (remove != null) {
                     if (remove.itemStackList != null) {
-                        remove.itemStackList.forEach(itemStack -> removeItemStack(playerEntity, itemStack));
+                        remove.itemStackList.forEach(itemStack -> removeItemStack(playerEntity, getItemStack(itemStack)));
                     } else if (remove.itemStack != null) {
-                        removeItemStack(playerEntity, remove.itemStack);
+                        removeItemStack(playerEntity, getItemStack(remove.itemStack));
                     }
                 }
                 if (damageArmor != null) {
@@ -48,16 +50,24 @@ public class InventoryProcess implements IProcess {
                 if (damageItem != null) {
                     if (damageItem.amount != -1) {
                         if (damageItem.itemStackList != null)
-                            damageItem.itemStackList.stream().filter(playerEntity.inventory::hasItemStack).forEach(itemStack -> itemStack.damageItem(damageItem.amount, playerEntity, onBroken -> {
-                                if (playerEntity.getHeldItemMainhand().equals(itemStack) || playerEntity.getHeldItemOffhand().equals(itemStack))
-                                    playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
-                            }));
-                        else if (damageItem.itemStack != null) {
-                            if (playerEntity.inventory.hasItemStack(damageItem.itemStack)) {
-                                damageItem.itemStack.damageItem(damageItem.amount, playerEntity, onBroken -> {
-                                    if (playerEntity.getHeldItemMainhand().equals(damageItem.itemStack) || playerEntity.getHeldItemOffhand().equals(damageItem.itemStack))
+                            damageItem.itemStackList.forEach(itemStackName -> {
+                                ItemStack parsedStack = getItemStack(itemStackName);
+                                parsedStack.damageItem(damageItem.amount, playerEntity, onBroken -> {
+                                    if (playerEntity.getHeldItemMainhand().equals(parsedStack) || playerEntity.getHeldItemOffhand().equals(parsedStack))
                                         playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
                                 });
+                            });
+                        else if (damageItem.itemStack != null) {
+                            ItemStack parsedStack = getItemStack(damageItem.itemStack);
+                            if (playerEntity.inventory.hasItemStack(parsedStack)) {
+                                ItemStack damagableItem = playerEntity.inventory.getStackInSlot(playerEntity.inventory.getSlotFor(parsedStack));
+
+                                damagableItem.damageItem(damageItem.amount, playerEntity, onBroken -> {
+                                    if (playerEntity.getHeldItemMainhand().equals(parsedStack) || playerEntity.getHeldItemOffhand().equals(parsedStack))
+                                        playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
+                                });
+                                System.out.println(damagableItem.getDisplayName().getFormattedText());
+
                             }
                         }
                     }
@@ -85,33 +95,37 @@ public class InventoryProcess implements IProcess {
             playerEntityIn.inventory.deleteStack(itemStackIn);
     }
 
+    private ItemStack getItemStack(String itemRegistryNameIn) {
+        return ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemRegistryNameIn)).getDefaultInstance();
+    }
+
     @Override
     public String getRegistryName() {
         return "nuwa:inventory_process";
     }
 
     static class AddObject {
-        private List<ItemStack> itemStackList;
-        private ItemStack itemStack;
+        private List<String> itemStackList;
+        private String itemStack;
 
-        public List<ItemStack> getItemStackList() {
+        public List<String> getItemStackList() {
             return itemStackList;
         }
 
-        public ItemStack getItemStack() {
+        public String getItemStack() {
             return itemStack;
         }
     }
 
     static class RemoveObject {
-        private List<ItemStack> itemStackList;
-        private ItemStack itemStack;
+        private List<String> itemStackList;
+        private String itemStack;
 
-        public List<ItemStack> getItemStackList() {
+        public List<String> getItemStackList() {
             return itemStackList;
         }
 
-        public ItemStack getItemStack() {
+        public String getItemStack() {
             return itemStack;
         }
 
@@ -126,19 +140,19 @@ public class InventoryProcess implements IProcess {
     }
 
     static class DamageItemObject {
-        private List<ItemStack> itemStackList;
-        private ItemStack itemStack;
+        private List<String> itemStackList;
+        private String itemStack;
         private int amount;
 
         public int getAmount() {
             return amount;
         }
 
-        public List<ItemStack> getItemStackList() {
+        public List<String> getItemStackList() {
             return itemStackList;
         }
 
-        public ItemStack getItemStack() {
+        public String getItemStack() {
             return itemStack;
         }
 

@@ -50,17 +50,6 @@ public class IProcessAdapter implements JsonDeserializer<IProcess> {
         }
     }
 
-    private Type conditionForName(final JsonElement typeElem) {
-        for (int i = 0; i < typeElem.getAsJsonArray().size(); i++) {
-            try {
-                return Class.forName(NuwaRegistries.CONDITION.getValue(new ResourceLocation(typeElem.getAsJsonArray().get(i).getAsString())).getConditionObject().getConditionClass());
-            } catch (ClassNotFoundException e) {
-                throw new JsonParseException(e);
-            }
-        }
-        return null;
-    }
-
     private JsonElement get(final JsonObject wrapper, final String memberName) {
         final JsonElement elem = wrapper.get(memberName);
         if (elem == null) {

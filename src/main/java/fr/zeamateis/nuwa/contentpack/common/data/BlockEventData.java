@@ -27,7 +27,7 @@ public class BlockEventData implements IPackData {
      */
     @Override
     public String getEntryFolder() {
-        return "objects/blocks/events/";
+        return "objects/events/blocks/";
     }
 
     /**
@@ -43,7 +43,6 @@ public class BlockEventData implements IPackData {
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         BlockEventObject blockEventObject = packManagerIn.getGson().fromJson(readerIn, BlockEventObject.class);
         blockEventObject.setRegistryName(new ResourceLocation(contentPackIn.getNamespace(), blockEventObject.getRegistryName()));
-        System.out.println(blockEventObject.getRegistryName());
         this.blockEventTypes.add(new BlockEventType(blockEventObject));
     }
 

@@ -1,6 +1,5 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.EntityBlockEvent;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.ProcessEvent;
 import net.minecraft.util.ResourceLocation;
 

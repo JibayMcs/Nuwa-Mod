@@ -9,7 +9,6 @@ import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.contentpack.client.minecraft.assets.ContentPackFinder;
 import fr.zeamateis.nuwa.contentpack.common.data.*;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.IProcessAdapter;
-import fr.zeamateis.nuwa.contentpack.common.json.adapter.ItemStackAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ItemGroupType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
@@ -18,7 +17,6 @@ import fr.zeamateis.nuwa.proxy.CommonProxy;
 import fr.zeamateis.nuwa.proxy.ServerProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -60,6 +58,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         this.packManager = new PackManager(Constant.DATA_VERSION, LOGGER, PROXY.getPackDir().toPath());
         this.packManager.setGson(this.nuwaGsonInstance());
 
+
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class, NuwaRegistries.PROCESS);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_event_data"), BlockEventData.class, NuwaRegistries.BLOCK_EVENT);
 
@@ -94,7 +93,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
     private Gson nuwaGsonInstance() {
         return new GsonBuilder()
-                .registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
+                //.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
                 .registerTypeAdapter(IProcess.class, new IProcessAdapter())
                // .registerTypeAdapter(ICondition.class, new IConditionAdapter())
                 .create();

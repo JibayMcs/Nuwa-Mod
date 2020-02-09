@@ -56,30 +56,6 @@ public class PackManager {
         }
     }
 
-
-    public void throwItemGroupWarn(ContentPack contentPackIn, ZipFile zipFile, String entryName, ResourceLocation parsedItemGroup) {
-        int erroredLine = 0;
-        LineNumberReader lnr = null;
-        try {
-            lnr = new LineNumberReader(new InputStreamReader(zipFile.getInputStream(new ZipEntry(entryName))));
-            String line;
-            while ((line = lnr.readLine()) != null) {
-                if (line.contains(parsedItemGroup.toString())) {
-                    erroredLine = lnr.getLineNumber();
-                }
-            }
-        } catch (IOException e) {
-        }
-        this.logger.warn("Item Group {{}} at line {} in {}/{} does not exist.", parsedItemGroup.toString(), erroredLine, contentPackIn.getPackInfo().getPackName(), entryName);
-        try {
-            if (lnr != null) {
-                lnr.close();
-            }
-        } catch (IOException e) {
-        }
-    }
-
-
     /**
      * Main method to load packs from {@link PackManager#contentPackPath}
      * read zip content and inject {@link PackManager#packDataMap} into game
@@ -112,7 +88,7 @@ public class PackManager {
                                     }
 
                                 }
-                            } catch (IOException | IllegalAccessException | InstantiationException e) {
+                            } catch (IOException e) {
                                 e.printStackTrace();
                             } finally {
                                 this.close(walk);
@@ -162,11 +138,10 @@ public class PackManager {
         return null;
     }
 
-    private void parseHardcodedData(ContentPack contentPackIn) throws IllegalAccessException, InstantiationException {
+    private void parseHardcodedData(ContentPack contentPackIn) {
         this.packDataMap.forEach((resourceLocation, dataEntry) -> {
             try {
                 IData data = dataEntry.getDataClass().newInstance();
-                //Hardcoded datas
                 data.parseData(this);
                 this.fillRegistries(data);
             } catch (InstantiationException | IllegalAccessException ex) {
@@ -179,8 +154,6 @@ public class PackManager {
         this.packDataMap.forEach((resourceLocation, dataEntry) -> {
             try {
                 IData data = dataEntry.getDataClass().newInstance();
-
-                //Pack datas
                 if (data instanceof IPackData) {
                     IPackData packData = (IPackData) data;
 
@@ -201,6 +174,9 @@ public class PackManager {
         });
     }
 
+    /**
+     * Register objects in their respectives registries
+     */
     private void fillRegistries(IData dataIn) {
         if (dataIn.getObjectsList() != null && !dataIn.getObjectsList().isEmpty()) {
             dataIn.getObjectsList().stream()
@@ -213,6 +189,31 @@ public class PackManager {
                                     data.getValue().getForgeRegistry().register(object);
                                 });
                     });
+        }
+    }
+
+    /**
+     * Throw a message if an {@link net.minecraft.item.ItemGroup} doesn't exist in "itemGroup" object
+     */
+    public void throwItemGroupWarn(ContentPack contentPackIn, ZipFile zipFile, String entryName, ResourceLocation parsedItemGroup) {
+        int erroredLine = 0;
+        LineNumberReader lnr = null;
+        try {
+            lnr = new LineNumberReader(new InputStreamReader(zipFile.getInputStream(new ZipEntry(entryName))));
+            String line;
+            while ((line = lnr.readLine()) != null) {
+                if (line.contains(parsedItemGroup.toString())) {
+                    erroredLine = lnr.getLineNumber();
+                }
+            }
+        } catch (IOException e) {
+        }
+        this.logger.warn("Item Group {{}} at line {} in {}/{} does not exist.", parsedItemGroup.toString(), erroredLine, contentPackIn.getPackInfo().getPackName(), entryName);
+        try {
+            if (lnr != null) {
+                lnr.close();
+            }
+        } catch (IOException e) {
         }
     }
 

@@ -1,7 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.EntityBlockEvent;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.EntityBlockEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
