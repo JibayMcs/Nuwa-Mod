@@ -60,14 +60,10 @@ public class InventoryProcess implements IProcess {
                         else if (damageItem.getItemStack() != null) {
                             ItemStack parsedStack = getItemStack(damageItem.getItemStack());
                             if (playerEntity.inventory.hasItemStack(parsedStack)) {
-                                ItemStack damagableItem = playerEntity.inventory.getStackInSlot(playerEntity.inventory.getSlotFor(parsedStack));
-
-                                damagableItem.damageItem(damageItem.amount, playerEntity, onBroken -> {
+                                parsedStack.damageItem(damageItem.amount, playerEntity, onBroken -> {
                                     if (playerEntity.getHeldItemMainhand().equals(parsedStack) || playerEntity.getHeldItemOffhand().equals(parsedStack))
                                         playerEntity.sendBreakAnimation(playerEntity.getActiveHand());
                                 });
-                                System.out.println(damagableItem.getDisplayName().getFormattedText());
-
                             }
                         }
                     }

@@ -81,6 +81,7 @@ public class PackManager {
                                             this.parseHardcodedData(contentPack);
                                             //Parse Pack Data
                                             this.parseData(contentPack);
+                                            //Add ContentPack to list
                                             packs.add(contentPack);
                                         } else {
                                             this.logger.error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", contentPack.getPackInfo().getPackName(), this.dataVersion);

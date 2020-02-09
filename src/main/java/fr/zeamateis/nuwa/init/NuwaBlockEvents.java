@@ -41,7 +41,7 @@ public class NuwaBlockEvents {
             if (jsonBlock.getBlockEventObject() != null) {
                 ProcessEvent leftClickBlock = jsonBlock.getBlockEventObject().getLeftClickBlockEvent();
                 if (leftClickBlock != null) {
-                    leftClickBlock.getProcesses().stream().forEach(process -> {
+                    leftClickBlock.getProcesses().forEach(process -> {
                         process.process(event.getWorld(), event.getPos(), event.getPlayer());
                     });
                 }

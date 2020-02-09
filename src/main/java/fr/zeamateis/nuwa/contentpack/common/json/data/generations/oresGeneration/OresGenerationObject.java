@@ -7,7 +7,7 @@ import java.util.List;
 
 public class OresGenerationObject {
 
-    private DimensionType dimensionType;
+    private String dimension;
 
     private List<String> genInBiomes = new ArrayList<>();
 
@@ -17,8 +17,8 @@ public class OresGenerationObject {
     @SerializedName("vein")
     private VeinObject veinObject;
 
-    public DimensionType getDimensionType() {
-        return dimensionType;
+    public String getDimension() {
+        return dimension;
     }
 
     public List<String> getGenInBiomes() {
@@ -33,9 +33,4 @@ public class OresGenerationObject {
         return veinObject;
     }
 
-    public enum DimensionType {
-        OVERWORLD,
-        NETHER,
-        END
-    }
 }

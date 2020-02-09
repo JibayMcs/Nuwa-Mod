@@ -11,8 +11,15 @@ import java.util.regex.Pattern;
 
 public class PositionObject {
 
+    private String dimension;
     private double[] blockPos;
     private String atEntity;
+
+    private double[] facing;
+
+    public String getDimension() {
+        return dimension;
+    }
 
     public double[] getBlockPos() {
         return blockPos;
@@ -20,6 +27,10 @@ public class PositionObject {
 
     public String getAtEntity() {
         return atEntity;
+    }
+
+    public double[] getFacing() {
+        return facing;
     }
 
     public BlockPos getPos(World worldIn, BlockPos defaultPosIn) {

@@ -58,8 +58,8 @@ public class OresGenerationData implements IPackData {
                             for (final Biome biome : ForgeRegistries.BIOMES) {
                                 if (biomeToGen.equals(biome.getRegistryName().toString())) {
                                     if (BiomeDictionary.hasAnyType(ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeToGen)))) {
-                                        switch (generationObject.getDimensionType()) {
-                                            case OVERWORLD:
+                                        switch (generationObject.getDimension()) {
+                                            case "minecraft:overworld":
                                                 biome.addFeature(
                                                         GenerationStage.Decoration.UNDERGROUND_ORES,
                                                         Biome.createDecoratedFeature(Feature.ORE,
@@ -72,7 +72,7 @@ public class OresGenerationData implements IPackData {
                                                         )
                                                 );
                                                 break;
-                                            case NETHER:
+                                            case "minecraft:the_nether":
                                                 biome.addFeature(
                                                         GenerationStage.Decoration.UNDERGROUND_ORES,
                                                         Biome.createDecoratedFeature(Feature.ORE,
@@ -85,7 +85,7 @@ public class OresGenerationData implements IPackData {
                                                         )
                                                 );
                                                 break;
-                                            case END:
+                                            case "minecraft:the_end":
                                                 biome.addFeature(
                                                         GenerationStage.Decoration.UNDERGROUND_DECORATION,
                                                         Biome.createDecoratedFeature(Feature.EMERALD_ORE,
@@ -106,8 +106,8 @@ public class OresGenerationData implements IPackData {
                     }
                 } else {
                     for (final Biome biome : ForgeRegistries.BIOMES) {
-                        switch (generationObject.getDimensionType()) {
-                            case OVERWORLD:
+                        switch (generationObject.getDimension()) {
+                            case "overworld":
                                 biome.addFeature(
                                         GenerationStage.Decoration.UNDERGROUND_ORES,
                                         Biome.createDecoratedFeature(Feature.ORE,
@@ -120,7 +120,7 @@ public class OresGenerationData implements IPackData {
                                         )
                                 );
                                 break;
-                            case NETHER:
+                            case "minecraft:the_nether":
                                 biome.addFeature(
                                         GenerationStage.Decoration.UNDERGROUND_ORES,
                                         Biome.createDecoratedFeature(Feature.ORE,
@@ -133,7 +133,7 @@ public class OresGenerationData implements IPackData {
                                         )
                                 );
                                 break;
-                            case END:
+                            case "minecraft:the_end":
                                 biome.addFeature(
                                         GenerationStage.Decoration.UNDERGROUND_DECORATION,
                                         Biome.createDecoratedFeature(Feature.EMERALD_ORE,
