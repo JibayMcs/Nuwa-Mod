@@ -1,13 +1,24 @@
-package fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties;
+package fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks;
 
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.EntityBlockEvent;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.ProcessEvent;
+import net.minecraft.util.ResourceLocation;
 
-public class BlockEventsObject {
+public class BlockEventObject {
+
+    private String registryName;
 
     private EntityBlockEvent entityCollideBlockEvent;
     private ProcessEvent playerDestroyBlockEvent;
     private ProcessEvent leftClickBlockEvent, rightClickBlockEvent;
+
+    public String getRegistryName() {
+        return registryName;
+    }
+
+    public void setRegistryName(ResourceLocation registryName) {
+        this.registryName = registryName.toString();
+    }
 
     public EntityBlockEvent getEntityCollideBlockEvent() {
         return entityCollideBlockEvent;

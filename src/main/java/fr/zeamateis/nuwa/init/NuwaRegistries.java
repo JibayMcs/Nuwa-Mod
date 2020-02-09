@@ -47,6 +47,12 @@ public class NuwaRegistries {
             .setIDRange(0, Integer.MAX_VALUE)
             .create();
 
+    public static final IForgeRegistry<BlockEventType> BLOCK_EVENT = new RegistryBuilder<BlockEventType>()
+            .setName(new ResourceLocation(Constant.MODID, "block_events"))
+            .setType(BlockEventType.class)
+            .setIDRange(0, Integer.MAX_VALUE)
+            .create();
+
     @SubscribeEvent
     public static void onMissingToolMaterial(RegistryEvent.MissingMappings<ToolMaterialType> event) {
         for (RegistryEvent.MissingMappings.Mapping<ToolMaterialType> mapping : event.getAllMappings()) {

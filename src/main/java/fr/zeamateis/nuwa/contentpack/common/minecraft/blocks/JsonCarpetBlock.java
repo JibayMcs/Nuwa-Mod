@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockEventsObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Block;
@@ -22,7 +22,7 @@ public class JsonCarpetBlock extends Block implements IJsonBlock {
 
     private static final VoxelShape DEFAULT_CARPET_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
     private ItemGroup itemGroup;
-    private BlockEventsObject eventProperties;
+    private BlockEventObject eventProperties;
 
     public JsonCarpetBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
@@ -30,12 +30,12 @@ public class JsonCarpetBlock extends Block implements IJsonBlock {
     }
 
     @Override
-    public BlockEventsObject getBlockEventObject() {
+    public BlockEventObject getBlockEventObject() {
         return this.eventProperties;
     }
 
     @Override
-    public void setBlockEventObject(BlockEventsObject eventProperties) {
+    public void setBlockEventObject(BlockEventObject eventProperties) {
         this.eventProperties = eventProperties;
     }
 

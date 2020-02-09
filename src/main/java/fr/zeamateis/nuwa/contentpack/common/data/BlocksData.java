@@ -4,7 +4,6 @@ import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
 import api.contentpack.data.IPackData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.BlockObject;
-import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockEventsObject;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.OreProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.type.BlockType;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonCropsBlock;
@@ -67,10 +66,6 @@ public class BlocksData implements IPackData {
 
         OreProperties oreProperties = blocksObject.getOreProperties();
 
-        BlockEventsObject blocksObjectEvents = blocksObject.getEvents();
-
-        //Events
-
         if (blockType != BlockType.NULL) {
             try {
                 switch (blockType) {
@@ -96,8 +91,8 @@ public class BlocksData implements IPackData {
                 }
 
 
-                if (blocksObjectEvents != null) {
-                    parsedBlock.get().setBlockEventObject(blocksObjectEvents);
+                if (blocksObject.getEvent() != null) {
+                    parsedBlock.get().setBlockEventObject(NuwaRegistries.BLOCK_EVENT.getValue(new ResourceLocation(blocksObject.getEvent())).getBlockEventsObject());
                 }
 
                 //Voxel Shapes

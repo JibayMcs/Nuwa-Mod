@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockEventsObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Blocks;
@@ -15,7 +15,7 @@ public class JsonStairsBlock extends StairsBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
-    private BlockEventsObject eventProperties;
+    private BlockEventObject eventProperties;
 
     public JsonStairsBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(Blocks.STONE.getDefaultState(), properties);
@@ -23,12 +23,12 @@ public class JsonStairsBlock extends StairsBlock implements IJsonBlock {
     }
 
     @Override
-    public BlockEventsObject getBlockEventObject() {
+    public BlockEventObject getBlockEventObject() {
         return this.eventProperties;
     }
 
     @Override
-    public void setBlockEventObject(BlockEventsObject eventProperties) {
+    public void setBlockEventObject(BlockEventObject eventProperties) {
         this.eventProperties = eventProperties;
     }
 

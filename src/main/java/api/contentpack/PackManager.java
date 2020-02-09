@@ -1,5 +1,6 @@
 package api.contentpack;
 
+import api.contentpack.data.Data;
 import api.contentpack.data.IData;
 import api.contentpack.data.IPackData;
 import api.contentpack.json.PackInfoObject;
@@ -25,8 +26,7 @@ public class PackManager {
     private final AtomicReference<InputStream> stream;
     private final AtomicReference<InputStreamReader> reader;
     private final List<ContentPack> packs;
-    private final Map<ResourceLocation, Class<? extends IData>> packDataMap;
-    private final Map<IForgeRegistry, Class<? extends IData>> dataRegistryMap;
+    private final Map<ResourceLocation, Data> packDataMap;
     private final Logger logger;
     private final int dataVersion;
     private Gson gson;
@@ -46,7 +46,6 @@ public class PackManager {
         this.reader = new AtomicReference<>();
         this.packs = new ArrayList<>();
         this.packDataMap = new HashMap<>();
-        this.dataRegistryMap = new HashMap<>();
         this.contentPackPath = contentPackPathIn;
         if (!Files.exists(contentPackPath)) {
             try {
@@ -55,11 +54,6 @@ public class PackManager {
                 e.printStackTrace();
             }
         }
-    }
-
-
-    public Map<IForgeRegistry, Class<? extends IData>> getDataRegistryMap() {
-        return dataRegistryMap;
     }
 
 
@@ -85,13 +79,6 @@ public class PackManager {
         }
     }
 
-    public List<ContentPack> getPacks() {
-        return packs;
-    }
-
-    public Map<ResourceLocation, Class<? extends IData>> getPackDataMap() {
-        return packDataMap;
-    }
 
     /**
      * Main method to load packs from {@link PackManager#contentPackPath}
@@ -176,61 +163,58 @@ public class PackManager {
     }
 
     private void parseHardcodedData(ContentPack contentPackIn) throws IllegalAccessException, InstantiationException {
-        for (Map.Entry<ResourceLocation, Class<? extends IData>> packDataEntry : packDataMap.entrySet()) {
-            IData data = packDataEntry.getValue().newInstance();
-            //Hardcoded datas
-            data.parseData(this);
-
-            if (data.getObjectsList() != null && !data.getObjectsList().isEmpty()) {
-                data.getObjectsList().stream()
-                        .filter(Objects::nonNull)
-                        .forEach(object -> {
-                            this.dataRegistryMap.entrySet().stream()
-                                    .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
-                                    .filter(Objects::nonNull)
-                                    .forEach(registry -> {
-                                        registry.getKey().register(object);
-                                    });
-                        });
+        this.packDataMap.forEach((resourceLocation, dataEntry) -> {
+            try {
+                IData data = dataEntry.getDataClass().newInstance();
+                //Hardcoded datas
+                data.parseData(this);
+                this.fillRegistries(data);
+            } catch (InstantiationException | IllegalAccessException ex) {
+                ex.printStackTrace();
             }
-        }
+        });
     }
 
-    private void parseData(ContentPack contentPackIn) throws IllegalAccessException, InstantiationException {
-        for (Map.Entry<ResourceLocation, Class<? extends IData>> packDataEntry : packDataMap.entrySet()) {
-            IData data = packDataEntry.getValue().newInstance();
+    private void parseData(ContentPack contentPackIn) {
+        this.packDataMap.forEach((resourceLocation, dataEntry) -> {
+            try {
+                IData data = dataEntry.getDataClass().newInstance();
 
-            //Pack datas
-            if (data instanceof IPackData) {
-                IPackData packData = (IPackData) data;
+                //Pack datas
+                if (data instanceof IPackData) {
+                    IPackData packData = (IPackData) data;
 
-                zipFile.stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
-                    try {
-                        stream.set(zipFile.getInputStream(o));
-                        reader.set(new InputStreamReader(stream.get()));
-                        packData.parseData(this, contentPackIn, zipFile, reader.get());
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                });
-
-                if (packData.getObjectsList() != null && !packData.getObjectsList().isEmpty()) {
-                    packData.getObjectsList().stream()
-                            .filter(Objects::nonNull)
-                            .forEach(object -> {
-                                this.dataRegistryMap.entrySet().stream()
-                                        .filter(classEntry -> classEntry.getKey().getRegistrySuperType().equals(object.getRegistryType()))
-                                        .filter(Objects::nonNull)
-                                        .forEach(registry -> {
-                                            registry.getKey().register(object);
-                                        });
-                            });
+                    zipFile.stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
+                        try {
+                            stream.set(zipFile.getInputStream(o));
+                            reader.set(new InputStreamReader(stream.get()));
+                            packData.parseData(this, contentPackIn, zipFile, reader.get());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                    this.fillRegistries(packData);
                 }
+            } catch (InstantiationException | IllegalAccessException ex) {
+                ex.printStackTrace();
             }
-
-        }
+        });
     }
 
+    private void fillRegistries(IData dataIn) {
+        if (dataIn.getObjectsList() != null && !dataIn.getObjectsList().isEmpty()) {
+            dataIn.getObjectsList().stream()
+                    .filter(Objects::nonNull)
+                    .forEach(object -> {
+                        this.packDataMap.entrySet().stream()
+                                .filter(data -> data.getValue().getForgeRegistry() != null)
+                                .filter(data -> data.getValue().getForgeRegistry().getRegistrySuperType().equals(object.getRegistryType()))
+                                .forEach(data -> {
+                                    data.getValue().getForgeRegistry().register(object);
+                                });
+                    });
+        }
+    }
 
     /**
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
@@ -239,20 +223,19 @@ public class PackManager {
      * @param dataIn
      */
     public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn) {
-        this.packDataMap.put(dataNameIn, dataIn);
+        this.packDataMap.put(dataNameIn, new Data(dataIn));
     }
 
     /**
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
-     * Attach an {@link IForgeRegistry} if using {@link IRegistryData#getObjectsList()}
+     * Attach an {@link IForgeRegistry} if using {@link IData#getObjectsList()}
      *
      * @param dataNameIn
      * @param dataIn
      * @param registryIn
      */
     public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn, IForgeRegistry registryIn) {
-        this.packDataMap.put(dataNameIn, dataIn);
-        this.dataRegistryMap.put(registryIn, dataIn);
+        this.packDataMap.put(dataNameIn, new Data(dataIn, registryIn));
     }
 
     /**
@@ -275,5 +258,13 @@ public class PackManager {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public List<ContentPack> getPacks() {
+        return packs;
+    }
+
+    public Map<ResourceLocation, Data> getPackDataMap() {
+        return packDataMap;
     }
 }

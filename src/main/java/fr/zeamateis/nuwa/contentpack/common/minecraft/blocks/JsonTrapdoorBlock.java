@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockEventsObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.TrapDoorBlock;
@@ -14,7 +14,7 @@ public class JsonTrapdoorBlock extends TrapDoorBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;
-    private BlockEventsObject eventProperties;
+    private BlockEventObject eventProperties;
 
     public JsonTrapdoorBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {
         super(properties);
@@ -22,12 +22,12 @@ public class JsonTrapdoorBlock extends TrapDoorBlock implements IJsonBlock {
     }
 
     @Override
-    public BlockEventsObject getBlockEventObject() {
+    public BlockEventObject getBlockEventObject() {
         return this.eventProperties;
     }
 
     @Override
-    public void setBlockEventObject(BlockEventsObject eventProperties) {
+    public void setBlockEventObject(BlockEventObject eventProperties) {
         this.eventProperties = eventProperties;
     }
 

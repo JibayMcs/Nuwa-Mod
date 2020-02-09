@@ -61,6 +61,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         this.packManager.setGson(this.nuwaGsonInstance());
 
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class, NuwaRegistries.PROCESS);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_event_data"), BlockEventData.class, NuwaRegistries.BLOCK_EVENT);
 
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_group_data"), ItemGroupData.class, NuwaRegistries.ITEM_GROUP);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerVanillaGroup);
