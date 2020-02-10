@@ -100,7 +100,6 @@ public class ClientEvents {
         public static void registerBlockColourHandlers(ColorHandlerEvent.Block event) {
             BlockColors blockcolors = event.getBlockColors();
 
-
             NuwaMod.getPackManager().getPackDataMap().forEach((resourceLocation, data) -> {
                 if (data.getForgeRegistry() != null)
                     try {

@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
@@ -54,6 +55,8 @@ public class OresGenerationData implements IPackData {
                     for (String biomeToGen : generationObject.getGenInBiomes()) {
                         if (ForgeRegistries.BIOMES.getValue(new ResourceLocation(biomeToGen)) == null) {
                             packManagerIn.getLogger().warn("Biome \"{}\" doesn't exist or was not registered in the BiomeDictionnary, Ore \"{}\" was not generated in the world.", biomeToGen, blockToGen);
+                        } else if (DimensionType.byName(new ResourceLocation(generationObject.getDimension())) != null) {
+                            packManagerIn.getLogger().warn("Dimension \"{}\" doesn't exist or was not registered in the DimensionManager, Ore \"{}\" was not generated in the world.", generationObject.getDimension(), blockToGen);
                         } else {
                             for (final Biome biome : ForgeRegistries.BIOMES) {
                                 if (biomeToGen.equals(biome.getRegistryName().toString())) {

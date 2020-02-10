@@ -9,7 +9,9 @@ import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
 import fr.zeamateis.nuwa.contentpack.client.minecraft.assets.ContentPackFinder;
 import fr.zeamateis.nuwa.contentpack.common.data.*;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.IProcessAdapter;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.BiomeObject;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.biome.JsonBiome;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ItemGroupType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
@@ -20,8 +22,11 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -36,6 +41,8 @@ import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 //TODO Fix content packs not closed after loading.
@@ -71,8 +78,17 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class, NuwaRegistries.ARMOR_MATERIAL);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class, NuwaRegistries.TOOL_MATERIAL);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class, ForgeRegistries.SOUND_EVENTS);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "biomes_data"), BiomeData.class, ForgeRegistries.BIOMES);
 
         this.packManager.loadPacks();
+
+        ForgeRegistries.BIOMES.getEntries().stream()
+                .filter(resourceLocationBiomeEntry -> !resourceLocationBiomeEntry.getKey().getNamespace().equals("minecraft"))
+                .map(Map.Entry::getValue)
+                .forEach(biome -> {
+                    JsonBiome jsonBiome = ((JsonBiome) biome);
+                    registerBiome(jsonBiome, jsonBiome.getBiomeType(), jsonBiome.getWeight(), jsonBiome.getBiomeDictionnaryTypes());
+                });
 
         MinecraftForge.EVENT_BUS.addListener(this::onServerAboutToStart);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> this::registerAssetsManager);
@@ -91,11 +107,16 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         return CHANNEL;
     }
 
+    private <T extends Biome> void registerBiome(final T parsedBiome, final BiomeManager.BiomeType biomeType, final int weight, final List<BiomeObject.BiomeDictionaryType> types) {
+        BiomeDictionary.addTypes(parsedBiome, types.stream().map(BiomeObject.BiomeDictionaryType::getBiomeDictionaryType).toArray(BiomeDictionary.Type[]::new));
+        BiomeManager.addBiome(biomeType, new BiomeManager.BiomeEntry(parsedBiome, weight));
+    }
+
     private Gson nuwaGsonInstance() {
         return new GsonBuilder()
                 //.registerTypeAdapter(ItemStack.class, new ItemStackAdapter())
                 .registerTypeAdapter(IProcess.class, new IProcessAdapter())
-               // .registerTypeAdapter(ICondition.class, new IConditionAdapter())
+                // .registerTypeAdapter(ICondition.class, new IConditionAdapter())
                 .create();
     }
 
