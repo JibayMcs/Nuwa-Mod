@@ -2,12 +2,12 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 
 import net.minecraft.world.biome.Biome;
 
-public class ClimatPropertiesObject {
+public class ClimatObject {
 
     private Biome.RainType rainType;
     private float temperature, downfall;
 
-    public ClimatPropertiesObject() {
+    public ClimatObject() {
         this.rainType = Biome.RainType.NONE;
         this.temperature = 1.0F;
         this.downfall = 0.0F;

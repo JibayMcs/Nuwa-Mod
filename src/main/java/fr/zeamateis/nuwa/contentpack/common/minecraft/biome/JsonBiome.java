@@ -1,14 +1,15 @@
 package fr.zeamateis.nuwa.contentpack.common.minecraft.biome;
 
 import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.BiomeObject;
-import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.SpawnPropertiesObject;
-import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.StructureObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.CarverObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.SpawnObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.FeatureObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.structures.StructureObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
-import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.BiomeManager;
@@ -24,21 +25,34 @@ public class JsonBiome extends Biome {
     private int weight;
     private Integer grassColor, foliageColor;
 
-    public JsonBiome(Builder biomeBuilder, @Nonnull ResourceLocation registryNameIn, List<StructureObject> structures, List<SpawnPropertiesObject> spawns) {
+    public JsonBiome(Builder biomeBuilder, @Nonnull ResourceLocation registryNameIn,
+                     List<StructureObject> structures,
+                     List<SpawnObject> spawns,
+                     List<CarverObject> carvers,
+                     List<FeatureObject> features) {
         super(biomeBuilder);
         RegistryUtil.forceRegistryName(this, registryNameIn);
 
-        if (structures != null)
-            structures.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(structureObject -> this.addStructure(structureObject.getStructure(), IFeatureConfig.NO_FEATURE_CONFIG));
+        if (structures != null) structures.stream()
+                .filter(Objects::nonNull)
+                .forEach(structureObject -> {
+                    this.addStructure(structureObject.getFeature(), structureObject.getFeatureConfig());
+                });
 
-        if (spawns != null)
-            spawns.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(spawn -> this.addSpawn(spawn.getEntityClassification(), spawn.getSpawnListEntry()));
+        if (spawns != null) spawns.stream()
+                .filter(Objects::nonNull)
+                .forEach(spawn -> this.addSpawn(spawn.getEntityClassification(), spawn.getSpawnListEntry()));
 
-        DefaultBiomeFeatures.addCarvers(this);
+        if (carvers != null) carvers.stream()
+                .filter(Objects::nonNull)
+                .forEach(carver -> this.addCarver(carver.getType(), Biome.createCarver(carver.getCarver(), new ProbabilityConfig(carver.getProbability()))));
+
+        if (features != null) features.stream()
+                .filter(Objects::nonNull)
+                .forEach(feature -> this.addFeature(feature.getDecoration(), feature.getFeature()));
+
+
+      /*  DefaultBiomeFeatures.addCarvers(this);
         DefaultBiomeFeatures.addStructures(this);
         DefaultBiomeFeatures.addLakes(this);
         DefaultBiomeFeatures.addMonsterRooms(this);
@@ -52,7 +66,7 @@ public class JsonBiome extends Biome {
         DefaultBiomeFeatures.addMushrooms(this);
         DefaultBiomeFeatures.addReedsAndPumpkins(this);
         DefaultBiomeFeatures.addSprings(this);
-        DefaultBiomeFeatures.addFreezeTopLayer(this);
+        DefaultBiomeFeatures.addFreezeTopLayer(this);*/
     }
 
     public BiomeManager.BiomeType getBiomeType() {

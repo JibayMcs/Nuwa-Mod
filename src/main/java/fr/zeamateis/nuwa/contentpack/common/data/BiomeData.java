@@ -56,19 +56,21 @@ public class BiomeData implements IPackData {
                 .category(biomeObject.getCategory() != null ? biomeObject.getCategory() : Biome.Category.NONE)
                 .depth(biomeObject.getDepth())
                 .scale(biomeObject.getScale())
-                .precipitation(biomeObject.getClimatProperties().getRainType())
-                .temperature(biomeObject.getClimatProperties().getTemperature())
-                .downfall(biomeObject.getClimatProperties().getDownfall())
-                .waterColor(biomeObject.getWaterColor())
-                .waterFogColor(biomeObject.getWaterFogColor())
+                .precipitation(biomeObject.getClimat().getRainType())
+                .temperature(biomeObject.getClimat().getTemperature())
+                .downfall(biomeObject.getClimat().getDownfall())
+                .waterColor(biomeObject.getBiomeColor().getWaterColor())
+                .waterFogColor(biomeObject.getBiomeColor().getWaterFogColor())
                 .parent(null);
 
-        JsonBiome parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns());
+        JsonBiome parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures());
+
         parsedBiome.setBiomeType(biomeObject.getBiomeType());
-        parsedBiome.setBiomeDictionnaryTypes(biomeObject.getBiomeDictionnaryTypes());
+        parsedBiome.setBiomeDictionnaryTypes(biomeObject.getBiomeDictionaryTypes());
         parsedBiome.setWeight(biomeObject.getWeight());
-        parsedBiome.setGrassColor(biomeObject.getGrassColor());
-        parsedBiome.setFoliageColor(biomeObject.getFoliageColor());
+        parsedBiome.setGrassColor(biomeObject.getBiomeColor().getGrassColor());
+        parsedBiome.setFoliageColor(biomeObject.getBiomeColor().getFoliageColor());
+
         this.biomes.add(parsedBiome);
     }
 

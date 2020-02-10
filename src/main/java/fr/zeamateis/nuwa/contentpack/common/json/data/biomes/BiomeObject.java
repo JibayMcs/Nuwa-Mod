@@ -1,5 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.FeatureObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.structures.StructureObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -14,15 +16,16 @@ public class BiomeObject {
     private SurfaceObject surface;
     private Biome.Category category;
     private BiomeManager.BiomeType biomeType;
-    private List<BiomeDictionaryType> biomeDictionnaryTypes;
-    private ClimatPropertiesObject climatProperties = new ClimatPropertiesObject();
+    private List<BiomeDictionaryType> biomeDictionaryTypes;
+    private ClimatObject climat = new ClimatObject();
+    private BiomeColorObject biomeColor;
     private float depth;
     private float scale;
-    private int waterColor, waterFogColor;
     private int weight;
-    private int grassColor, foliageColor;
     private List<StructureObject> structures;
-    private List<SpawnPropertiesObject> spawns;
+    private List<SpawnObject> spawns;
+    private List<CarverObject> carvers;
+    private List<FeatureObject> features;
 
     public ResourceLocation getRegistryName() {
         return new ResourceLocation(registryName);
@@ -40,12 +43,12 @@ public class BiomeObject {
         return biomeType;
     }
 
-    public List<BiomeDictionaryType> getBiomeDictionnaryTypes() {
-        return biomeDictionnaryTypes;
+    public List<BiomeDictionaryType> getBiomeDictionaryTypes() {
+        return biomeDictionaryTypes;
     }
 
-    public ClimatPropertiesObject getClimatProperties() {
-        return climatProperties;
+    public ClimatObject getClimat() {
+        return climat;
     }
 
     public float getDepth() {
@@ -56,32 +59,28 @@ public class BiomeObject {
         return scale;
     }
 
-    public int getWaterColor() {
-        return waterColor;
-    }
-
-    public int getWaterFogColor() {
-        return waterFogColor;
-    }
-
     public int getWeight() {
         return weight;
-    }
-
-    public int getGrassColor() {
-        return grassColor;
-    }
-
-    public int getFoliageColor() {
-        return foliageColor;
     }
 
     public List<StructureObject> getStructures() {
         return structures;
     }
 
-    public List<SpawnPropertiesObject> getSpawns() {
+    public List<SpawnObject> getSpawns() {
         return spawns;
+    }
+
+    public BiomeColorObject getBiomeColor() {
+        return biomeColor;
+    }
+
+    public List<CarverObject> getCarvers() {
+        return carvers;
+    }
+
+    public List<FeatureObject> getFeatures() {
+        return features;
     }
 
     public enum BiomeDictionaryType {

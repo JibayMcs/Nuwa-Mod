@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class SpawnPropertiesObject {
+public class SpawnObject {
 
     private EntityClassification entityClassification;
     private String entity;
