@@ -10,11 +10,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class StructureObject {
 
-    private String name;
-    private FeatureConfig config = FeatureConfig.NO_FEATURE;
+    private String name; //mandatory
+    private FeatureConfig config;
 
     private float probability, largeProbability, clusterProbability;
     private boolean isBeached;
+    private float[] probabilities;
 
     //Village Config
     private String startPool;
@@ -25,6 +26,10 @@ public class StructureObject {
 
     private MineshaftStructure.Type mineshaftType;
     private OceanRuinStructure.Type oceanRuinType;
+
+    public StructureObject() {
+        this.config = FeatureConfig.NO_FEATURE;
+    }
 
     public <C extends IFeatureConfig, F extends Feature<C>> F getFeature() {
         return (F) ForgeRegistries.FEATURES.getValue(new ResourceLocation(name));
@@ -48,9 +53,10 @@ public class StructureObject {
                 return new MultipleRandomFeatureConfig(
                         multipleRandomFeature.getFeatures().stream().map(StructureObject::getFeature).toArray(Feature[]::new),
                         multipleRandomFeature.getFeatures().stream().map(StructureObject::getFeatureConfig).toArray(IFeatureConfig[]::new),
-                        new float[]{0.2F, 0.1F},
-                        Feature.NORMAL_TREE,
-                        IFeatureConfig.NO_FEATURE_CONFIG);
+                        probabilities,
+                        multipleRandomFeature.getFeatureProperties().getFeature(),
+                        multipleRandomFeature.getFeatureProperties().getFeatureConfig());
+            case NO_FEATURE:
             default:
                 return IFeatureConfig.NO_FEATURE_CONFIG;
         }

@@ -1,4 +1,0 @@
-{
-  "registryName": "nuwa:attack_process",
-  "processClass": "api.contentpack.common.json.datas.blocks.events.actions.AttackProcess"
-}

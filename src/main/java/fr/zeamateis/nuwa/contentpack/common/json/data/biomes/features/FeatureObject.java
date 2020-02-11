@@ -8,7 +8,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 public class FeatureObject {
 
     private GenerationStage.Decoration decoration;
-    private StructureObject feature;
+    private StructureObject feature = new StructureObject();
     private PlacementObject placement = new PlacementObject();
 
     public GenerationStage.Decoration getDecoration() {
