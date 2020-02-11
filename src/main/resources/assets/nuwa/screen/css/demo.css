@@ -1,0 +1,5 @@
+#mainpanel {
+  background-texture: assets("minecraft:textures/block/dirt.png", 16px, 16px);
+  background-repeat: repeat;
+  background-color: #000000 60%;
+}

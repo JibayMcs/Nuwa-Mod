@@ -4,8 +4,8 @@ import api.contentpack.data.IPackData;
 import com.mojang.blaze3d.platform.GlStateManager;
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.client.gui.brokkgui.contentpack.ContentPacksBrokkScreen;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackButton;
-import fr.zeamateis.nuwa.client.gui.contentPack.ContentPacksScreen;
 import fr.zeamateis.nuwa.contentpack.common.data.BlocksData;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IBiomeColor;
@@ -25,6 +25,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GameType;
 import net.minecraft.world.GrassColors;
@@ -36,6 +37,7 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.voxelindustry.brokkgui.wrapper.impl.BrokkGuiManager;
 
 @Mod.EventBusSubscriber(modid = Constant.MODID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -46,7 +48,7 @@ public class ClientEvents {
             int width = event.getGui().width;
             int height = event.getGui().height / 4 + (48 * 2) + 12;
             Button contentPackButton = new ContentPackButton(false, width / 2 - 124, height - 12, 20, 20, 0, 0, 20, 64, 64, onPress -> {
-                Minecraft.getInstance().displayGuiScreen(new ContentPacksScreen(event.getGui()));
+                Minecraft.getInstance().displayGuiScreen(BrokkGuiManager.getBrokkGuiScreen(new StringTextComponent(""), new ContentPacksBrokkScreen(Minecraft.getInstance())));
             });
             event.addWidget(contentPackButton);
         }
