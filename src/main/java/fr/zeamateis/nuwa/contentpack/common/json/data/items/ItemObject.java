@@ -18,12 +18,12 @@ public class ItemObject {
     private ToolMaterialProperties toolProperties;
     private SoundProperties soundProperties;
 
-    public ItemsPropertiesObject getProperties() {
-        return properties;
-    }
-
     public String getRegistryName() {
         return registryName;
+    }
+
+    public ItemsPropertiesObject getProperties() {
+        return properties;
     }
 
     public String getItemGroup() {

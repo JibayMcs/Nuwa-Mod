@@ -1,6 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.items.properties;
 
 import com.google.gson.annotations.SerializedName;
+import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
@@ -12,26 +13,28 @@ public class ItemsPropertiesObject {
     /**
      * Default Properties for a basic item if json file has no datas
      */
-    private String toolType = "";
-    private int toolTypeLevel;
-    private String containerItem = "";
+    private String toolType;
+    private int toolTypeLevel = -1;
+    private String containerItem;
     @SerializedName("defaultMaxDurability")
-    private int defaultMaxDamage;
+    private int defaultMaxDamage = -1;
     @SerializedName("maxDurability")
-    private int maxDamage;
-    private String food = "";
+    private int maxDamage = -1;
+    private FoodProperties food;
     private int maxStackSize = 64;
-    private boolean noRepair = false;
-    private Rarity rarity;
+    private boolean noRepair;
+    private Rarity rarity = Rarity.COMMON;
 
     public Item.Properties getParsedProperties() {
         Item.Properties properties = new Item.Properties();
 
-        properties.addToolType(ToolType.get(getToolType()), getToolTypeLevel());
-        properties.containerItem(ForgeRegistries.ITEMS.getValue(new ResourceLocation(getContainerItem())));
-        properties.defaultMaxDamage(getDefaultMaxDamage());
-        properties.food(ForgeRegistries.ITEMS.getValue(new ResourceLocation(getFood())).getFood());
-        properties.maxDamage(getMaxDamage());
+        if (toolType != null && toolTypeLevel != -1)
+            properties.addToolType(ToolType.get(getToolType()), getToolTypeLevel());
+        if (containerItem != null)
+            properties.containerItem(ForgeRegistries.ITEMS.getValue(new ResourceLocation(getContainerItem())));
+        if (defaultMaxDamage != -1) properties.defaultMaxDamage(getDefaultMaxDamage());
+        if (food != null) properties.food(food.getFood());
+        if (maxDamage != -1) properties.maxDamage(getMaxDamage());
         if (getMaxDamage() <= 0) {
             properties.maxStackSize(getMaxStackSize());
         }
@@ -41,8 +44,8 @@ public class ItemsPropertiesObject {
 
         //TODO Implements Later.
         //properties.setTEISR();
-        properties.rarity(getRarity());
 
+        properties.rarity(getRarity());
         return properties;
     }
 
@@ -66,8 +69,8 @@ public class ItemsPropertiesObject {
         return maxDamage;
     }
 
-    private String getFood() {
-        return food;
+    private Food getFood() {
+        return food.getFood();
     }
 
     private int getMaxStackSize() {
