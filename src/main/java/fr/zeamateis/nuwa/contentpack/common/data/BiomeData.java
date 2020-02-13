@@ -101,7 +101,7 @@ public class BiomeData implements IPackData {
         ) {
             super.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed);
             final ChunkPos chunkPos = chunk.getPos();
-            NuwaMod.getPackManager().getLogger().info("Generating {} at {},{}", biome.getRegistryName(), chunkPos.getXStart(), chunkPos.getZStart());
+            NuwaMod.getPackManager().getLogger().debug("Generating {} at {},{}", biome.getRegistryName(), chunkPos.getXStart(), chunkPos.getZStart());
         }
     }
 }

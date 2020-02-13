@@ -1,6 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
 import com.google.gson.annotations.SerializedName;
+import fr.zeamateis.nuwa.contentpack.common.json.data.EffectObject;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,10 +17,10 @@ import java.util.List;
 public class EffectProcess implements IProcess {
 
     @SerializedName("applyEffect")
-    private ApplyEffectObject applyEffectObject;
+    private EffectObjectList applyEffectObject;
 
     @SerializedName("removeEffect")
-    private EffectObject removeEffectObject;
+    private EffectObjectList removeEffectObject;
 
     private boolean clearEffects;
 
@@ -30,29 +31,29 @@ public class EffectProcess implements IProcess {
             if (applyEffectObject != null) {
                 if (applyEffectObject.getEffects() != null) {
                     applyEffectObject.getEffects().forEach(effect -> {
-                        Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(applyEffectObject.getEffect()));
+                        Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(effect.getEffectName()));
                         if (parsedEffect != null) {
-                            EffectInstance effectInstance = new EffectInstance(parsedEffect, applyEffectObject.getDuration(), applyEffectObject.getAmplifier());
+                            EffectInstance effectInstance = new EffectInstance(parsedEffect, effect.getDuration(), effect.getAmplifier());
                             applyEffect(playerEntity, effectInstance);
                         }
                     });
                 } else if (applyEffectObject.getEffect() != null) {
-                    Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(applyEffectObject.getEffect()));
+                    Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(applyEffectObject.getEffect().getEffectName()));
                     if (parsedEffect != null) {
-                        EffectInstance effectInstance = new EffectInstance(parsedEffect, applyEffectObject.getDuration(), applyEffectObject.getAmplifier());
+                        EffectInstance effectInstance = new EffectInstance(parsedEffect, applyEffectObject.getEffect().getDuration(), applyEffectObject.getEffect().getAmplifier());
                         applyEffect(playerEntity, effectInstance);
                     }
                 }
             } else if (removeEffectObject != null) {
                 if (removeEffectObject.getEffects() != null) {
                     removeEffectObject.getEffects().forEach(effect -> {
-                        Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(removeEffectObject.getEffect()));
+                        Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(effect.getEffectName()));
                         if (parsedEffect != null) {
                             removeEffect(playerEntity, parsedEffect);
                         }
                     });
                 } else if (removeEffectObject.getEffect() != null) {
-                    Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(removeEffectObject.getEffect()));
+                    Effect parsedEffect = ForgeRegistries.POTIONS.getValue(new ResourceLocation(removeEffectObject.getEffect().getEffectName()));
                     if (parsedEffect != null) {
                         removeEffect(playerEntity, parsedEffect);
                     }
@@ -75,28 +76,16 @@ public class EffectProcess implements IProcess {
         return "nuwa:effect_process";
     }
 
-    static class EffectObject {
-        private List<String> effects;
-        private String effect;
+    static class EffectObjectList {
+        private List<EffectObject> effects;
+        private EffectObject effect;
 
-        public List<String> getEffects() {
+        public List<EffectObject> getEffects() {
             return effects;
         }
 
-        public String getEffect() {
+        public EffectObject getEffect() {
             return effect;
-        }
-    }
-
-    static class ApplyEffectObject extends EffectObject {
-        private int duration, amplifier;
-
-        public int getDuration() {
-            return duration;
-        }
-
-        public int getAmplifier() {
-            return amplifier;
         }
     }
 }
