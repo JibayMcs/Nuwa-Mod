@@ -2,54 +2,19 @@ package tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.ICondition;
+import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.PreconfiguredFeaturesObject;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class JsonTests {
 
     public static void main(String[] args) {
-        Gson gson = new GsonBuilder()/*.registerTypeAdapter(ICondition.class, new IConditionAdapter())*/.create();
+        Gson gson = new GsonBuilder().create();
 
-        String checkEmpty = "{\n" +
-                "  \"conditions\": [\n" +
-                "    {\n" +
-                "      \"condition\" : \"" + PlayerHeldItemCondition.class.getName() + "\",\n" +
-                "      \"test\": {\n" +
-                "        \"hand\": \"MAIN_HAND\",\n" +
-                "        \"check\": {\n" +
-                "          \"type\" : \"IS_EMPTY\",\n" +
-                "        }\n" +
-                "      }\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
+        List<PreconfiguredFeaturesObject> objects = Arrays.asList(PreconfiguredFeaturesObject.values());
 
-        String checkContain = "{\n" +
-                "  \"conditions\": [\n" +
-                "    {\n" +
-                "      \"condition\" : \"" + PlayerHeldItemCondition.class.getName() + "\",\n" +
-                "      \"test\": {\n" +
-                "        \"hand\": \"MAIN_HAND\",\n" +
-                "        \"check\": {\n" +
-                "          \"type\" : \"EQUAL\",\n" +
-                "          \"value\" : \"minecraft:apple\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-
-        TestCondition testCondition = gson.fromJson(checkContain, TestCondition.class);
-
-        /*testCondition.conditions.forEach(iCondition -> {
-            System.out.println(((PlayerHeldItemCondition) iCondition).hand);
-            iCondition.test();
-        });*/
+        System.out.println(gson.toJson(objects));
     }
 
-    static class TestCondition {
-        List<ICondition> conditions;
-    }
 }

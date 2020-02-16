@@ -63,7 +63,12 @@ public class BiomeData implements IPackData {
                 .waterFogColor(biomeObject.getBiomeColor().getWaterFogColor())
                 .parent(null);
 
-        JsonBiome parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures());
+        JsonBiome parsedBiome;
+
+        if (biomeObject.getPreconfiguredFeatures() != null)
+            parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures(), biomeObject.getPreconfiguredFeatures());
+        else
+            parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures());
 
         parsedBiome.setBiomeType(biomeObject.getBiomeType());
         parsedBiome.setBiomeDictionnaryTypes(biomeObject.getBiomeDictionaryTypes());

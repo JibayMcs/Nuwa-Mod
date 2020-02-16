@@ -2,7 +2,7 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 
 public class BiomeColorObject {
     private int waterColor, waterFogColor;
-    private int grassColor, foliageColor;
+    private Integer grassColor = null, foliageColor = null;
 
     public int getWaterColor() {
         return waterColor;
@@ -12,11 +12,11 @@ public class BiomeColorObject {
         return waterFogColor;
     }
 
-    public int getGrassColor() {
+    public Integer getGrassColor() {
         return grassColor;
     }
 
-    public int getFoliageColor() {
+    public Integer getFoliageColor() {
         return foliageColor;
     }
 }

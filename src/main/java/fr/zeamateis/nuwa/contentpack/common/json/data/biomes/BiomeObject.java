@@ -26,6 +26,7 @@ public class BiomeObject {
     private List<SpawnObject> spawns;
     private List<CarverObject> carvers;
     private List<FeatureObject> features;
+    private List<PreconfiguredFeaturesObject> preconfiguredFeatures;
 
     public ResourceLocation getRegistryName() {
         return new ResourceLocation(registryName);
@@ -81,6 +82,10 @@ public class BiomeObject {
 
     public List<FeatureObject> getFeatures() {
         return features;
+    }
+
+    public List<PreconfiguredFeaturesObject> getPreconfiguredFeatures() {
+        return preconfiguredFeatures;
     }
 
     public enum BiomeDictionaryType {
