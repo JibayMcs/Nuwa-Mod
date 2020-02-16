@@ -44,8 +44,8 @@ public class ToolMaterialObject implements IItemTier {
         return repairMaterial != null ? Ingredient.fromItems(repairMaterial) : null;
     }
 
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(registryName);
+    public String getRegistryName() {
+        return registryName;
     }
 
 }

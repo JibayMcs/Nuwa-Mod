@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.items.properties;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.EffectObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.effects.EffectObject;
 import net.minecraft.item.Food;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;

@@ -40,9 +40,11 @@ public class ItemGroupData implements IPackData {
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         ItemGroupObject itemGroupObject = packManagerIn.getGson().fromJson(readerIn, ItemGroupObject.class);
 
-        String label = String.format("%s.%s", itemGroupObject.getRegistryName().getNamespace(), itemGroupObject.getRegistryName().getPath());
+        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), itemGroupObject.getRegistryName());
 
-        this.itemGroupTypes.add(new ItemGroupType(itemGroupObject.getRegistryName(), new ItemGroup(label) {
+        String label = String.format("%s.%s", contentPackIn.getNamespace(), registryName.getPath());
+
+        this.itemGroupTypes.add(new ItemGroupType(new ItemGroup(label) {
             @Override
             public ItemStack createIcon() {
                 return ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemGroupObject.getItemIcon())).getDefaultInstance();
@@ -67,7 +69,7 @@ public class ItemGroupData implements IPackData {
             public ItemGroup setNoTitle() {
                 return itemGroupObject.hasNoTitle() ? super.setNoTitle() : this;
             }
-        }));
+        }).setRegistryName(registryName));
 
     }
 

@@ -2,7 +2,6 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 
 import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.FeatureObject;
 import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.structures.StructureObject;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
@@ -28,8 +27,8 @@ public class BiomeObject {
     private List<FeatureObject> features;
     private List<PreconfiguredFeaturesObject> preconfiguredFeatures;
 
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(registryName);
+    public String getRegistryName() {
+        return registryName;
     }
 
     public SurfaceObject getSurface() {

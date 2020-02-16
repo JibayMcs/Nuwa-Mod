@@ -7,6 +7,7 @@ import fr.zeamateis.nuwa.NuwaMod;
 import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.BiomeObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.biome.JsonBiome;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunk;
@@ -51,6 +52,8 @@ public class BiomeData implements IPackData {
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         BiomeObject biomeObject = packManagerIn.getGson().fromJson(readerIn, BiomeObject.class);
 
+        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), biomeObject.getRegistryName());
+
         Biome.Builder builder = new Biome.Builder()
                 .surfaceBuilder(new LoggingConfiguredSurfaceBuilder<>(biomeObject.getSurface().getSurfaceBuilderType().getSurfaceBuilder(), biomeObject.getSurface().getTerrainConfig().getConfig()))
                 .category(biomeObject.getCategory() != null ? biomeObject.getCategory() : Biome.Category.NONE)
@@ -66,9 +69,9 @@ public class BiomeData implements IPackData {
         JsonBiome parsedBiome;
 
         if (biomeObject.getPreconfiguredFeatures() != null)
-            parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures(), biomeObject.getPreconfiguredFeatures());
+            parsedBiome = new JsonBiome(builder, registryName, biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures(), biomeObject.getPreconfiguredFeatures());
         else
-            parsedBiome = new JsonBiome(builder, biomeObject.getRegistryName(), biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures());
+            parsedBiome = new JsonBiome(builder, registryName, biomeObject.getStructures(), biomeObject.getSpawns(), biomeObject.getCarvers(), biomeObject.getFeatures());
 
         parsedBiome.setBiomeType(biomeObject.getBiomeType());
         parsedBiome.setBiomeDictionnaryTypes(biomeObject.getBiomeDictionaryTypes());
@@ -102,8 +105,8 @@ public class BiomeData implements IPackData {
                 final Random random, final IChunk chunk, final Biome biome,
                 final int x, final int z, final int startHeight, final double noise,
                 final BlockState defaultBlock, final BlockState defaultFluid,
-                final int seaLevel, final long seed
-        ) {
+                final int seaLevel, final long seed) {
+
             super.buildSurface(random, chunk, biome, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed);
             final ChunkPos chunkPos = chunk.getPos();
             NuwaMod.getPackManager().getLogger().debug("Generating {} at {},{}", biome.getRegistryName(), chunkPos.getXStart(), chunkPos.getZStart());

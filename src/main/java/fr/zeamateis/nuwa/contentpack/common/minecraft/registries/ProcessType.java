@@ -12,7 +12,6 @@ public class ProcessType implements IForgeRegistryEntry<ProcessType> {
     private ResourceLocation registryName;
 
     public ProcessType(ProcessObject processObject) {
-        this.setRegistryName(processObject.getRegistryName());
         this.processObject = processObject;
     }
 

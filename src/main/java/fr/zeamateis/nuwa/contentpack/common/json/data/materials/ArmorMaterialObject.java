@@ -76,8 +76,8 @@ public class ArmorMaterialObject {
         this.toughness = toughness;
     }
 
-    public ResourceLocation getRegistryName() {
-        return new ResourceLocation(registryName);
+    public String getRegistryName() {
+        return registryName;
     }
 
     public IArmorMaterial getMaterial() {

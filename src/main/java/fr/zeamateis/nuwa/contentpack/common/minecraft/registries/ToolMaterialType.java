@@ -12,7 +12,6 @@ public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
     private ResourceLocation registryName;
 
     public ToolMaterialType(ToolMaterialObject toolMaterialObject) {
-        this.setRegistryName(toolMaterialObject.getRegistryName());
         this.toolMaterialObject = toolMaterialObject;
     }
 

@@ -3,8 +3,9 @@ package fr.zeamateis.nuwa.contentpack.common.data;
 import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
 import api.contentpack.data.IPackData;
-import fr.zeamateis.nuwa.contentpack.common.json.data.materials.ToolMaterialObject;
-import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ToolMaterialType;
+import fr.zeamateis.nuwa.contentpack.common.json.data.effects.EffectObject;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.effect.JsonEffect;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -12,12 +13,12 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
-public class ToolMaterialData implements IPackData {
+public class EffectsData implements IPackData {
 
-    private final LinkedList<ToolMaterialType> toolMaterialTypes;
+    private LinkedList<Effect> effects;
 
-    public ToolMaterialData() {
-        this.toolMaterialTypes = new LinkedList<>();
+    public EffectsData() {
+        this.effects = new LinkedList<>();
     }
 
     /**
@@ -27,7 +28,7 @@ public class ToolMaterialData implements IPackData {
      */
     @Override
     public String getEntryFolder() {
-        return "objects/materials/tools/";
+        return "objects/effects/";
     }
 
     /**
@@ -41,9 +42,15 @@ public class ToolMaterialData implements IPackData {
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
-        ToolMaterialObject toolMaterialObject = packManagerIn.getGson().fromJson(readerIn, ToolMaterialObject.class);
-        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), toolMaterialObject.getRegistryName());
-        toolMaterialTypes.add(new ToolMaterialType(toolMaterialObject).setRegistryName(registryName));
+        EffectObject effectObject = packManagerIn.getGson().fromJson(readerIn, EffectObject.class);
+        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), effectObject.getRegistryName());
+        JsonEffect parsedEffect = new JsonEffect(effectObject.getEffectType(), effectObject.getLiquidColor(), registryName, effectObject.isInstant());
+
+        if (effectObject.getPerformEffect() != null) {
+            parsedEffect.setProcess(effectObject.getPerformEffect());
+        }
+
+        this.effects.add(parsedEffect);
     }
 
     /**
@@ -54,7 +61,7 @@ public class ToolMaterialData implements IPackData {
      * @see ForgeRegistries
      */
     @Override
-    public LinkedList<ToolMaterialType> getObjectsList() {
-        return this.toolMaterialTypes;
+    public LinkedList<Effect> getObjectsList() {
+        return this.effects;
     }
 }

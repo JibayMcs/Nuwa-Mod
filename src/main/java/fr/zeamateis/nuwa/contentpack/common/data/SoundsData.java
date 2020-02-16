@@ -43,7 +43,7 @@ public class SoundsData implements IPackData {
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         SoundObject soundObject = packManagerIn.getGson().fromJson(readerIn, SoundObject.class);
-        ResourceLocation registryName = new ResourceLocation(soundObject.getRegistryName());
+        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), soundObject.getRegistryName());
         SoundEvent soundEvent = new SoundEvent(registryName);
         RegistryUtil.forceRegistryName(soundEvent, registryName);
         this.soundEvents.add(soundEvent);

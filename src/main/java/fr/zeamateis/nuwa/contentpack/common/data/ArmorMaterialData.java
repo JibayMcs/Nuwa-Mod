@@ -5,6 +5,7 @@ import api.contentpack.PackManager;
 import api.contentpack.data.IPackData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.materials.ArmorMaterialObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ArmorMaterialType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.InputStreamReader;
@@ -41,7 +42,8 @@ public class ArmorMaterialData implements IPackData {
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         ArmorMaterialObject armorMaterialObject = packManagerIn.getGson().fromJson(readerIn, ArmorMaterialObject.class);
-        armorMaterialTypes.add(new ArmorMaterialType(armorMaterialObject));
+        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), armorMaterialObject.getRegistryName());
+        armorMaterialTypes.add(new ArmorMaterialType(armorMaterialObject).setRegistryName(registryName));
     }
 
     /**

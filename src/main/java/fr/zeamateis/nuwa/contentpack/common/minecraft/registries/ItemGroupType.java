@@ -11,8 +11,7 @@ public class ItemGroupType implements IForgeRegistryEntry<ItemGroupType> {
     private final ItemGroup itemGroupObject;
     private ResourceLocation registryName;
 
-    public ItemGroupType(ResourceLocation registryNameIn, ItemGroup itemGroupIn) {
-        this.setRegistryName(registryNameIn);
+    public ItemGroupType(ItemGroup itemGroupIn) {
         this.itemGroupObject = itemGroupIn;
     }
 

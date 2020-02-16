@@ -12,7 +12,6 @@ public class BlockEventType implements IForgeRegistryEntry<BlockEventType> {
     private ResourceLocation registryName;
 
     public BlockEventType(BlockEventObject blockEventsObject) {
-        this.setRegistryName(new ResourceLocation(blockEventsObject.getRegistryName()));
         this.blockEventsObject = blockEventsObject;
     }
 

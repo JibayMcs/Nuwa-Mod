@@ -13,7 +13,6 @@ public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType>
     private ResourceLocation registryName;
 
     public ArmorMaterialType(ArmorMaterialObject armorMaterialObject) {
-        this.setRegistryName(armorMaterialObject.getRegistryName());
         this.armorMaterialObject = armorMaterialObject;
     }
 

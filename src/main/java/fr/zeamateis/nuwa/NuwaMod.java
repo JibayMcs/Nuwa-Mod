@@ -79,6 +79,8 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class, NuwaRegistries.TOOL_MATERIAL);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "sounds_data"), SoundsData.class, ForgeRegistries.SOUND_EVENTS);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "biomes_data"), BiomeData.class, ForgeRegistries.BIOMES);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "effects_data"), EffectsData.class, ForgeRegistries.POTIONS);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "potions_data"), PotionsData.class, ForgeRegistries.POTION_TYPES);
 
         this.packManager.loadPacks();
 
@@ -122,15 +124,15 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
     @OnlyIn(Dist.CLIENT)
     private void registerVanillaGroup() {
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:blocks"), ItemGroup.BUILDING_BLOCKS));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:brewing"), ItemGroup.BREWING));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:combat"), ItemGroup.COMBAT));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:decoration"), ItemGroup.DECORATIONS));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:food"), ItemGroup.FOOD));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:misc"), ItemGroup.MISC));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:redstone"), ItemGroup.REDSTONE));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:tools"), ItemGroup.TOOLS));
-        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(new ResourceLocation("minecraft:transportation"), ItemGroup.TRANSPORTATION));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.BUILDING_BLOCKS).setRegistryName(new ResourceLocation("minecraft:blocks")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.BREWING).setRegistryName(new ResourceLocation("minecraft:brewing")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.COMBAT).setRegistryName(new ResourceLocation("minecraft:combat")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.DECORATIONS).setRegistryName(new ResourceLocation("minecraft:decoration")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.FOOD).setRegistryName(new ResourceLocation("minecraft:food")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.MISC).setRegistryName(new ResourceLocation("minecraft:misc")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.REDSTONE).setRegistryName(new ResourceLocation("minecraft:redstone")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.TOOLS).setRegistryName(new ResourceLocation("minecraft:tools")));
+        NuwaRegistries.ITEM_GROUP.register(new ItemGroupType(ItemGroup.TRANSPORTATION).setRegistryName(new ResourceLocation("minecraft:transportation")));
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -42,8 +42,8 @@ public class BlockEventData implements IPackData {
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
         BlockEventObject blockEventObject = packManagerIn.getGson().fromJson(readerIn, BlockEventObject.class);
-        blockEventObject.setRegistryName(new ResourceLocation(contentPackIn.getNamespace(), blockEventObject.getRegistryName()));
-        this.blockEventTypes.add(new BlockEventType(blockEventObject));
+        ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), blockEventObject.getRegistryName());
+        this.blockEventTypes.add(new BlockEventType(blockEventObject).setRegistryName(registryName));
     }
 
     /**
