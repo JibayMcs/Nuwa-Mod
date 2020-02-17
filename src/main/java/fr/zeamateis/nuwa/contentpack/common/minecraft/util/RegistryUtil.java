@@ -13,8 +13,11 @@ public class RegistryUtil {
     /**
      * Hackky method from {@link net.minecraftforge.registries.GameData#forceRegistryName}
      * to remove 'Potentially dangerous alternative [..]' line from logs
+     *
+     * @param entryIn        The entry to force registry
+     * @param registryNameIn The future registry name of the entry
      */
-    public static void forceRegistryName(IForgeRegistryEntry<?> entry, ResourceLocation name) {
+    public static void forceRegistryName(IForgeRegistryEntry<?> entryIn, ResourceLocation registryNameIn) {
         if (regName == null) {
             try {
                 regName = ForgeRegistryEntry.class.getDeclaredField("registryName");
@@ -24,10 +27,10 @@ public class RegistryUtil {
             }
         }
         try {
-            regName.set(entry, name);
-            //NuwaMod.getLogger().debug("{} has now registryName : {}", entry, name);
+            regName.set(entryIn, registryNameIn);
+            //NuwaMod.getLogger().debug("{} has now registryName : {}", entryIn, registryNameIn);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            throw new RuntimeException(String.format("Could not set `registryName` field in IForgeRegistryEntry.Impl to `%s`", name.toString()), e);
+            throw new RuntimeException(String.format("Could not set `registryName` field in IForgeRegistryEntry.Impl to `%s`", registryNameIn.toString()), e);
         }
 
     }

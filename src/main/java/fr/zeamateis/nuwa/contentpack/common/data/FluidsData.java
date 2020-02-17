@@ -5,6 +5,7 @@ import api.contentpack.PackManager;
 import api.contentpack.data.IPackData;
 import net.minecraft.fluid.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -21,7 +22,7 @@ public class FluidsData implements IPackData {
     /**
      * Define entry to {@link IPackData#parseData} from it
      *
-     * @return String
+     * @return the full entry folder path
      */
     @Override
     public String getEntryFolder() {
@@ -32,10 +33,10 @@ public class FluidsData implements IPackData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
@@ -46,7 +47,7 @@ public class FluidsData implements IPackData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
      * @see ForgeRegistries
      */
     @Override

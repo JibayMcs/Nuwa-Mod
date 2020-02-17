@@ -6,6 +6,7 @@ import api.contentpack.data.IData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.ConditionObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ConditionType;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.LinkedList;
 
@@ -21,10 +22,11 @@ public class ConditionsData implements IData {
      * Use {@link PackManager}
      * instance to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
      */
     @Override
-    public void parseData(PackManager packManagerIn, ContentPack contentPack) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn) {
         ConditionType playerHeldItem = new ConditionType(new ConditionObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition", "nuwa:player_held_item"));
         this.conditionTypes.add(playerHeldItem);
     }
@@ -34,7 +36,7 @@ public class ConditionsData implements IData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
      * @see ForgeRegistries
      */
     @Override

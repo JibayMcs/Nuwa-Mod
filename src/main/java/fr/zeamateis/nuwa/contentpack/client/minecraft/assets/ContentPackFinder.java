@@ -22,8 +22,8 @@ public class ContentPackFinder implements IPackFinder {
     /**
      * Add Content Pack to the Vanilla Resource Pack system to load assets from it
      *
-     * @param nameToPackMap
-     * @param packInfoFactory
+     * @param nameToPackMap   {@link Map} of the {@link ContentPack} namespace key and the {@link ResourcePackInfo} instance value
+     * @param packInfoFactory The {@link net.minecraft.resources.ResourcePackInfo.IFactory} instance
      */
     @Override
     public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> nameToPackMap, ResourcePackInfo.IFactory<T> packInfoFactory) {

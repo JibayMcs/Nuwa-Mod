@@ -6,7 +6,6 @@ import api.contentpack.data.IPackData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.materials.ToolMaterialObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ToolMaterialType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -23,7 +22,7 @@ public class ToolMaterialData implements IPackData {
     /**
      * Define entry to {@link IPackData#parseData} from it
      *
-     * @return String
+     * @return the full entry folder path
      */
     @Override
     public String getEntryFolder() {
@@ -34,10 +33,10 @@ public class ToolMaterialData implements IPackData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
@@ -50,8 +49,8 @@ public class ToolMaterialData implements IPackData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
-     * @see ForgeRegistries
+     * @return {@link LinkedList} type of {@link net.minecraftforge.registries.IForgeRegistryEntry}
+     * @see net.minecraftforge.registries.ForgeRegistries
      */
     @Override
     public LinkedList<ToolMaterialType> getObjectsList() {

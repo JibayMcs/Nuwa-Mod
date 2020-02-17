@@ -12,7 +12,8 @@ public interface IData {
      * Use {@link PackManager}
      * instance to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
      */
     void parseData(PackManager packManagerIn, ContentPack contentPackIn);
 
@@ -21,7 +22,7 @@ public interface IData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
      * @see net.minecraftforge.registries.ForgeRegistries
      */
     LinkedList<? extends IForgeRegistryEntry> getObjectsList();

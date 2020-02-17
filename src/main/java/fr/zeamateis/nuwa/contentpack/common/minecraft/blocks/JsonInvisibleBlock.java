@@ -28,7 +28,7 @@ public class JsonInvisibleBlock extends JsonBlock {
      * The type of render function called. MODEL for mixed tesr and static model, MODELBLOCK_ANIMATED for TESR-only,
      * LIQUID for vanilla liquids, INVISIBLE to skip all rendering
      *
-     * @deprecated call via {@link IBlockState#getRenderType()} whenever possible. Implementing/overriding is fine.
+     * @deprecated call via {@link BlockState#getRenderType()} whenever possible. Implementing/overriding is fine.
      */
     @Override
     public BlockRenderType getRenderType(BlockState state) {

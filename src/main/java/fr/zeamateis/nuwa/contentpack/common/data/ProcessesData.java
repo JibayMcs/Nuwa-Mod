@@ -6,11 +6,8 @@ import api.contentpack.data.IData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.ProcessObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ProcessType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
-import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.zip.ZipFile;
 
 public class ProcessesData implements IData {
 
@@ -20,11 +17,13 @@ public class ProcessesData implements IData {
         this.processTypes = new LinkedList<>();
     }
 
+
     /**
-     * Use {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
+     * Use {@link PackManager}
+     * instance to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn) {
@@ -45,8 +44,8 @@ public class ProcessesData implements IData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
-     * @see ForgeRegistries
+     * @return {@link LinkedList} type of {@link net.minecraftforge.registries.IForgeRegistryEntry}
+     * @see net.minecraftforge.registries.ForgeRegistries
      */
     @Override
     public LinkedList<ProcessType> getObjectsList() {

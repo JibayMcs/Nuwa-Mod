@@ -12,7 +12,7 @@ public interface IPackData extends IData {
     /**
      * Define entry to {@link IPackData#parseData} from it
      *
-     * @return String
+     * @return the full entry folder path
      */
     String getEntryFolder();
 
@@ -20,10 +20,10 @@ public interface IPackData extends IData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn);
 
@@ -31,7 +31,8 @@ public interface IPackData extends IData {
      * Use {@link PackManager}
      * instance to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
      */
     @Override
     default void parseData(PackManager packManagerIn, ContentPack contentPackIn) {

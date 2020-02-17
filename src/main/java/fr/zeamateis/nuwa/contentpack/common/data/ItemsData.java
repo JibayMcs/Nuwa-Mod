@@ -21,6 +21,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -37,6 +38,11 @@ public class ItemsData implements IPackData {
         this.itemList = new LinkedList<>();
     }
 
+    /**
+     * Define entry to {@link IPackData#parseData} from it
+     *
+     * @return the full entry folder path
+     */
     @Override
     public String getEntryFolder() {
         return "objects/items/";
@@ -46,10 +52,10 @@ public class ItemsData implements IPackData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
@@ -180,7 +186,7 @@ public class ItemsData implements IPackData {
                         itemList.add(parsedItem.get());
                     }
                 } else {*/
-                    itemList.add(parsedItem.get());
+                itemList.add(parsedItem.get());
                 // }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
@@ -188,6 +194,13 @@ public class ItemsData implements IPackData {
         }
     }
 
+    /**
+     * Define objects list injectable in the Forge Registry System
+     * to register it
+     *
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
+     * @see net.minecraftforge.registries.ForgeRegistries
+     */
     @Override
     public LinkedList<IJsonItem> getObjectsList() {
         return itemList;

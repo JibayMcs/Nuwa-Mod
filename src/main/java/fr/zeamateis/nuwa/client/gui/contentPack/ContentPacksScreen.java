@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class ContentPacksScreen extends Screen {
     private static final Logger LOGGER = LogManager.getLogger();
     private final List<ContentPack> unsortedMods;
-    private Screen mainMenu;
+    private Screen parentScreen;
     private ContentPacksList contentPacksList;
     private InfoPanel infoPanel;
     private ContentPacksList.PackEntry selected = null;
@@ -51,11 +51,11 @@ public class ContentPacksScreen extends Screen {
     private boolean hasLicenseIcon;
 
     /**
-     * @param mainMenu
+     * @param parentScreen The parent Screen, here {@link net.minecraft.client.gui.screen.MainMenuScreen}
      */
-    public ContentPacksScreen(Screen mainMenu) {
+    public ContentPacksScreen(Screen parentScreen) {
         super(new StringTextComponent(""));
-        this.mainMenu = mainMenu;
+        this.parentScreen = parentScreen;
         this.unsortedMods = Collections.unmodifiableList(this.contentPacks);
     }
 
@@ -80,7 +80,7 @@ public class ContentPacksScreen extends Screen {
 
         int doneButtonWidth = Math.min(modInfoWidth, 200);
         this.addButton(new Button(((contentPacksList.getWidth() + 8 + this.width - doneButtonWidth) / 2), this.height - 24, doneButtonWidth, 20,
-                I18n.format("gui.done"), b -> ContentPacksScreen.this.minecraft.displayGuiScreen(ContentPacksScreen.this.mainMenu)));
+                I18n.format("gui.done"), b -> ContentPacksScreen.this.minecraft.displayGuiScreen(ContentPacksScreen.this.parentScreen)));
         this.addButton(new Button(6, this.height - 24, this.listWidth - 25, 20,
                 I18n.format("nuwa.screen.label.openFolder"), b -> Util.getOSType().openFile(Constant.MODELS_PACK_DIR)));
 

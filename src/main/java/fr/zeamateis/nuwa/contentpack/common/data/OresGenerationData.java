@@ -24,10 +24,11 @@ import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
 public class OresGenerationData implements IPackData {
+
     /**
      * Define entry to {@link IPackData#parseData} from it
      *
-     * @return String
+     * @return the full entry folder path
      */
     @Override
     public String getEntryFolder() {
@@ -38,10 +39,10 @@ public class OresGenerationData implements IPackData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     //TODO Check if it's a correct check of nonnull/empty and list contain object from other.
     @Override
@@ -160,8 +161,8 @@ public class OresGenerationData implements IPackData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
-     * @see ForgeRegistries
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
+     * @see net.minecraftforge.registries.ForgeRegistries
      */
     @Override
     public LinkedList<? extends IForgeRegistryEntry> getObjectsList() {

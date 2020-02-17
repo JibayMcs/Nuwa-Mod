@@ -34,10 +34,12 @@ public class PackManager {
 
     /**
      * Define a {@link PackManager#contentPackPath} where {@link PackManager#loadPacks()} walk into it
-     * <br>You need to figure out the {@link net.minecraft.client.Minecraft#gameDir} was not the same in Client and Server<br>
-     * Use Proxies instead !
+     * * <br>You need to figure out the {@link net.minecraft.client.Minecraft#gameDir} was not the same in Client and Server<br>
+     * * Use Proxies instead !
      *
-     * @param contentPackPathIn
+     * @param dataVersionIn     Data version of the mod implementing API
+     * @param loggerIn          A logger instance
+     * @param contentPackPathIn folder path where content packs are
      */
     public PackManager(int dataVersionIn, Logger loggerIn, Path contentPackPathIn) {
         this.dataVersion = dataVersionIn;
@@ -101,6 +103,11 @@ public class PackManager {
         }
     }
 
+    /**
+     * Close properly various opened streams
+     *
+     * @param walkIn
+     */
     private void close(Stream<Path> walkIn) {
         try {
             if (zipFile != null) {
@@ -118,6 +125,14 @@ public class PackManager {
         }
     }
 
+    /**
+     * Create {@link ContentPack} based on content.pack zip entry informations
+     *
+     * @param files
+     * @param entries
+     * @return
+     * @throws IOException
+     */
     private ContentPack createContentPack(File files, Enumeration<? extends ZipEntry> entries) throws IOException {
         if (entries.nextElement().getName().equals("content.pack")) {
             ZipEntry contentPackEntry = zipFile.getEntry("content.pack");
@@ -139,6 +154,11 @@ public class PackManager {
         return null;
     }
 
+    /**
+     * Parse hardcoded data who don't need entries from zip and fill registries of the content pack
+     *
+     * @param contentPackIn
+     */
     private void parseHardcodedData(ContentPack contentPackIn) {
         this.packDataQueue.forEach((dataEntry) -> {
             try {
@@ -151,6 +171,11 @@ public class PackManager {
         });
     }
 
+    /**
+     * Parse data and fill registries of the content pack
+     *
+     * @param contentPackIn
+     */
     private void parseData(ContentPack contentPackIn) {
         this.packDataQueue.forEach((dataEntry) -> {
             try {
@@ -177,6 +202,8 @@ public class PackManager {
 
     /**
      * Register objects in their respectives registries
+     *
+     * @param dataIn
      */
     private void fillRegistries(IData dataIn) {
         if (dataIn.getObjectsList() != null && !dataIn.getObjectsList().isEmpty()) {
@@ -195,6 +222,11 @@ public class PackManager {
 
     /**
      * Throw a message if an {@link net.minecraft.item.ItemGroup} doesn't exist in "itemGroup" object
+     *
+     * @param contentPackIn   the errored content pack
+     * @param zipFile         the content pack zip file
+     * @param entryName       the errored json file
+     * @param parsedItemGroup the errored item group name
      */
     public void throwItemGroupWarn(ContentPack contentPackIn, ZipFile zipFile, String entryName, ResourceLocation parsedItemGroup) {
         int erroredLine = 0;
@@ -207,21 +239,21 @@ public class PackManager {
                     erroredLine = lnr.getLineNumber();
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         this.logger.warn("Item Group {{}} at line {} in {}/{} does not exist.", parsedItemGroup.toString(), erroredLine, contentPackIn.getPackInfo().getPackName(), entryName);
         try {
             if (lnr != null) {
                 lnr.close();
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
     /**
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      *
-     * @param dataIn
+     * @param dataIn the data class to be registered in queue
      */
     public void registerData(Class<? extends IData> dataIn) {
         this.packDataQueue.add(new Data(dataIn));
@@ -231,8 +263,8 @@ public class PackManager {
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      * Attach an {@link IForgeRegistry} if using {@link IData#getObjectsList()}
      *
-     * @param dataIn
-     * @param registryIn
+     * @param dataIn     the data class to be registered in queue
+     * @param registryIn the {@link IForgeRegistry} attached to the {@link IData} class
      */
     public void registerData(Class<? extends IData> dataIn, IForgeRegistry registryIn) {
         this.packDataQueue.add(new Data(dataIn, registryIn));
@@ -241,7 +273,7 @@ public class PackManager {
     /**
      * Remove {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      *
-     * @param dataIn
+     * @param dataIn the data class to be removed from queue
      */
     public void removePackDataEntry(Class<? extends IData> dataIn) {
         this.packDataQueue.removeIf(data -> data.getDataClass().equals(dataIn));

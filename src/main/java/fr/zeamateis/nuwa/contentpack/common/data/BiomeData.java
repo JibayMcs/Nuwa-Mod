@@ -15,6 +15,7 @@ import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -32,7 +33,7 @@ public class BiomeData implements IPackData {
     /**
      * Define entry to {@link IPackData#parseData} from it
      *
-     * @return String
+     * @return the full entry folder path
      */
     @Override
     public String getEntryFolder() {
@@ -43,10 +44,10 @@ public class BiomeData implements IPackData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
@@ -86,7 +87,7 @@ public class BiomeData implements IPackData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
      * @see ForgeRegistries
      */
     @Override
@@ -94,6 +95,12 @@ public class BiomeData implements IPackData {
         return this.biomes;
     }
 
+
+    /**
+     * Surface Builder who's logging position of the custom generating biome
+     *
+     * @param <C> extends {@link ISurfaceBuilderConfig}
+     */
     private static class LoggingConfiguredSurfaceBuilder<C extends ISurfaceBuilderConfig> extends ConfiguredSurfaceBuilder<C> {
 
         private LoggingConfiguredSurfaceBuilder(final SurfaceBuilder<C> surfaceBuilder, final C config) {

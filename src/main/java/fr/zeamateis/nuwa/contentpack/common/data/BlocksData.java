@@ -16,6 +16,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +36,7 @@ public class BlocksData implements IPackData {
     /**
      * Define entry to {@link IPackData#parseData} from it
      *
-     * @return String
+     * @return the full entry folder path
      */
     @Override
     public String getEntryFolder() {
@@ -46,10 +47,10 @@ public class BlocksData implements IPackData {
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
      *
-     * @param packManagerIn
-     * @param contentPackIn
-     * @param zipFileIn
-     * @param readerIn
+     * @param packManagerIn The {@link PackManager} instance
+     * @param contentPackIn The {@link ContentPack} instance
+     * @param zipFileIn     The {@link ZipFile} instance
+     * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
@@ -145,7 +146,7 @@ public class BlocksData implements IPackData {
      * Define objects list injectable in the Forge Registry System
      * to register it
      *
-     * @return LinkedList<? extends IForgeRegistryEntry>
+     * @return {@link LinkedList} type of {@link IForgeRegistryEntry}
      * @see ForgeRegistries
      */
     @Override

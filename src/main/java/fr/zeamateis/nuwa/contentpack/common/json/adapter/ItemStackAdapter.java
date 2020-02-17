@@ -26,9 +26,9 @@ public class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserial
      * the same type passing {@code json} since that will cause an infinite loop (Gson will call your
      * call-back method again).
      *
-     * @param json    The Json data being deserialized
-     * @param typeOfT The type of the Object to deserialize to
-     * @param context
+     * @param jsonElement The Json data being deserialized
+     * @param type        The type of the Object to deserialize to
+     * @param context     The {@link JsonDeserializationContext}
      * @return a deserialized object of the specified type typeOfT which is a subclass of {@code T}
      * @throws JsonParseException if json is not in the expected format of {@code typeofT}
      */
@@ -83,9 +83,9 @@ public class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserial
      * {@code src} object itself since that will cause an infinite loop (Gson will call your
      * call-back method again).</p>
      *
-     * @param src       the object that needs to be converted to Json.
-     * @param typeOfSrc the actual type (fully genericized version) of the source object.
-     * @param context
+     * @param itemStack the object that needs to be converted to Json.
+     * @param type      the actual type (fully genericized version) of the source object.
+     * @param context   The {@link JsonDeserializationContext}
      * @return a JsonElement corresponding to the specified object.
      */
     @Override
