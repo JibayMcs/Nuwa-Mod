@@ -2,11 +2,10 @@ package fr.zeamateis.nuwa.contentpack.client.minecraft.assets;
 
 import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
-import net.minecraft.resources.FilePack;
-import net.minecraft.resources.IPackFinder;
-import net.minecraft.resources.ResourcePackInfo;
+import net.minecraft.resources.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 public class ContentPackFinder implements IPackFinder {
@@ -28,23 +27,48 @@ public class ContentPackFinder implements IPackFinder {
     @Override
     public <T extends ResourcePackInfo> void addPackInfosToMap(Map<String, T> nameToPackMap, ResourcePackInfo.IFactory<T> packInfoFactory) {
         File contentPackFile = contentPack.getFile();
-        if (contentPackFile != null && contentPackFile.isFile()) {
-            T t1 = ResourcePackInfo.createResourcePack(contentPack.getNamespace(), true, () -> new FilePack(contentPackFile) {
-                @Override
-                public boolean isHidden() {
-                    return true;
-                }
+        if (contentPackFile != null) {
+            ResourcePack pack;
+            if(contentPack.isZipped()) {
+                pack = new FilePack(contentPackFile) {
+                    @Override
+                    public boolean isHidden() {
+                        return true;
+                    }
 
-                @Override
-                public void close() {
-                    super.close();
-                }
+                    @Override
+                    public void close() {
+                        super.close();
+                    }
 
-                @Override
-                protected void finalize() throws Throwable {
-                    super.finalize();
-                }
-            }, packInfoFactory, ResourcePackInfo.Priority.TOP);
+                    @Override
+                    protected void finalize() throws Throwable {
+                        super.finalize();
+                    }
+                };
+            } else {
+                pack = new FolderPack(contentPackFile) {
+                    @Override
+                    public boolean isHidden() {
+                        return true;
+                    }
+
+                    @Override
+                    public void close() {
+                        try {
+                            super.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void finalize() throws Throwable {
+                        super.finalize();
+                    }
+                };
+            }
+            T t1 = ResourcePackInfo.createResourcePack(contentPack.getNamespace(), true, () -> pack, packInfoFactory, ResourcePackInfo.Priority.TOP);
             if (t1 != null) {
                 nameToPackMap.put(contentPack.getNamespace(), t1);
                 packManager.getLogger().info("Added {} content pack assets to resources packs list.", t1.getName());

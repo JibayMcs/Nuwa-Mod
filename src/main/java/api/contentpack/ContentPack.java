@@ -1,6 +1,11 @@
 package api.contentpack;
 
 import api.contentpack.json.PackInfoObject;
+import com.google.common.collect.Lists;
+import fr.zeamateis.nuwa.NuwaMod;
+import fr.zeamateis.nuwa.io.DiskFile;
+import fr.zeamateis.nuwa.io.IFile;
+import fr.zeamateis.nuwa.io.ZipEntryFile;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -8,7 +13,18 @@ import net.minecraftforge.fml.DistExecutor;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class ContentPack {
 
@@ -16,24 +32,137 @@ public class ContentPack {
     private final PackInfoObject packInfoObject;
     private final long zipFileSize;
     private NativeImage packIcon;
+    private ZipFile zipFile;
+    private boolean isZipped;
+
+    /**
+     * Collection of sub files inside this content pack
+     */
+    private Collection<IFile> subFiles;
+    private final Path basePath;
 
     public ContentPack(File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this.contentPackFile = contentPackFileIn;
         this.packInfoObject = packInfoObject;
         this.zipFileSize = zipFileSize;
+        this.basePath = null;
+        isZipped = true;
     }
 
-    public ContentPack(InputStream stream, File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
+    public ContentPack(InputStream iconStream, File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this(contentPackFileIn, packInfoObject, zipFileSize);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             try {
-                packIcon = NativeImage.read(stream);
+                packIcon = NativeImage.read(iconStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
 
+    public ContentPack(InputStream iconStream, Path contentPackFolder, PackInfoObject packInfoObject) {
+        this(contentPackFolder, packInfoObject);
+        DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            try {
+                packIcon = NativeImage.read(iconStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public ContentPack(Path contentPackFolder, PackInfoObject packInfoObject) {
+        this.contentPackFile = contentPackFolder.toFile();
+        this.basePath = contentPackFolder;
+        this.packInfoObject = packInfoObject;
+        this.zipFileSize = 0L;
+        isZipped = false;
+    }
+
+    private ZipFile getBackingZip() throws IOException {
+        if(zipFile == null) {
+            if(this.isZipped()) {
+                zipFile = new ZipFile(contentPackFile);
+            } else {
+                throw new IOException("Tried to get backing zip of non-zip content pack!");
+            }
+        }
+        return zipFile;
+    }
+
+    /**
+     * Returns the list of all files inside this content pack
+     * @return
+     */
+    public Collection<IFile> getFiles() {
+        if(subFiles == null) {
+            if(isZipped()) {
+                subFiles = extractZipFiles();
+            } else {
+                subFiles = walkFolders();
+            }
+            NuwaMod.LOGGER.warn("Read files from content pack {}: {}", getPackInfo().getPackName(), subFiles.stream().map(it -> it.getName()).collect(Collectors.joining(",")));
+        }
+        return subFiles;
+    }
+
+    private Collection<IFile> walkFolders() {
+        LinkedList<IFile> files = new LinkedList<>();
+        try {
+            Files.walkFileTree(basePath, new FileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    files.add(new DiskFile(dir.toFile(), basePath.relativize(dir)));
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    files.add(new DiskFile(file.toFile(), basePath.relativize(file)));
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return files;
+    }
+
+    private Collection<IFile> extractZipFiles() {
+        try {
+            ZipFile zip = getBackingZip();
+            Enumeration<? extends ZipEntry> entries = zip.entries();
+            LinkedList<IFile> files = new LinkedList<>();
+            while(entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                ZipEntryFile file = new ZipEntryFile(zip, entry);
+                files.add(file);
+            }
+            return files;
+        } catch (Exception e) {
+            NuwaMod.LOGGER.error("Failed to load sub files for content pack: "+toString(), e);
+        }
+        return Lists.newArrayList();
+    }
+
+    /**
+     * Returns a sub file with the given name (can go downwards in a file hierarchy, ie assets/mymod/textures/logo.png is valid)
+     * @param name
+     * @return
+     */
+    public IFile getSubFile(String name) {
+        return getFiles().stream().filter(it -> it.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
 
     public String getPackName() {
         return this.packInfoObject.getPackName();
@@ -83,11 +212,16 @@ public class ContentPack {
         return packInfoObject;
     }
 
+    public boolean isZipped() {
+        return this.isZipped;
+    }
+
     @Override
     public String toString() {
         return "ContentPack{" +
                 "contentPackFile=" + contentPackFile +
                 ", packInfoObject=" + packInfoObject +
+                ", isZipped=" + isZipped +
                 ", zipFileSize=" + zipFileSize +
                 ", packIcon=" + packIcon +
                 '}';

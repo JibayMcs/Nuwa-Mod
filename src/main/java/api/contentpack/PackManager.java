@@ -30,7 +30,6 @@ public class PackManager {
     private final Logger logger;
     private final int dataVersion;
     private Gson gson;
-    private ZipFile zipFile = null;
 
     /**
      * Define a {@link PackManager#contentPackPath} where {@link PackManager#loadPacks()} walk into it
@@ -64,42 +63,90 @@ public class PackManager {
      */
     public void loadPacks() {
         if (this.contentPackPath != null) {
-            try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
-                walk.map(Path::toFile)
-                        .filter(f -> f.getName().endsWith(".zip"))
-                        .collect(Collectors.toList())
-                        .forEach(files -> {
-                            try {
-                                zipFile = new ZipFile(files);
-                                Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            loadZippedPacks();
+            loadUnzippedPacks();
+        }
+    }
 
-                                while (entries.hasMoreElements()) {
+    private void loadUnzippedPacks() {
+        // load zipped packs
+        try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
+            walk.map(Path::toFile)
+                    .filter(f -> f.isDirectory())
+                    .collect(Collectors.toList())
+                    .forEach(pack -> {
+                        Path basePath = pack.toPath();
+                        try(Stream<Path> subFiles = Files.walk(basePath)) {
+                            parseAndAdd(createUnzippedContentPack(basePath, subFiles.map(basePath::relativize).collect(Collectors.toList())));
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-                                    ContentPack contentPack = createContentPack(files, entries);
+    private ContentPack createUnzippedContentPack(Path basePath, List<Path> subFiles) throws FileNotFoundException {
+        Path actualPath = basePath.resolve("content.pack");
+        File actualFile = actualPath.toFile();
 
-                                    if (contentPack != null) {
-                                        if (contentPack.getPackInfo().getNuwaDataVersion() == this.dataVersion) {
-                                            //Parse Hardcoded Data
-                                            this.parseHardcodedData(contentPack);
-                                            //Parse Pack Data
-                                            this.parseData(contentPack);
-                                            //Add ContentPack to list
-                                            packs.add(contentPack);
-                                        } else {
-                                            this.logger.error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", contentPack.getPackInfo().getPackName(), this.dataVersion);
-                                        }
-                                    }
+        if(!actualFile.exists())
+            return null;
 
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } finally {
-                                this.close(walk);
-                            }
-                        });
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        Path packIconEntryPath = basePath.resolve("pack.png");
+        File packIconEntry = packIconEntryPath.toFile();
+
+        stream.set(new FileInputStream(actualFile));
+        reader.set(new InputStreamReader(stream.get()));
+        PackInfoObject packInfoObject = gson.fromJson(reader.get(), PackInfoObject.class);
+
+        if (packIconEntry != null) {
+            stream.set(new FileInputStream(packIconEntry));
+            return new ContentPack(stream.get(), basePath, packInfoObject);
+        } else {
+            return new ContentPack(basePath, packInfoObject);
+        }
+    }
+
+    private void parseAndAdd(ContentPack contentPack) {
+        if (contentPack != null) {
+            if (contentPack.getPackInfo().getNuwaDataVersion() == this.dataVersion) {
+                //Parse Hardcoded Data
+                this.parseHardcodedData(contentPack);
+                //Parse Pack Data
+                this.parseData(contentPack);
+                //Add ContentPack to list
+                packs.add(contentPack);
+                this.logger.info("Loaded \"{}\" Content Pack", contentPack.getPackInfo().getPackName());
+            } else {
+                this.logger.error("Unable to load \"{}\" Content Pack, Data Version mismatch with \"Nuwa\". Data Version: {}\"", contentPack.getPackInfo().getPackName(), this.dataVersion);
             }
+        }
+    }
+
+    private void loadZippedPacks() {
+        // load zipped packs
+        try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
+            walk.map(Path::toFile)
+                    .filter(f -> f.getName().endsWith(".zip"))
+                    .collect(Collectors.toList())
+                    .forEach(files -> {
+                        try(ZipFile zipFile = new ZipFile(files)) {
+                            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+
+                            while (entries.hasMoreElements()) {
+                                parseAndAdd(createZippedContentPack(zipFile, files, entries));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            this.close(walk);
+                        }
+                    });
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -110,9 +157,6 @@ public class PackManager {
      */
     private void close(Stream<Path> walkIn) {
         try {
-            if (zipFile != null) {
-                zipFile.close();
-            }
             if (stream.get() != null) {
                 stream.get().close();
             }
@@ -133,7 +177,7 @@ public class PackManager {
      * @return
      * @throws IOException
      */
-    private ContentPack createContentPack(File files, Enumeration<? extends ZipEntry> entries) throws IOException {
+    private ContentPack createZippedContentPack(ZipFile zipFile, File files, Enumeration<? extends ZipEntry> entries) throws IOException {
         if (entries.nextElement().getName().equals("content.pack")) {
             ZipEntry contentPackEntry = zipFile.getEntry("content.pack");
             ZipEntry packIconEntry = zipFile.getEntry("pack.png");
@@ -183,11 +227,11 @@ public class PackManager {
                 if (data instanceof IPackData) {
                     IPackData packData = (IPackData) data;
 
-                    zipFile.stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
+                    contentPackIn.getFiles().stream().filter(o -> o.getName().startsWith(packData.getEntryFolder()) && o.getName().endsWith(".json")).forEach(o -> {
                         try {
-                            stream.set(zipFile.getInputStream(o));
+                            stream.set(o.getInputStream());
                             reader.set(new InputStreamReader(stream.get()));
-                            packData.parseData(this, contentPackIn, zipFile, reader.get());
+                            packData.parseData(this, contentPackIn, reader.get());
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -222,17 +266,15 @@ public class PackManager {
 
     /**
      * Throw a message if an {@link net.minecraft.item.ItemGroup} doesn't exist in "itemGroup" object
-     *
-     * @param contentPackIn   the errored content pack
-     * @param zipFile         the content pack zip file
+     *  @param contentPackIn   the errored content pack
      * @param entryName       the errored json file
      * @param parsedItemGroup the errored item group name
      */
-    public void throwItemGroupWarn(ContentPack contentPackIn, ZipFile zipFile, String entryName, ResourceLocation parsedItemGroup) {
+    public void throwItemGroupWarn(ContentPack contentPackIn, String entryName, ResourceLocation parsedItemGroup) {
         int erroredLine = 0;
         LineNumberReader lnr = null;
         try {
-            lnr = new LineNumberReader(new InputStreamReader(zipFile.getInputStream(new ZipEntry(entryName))));
+            lnr = new LineNumberReader(new InputStreamReader(contentPackIn.getSubFile(entryName).getInputStream()));
             String line;
             while ((line = lnr.readLine()) != null) {
                 if (line.contains(parsedItemGroup.toString())) {

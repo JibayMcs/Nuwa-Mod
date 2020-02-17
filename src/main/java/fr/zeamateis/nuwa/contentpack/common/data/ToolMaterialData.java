@@ -32,14 +32,13 @@ public class ToolMaterialData implements IPackData {
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
-     *
+     *  @param zipFileIn     The {@link ZipFile} instance
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
-     * @param zipFileIn     The {@link ZipFile} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
-    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn) {
         ToolMaterialObject toolMaterialObject = packManagerIn.getGson().fromJson(readerIn, ToolMaterialObject.class);
         ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), toolMaterialObject.getRegistryName());
         toolMaterialTypes.add(new ToolMaterialType(toolMaterialObject).setRegistryName(registryName));

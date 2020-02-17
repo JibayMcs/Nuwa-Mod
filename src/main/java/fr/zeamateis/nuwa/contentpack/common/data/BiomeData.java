@@ -46,11 +46,10 @@ public class BiomeData implements IPackData {
      *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
-     * @param zipFileIn     The {@link ZipFile} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
-    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn) {
         BiomeObject biomeObject = packManagerIn.getGson().fromJson(readerIn, BiomeObject.class);
 
         ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), biomeObject.getRegistryName());

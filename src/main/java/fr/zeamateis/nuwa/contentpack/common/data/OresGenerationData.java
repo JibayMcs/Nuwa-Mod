@@ -38,15 +38,14 @@ public class OresGenerationData implements IPackData {
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
-     *
+     *  @param zipFileIn     The {@link ZipFile} instance
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
-     * @param zipFileIn     The {@link ZipFile} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
     //TODO Check if it's a correct check of nonnull/empty and list contain object from other.
     @Override
-    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn) {
         OresGenerationObject generationObject = packManagerIn.getGson().fromJson(readerIn, OresGenerationObject.class);
 
         if (generationObject.getOreBlock() != null) {

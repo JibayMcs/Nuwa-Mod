@@ -19,13 +19,11 @@ public interface IPackData extends IData {
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
-     *
-     * @param packManagerIn The {@link PackManager} instance
+     *  @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
-     * @param zipFileIn     The {@link ZipFile} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
-    void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn);
+    void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn);
 
     /**
      * Use {@link PackManager}
