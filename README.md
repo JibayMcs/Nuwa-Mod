@@ -1,5 +1,6 @@
-# Nuwa
-![Logo](./src/main/resources/logo.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/JibayMcs/Nuwa-Mod/master/src/main/resources/logo.png">
+</p>
 
 50% Modding / 50% Resource Packs, 100% Content Packs
 
