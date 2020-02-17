@@ -65,7 +65,6 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         this.packManager = new PackManager(Constant.DATA_VERSION, LOGGER, PROXY.getPackDir().toPath());
         this.packManager.setGson(this.nuwaGsonInstance());
 
-
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "processes_data"), ProcessesData.class, NuwaRegistries.PROCESS);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_event_data"), BlockEventData.class, NuwaRegistries.BLOCK_EVENT);
 
@@ -74,6 +73,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
 
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "block_data"), BlocksData.class, ForgeRegistries.BLOCKS);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "item_data"), ItemsData.class, ForgeRegistries.ITEMS);
+        this.packManager.registerData(new ResourceLocation(Constant.MODID, "paintings_data"), PaintingsData.class, ForgeRegistries.PAINTING_TYPES);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "ores_generation_data"), OresGenerationData.class);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "armor_material_data"), ArmorMaterialData.class, NuwaRegistries.ARMOR_MATERIAL);
         this.packManager.registerData(new ResourceLocation(Constant.MODID, "tool_material_data"), ToolMaterialData.class, NuwaRegistries.TOOL_MATERIAL);

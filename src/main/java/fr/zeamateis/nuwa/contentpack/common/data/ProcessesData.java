@@ -38,6 +38,7 @@ public class ProcessesData implements IData {
         this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "PlaySoundProcess")).setRegistryName(new ResourceLocation("nuwa:sound_process")));
         this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "EffectProcess")).setRegistryName(new ResourceLocation("nuwa:effect_process")));
         this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "SetOnFireProcess")).setRegistryName(new ResourceLocation("nuwa:set_on_fire_process")));
+        this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "MovementSpeedProcess")).setRegistryName(new ResourceLocation("nuwa:movement_speed_process")));
     }
 
     /**

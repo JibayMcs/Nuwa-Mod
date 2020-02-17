@@ -17,6 +17,7 @@ version = '0.0.6'
 group = 'fr.zeamateis.nuwa'
 archivesBaseName = 'nuwa'
 def brokkguiVersion = '1.0.0-58-SNAPSHOT'
+def evalexVersion = '2.4'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
@@ -71,6 +72,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.14.4-28.1.0'
     api "net.voxelindustry:brokkgui-core:${brokkguiVersion}"
     api fg.deobf("net.voxelindustry:brokkgui-binding-mc1.14:${brokkguiVersion}")
+    implementation "com.udojava:EvalEx:${evalexVersion}"
 }
 
 jar {
