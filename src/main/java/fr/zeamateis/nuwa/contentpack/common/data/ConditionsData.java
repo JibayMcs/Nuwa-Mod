@@ -1,5 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.data;
 
+import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
 import api.contentpack.data.IData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.ConditionObject;
@@ -23,7 +24,7 @@ public class ConditionsData implements IData {
      * @param packManagerIn
      */
     @Override
-    public void parseData(PackManager packManagerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPack) {
         ConditionType playerHeldItem = new ConditionType(new ConditionObject("fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.PlayerHeldItemCondition", "nuwa:player_held_item"));
         this.conditionTypes.add(playerHeldItem);
     }

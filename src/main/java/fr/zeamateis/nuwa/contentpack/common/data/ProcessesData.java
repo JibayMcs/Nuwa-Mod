@@ -27,7 +27,7 @@ public class ProcessesData implements IData {
      * @param packManagerIn
      */
     @Override
-    public void parseData(PackManager packManagerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn) {
         String processPackage = "fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.";
         this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "AttackProcess")).setRegistryName(new ResourceLocation("nuwa:attack_process")));
         this.processTypes.add(new ProcessType(new ProcessObject(processPackage + "HealProcess")).setRegistryName(new ResourceLocation("nuwa:heal_process")));

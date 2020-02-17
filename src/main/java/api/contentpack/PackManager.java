@@ -45,7 +45,7 @@ public class PackManager {
         this.stream = new AtomicReference<>();
         this.reader = new AtomicReference<>();
         this.packs = new ArrayList<>();
-        this.packDataMap = new HashMap<>();
+        this.packDataMap = new LinkedHashMap<>();
         this.contentPackPath = contentPackPathIn;
         if (!Files.exists(contentPackPath)) {
             try {
@@ -77,6 +77,9 @@ public class PackManager {
 
                                     if (contentPack != null) {
                                         if (contentPack.getPackInfo().getNuwaDataVersion() == this.dataVersion) {
+                                            this.packDataMap.forEach((resourceLocation, dataEntry) -> {
+                                                System.out.println(resourceLocation);
+                                            });
                                             //Parse Hardcoded Data
                                             this.parseHardcodedData(contentPack);
                                             //Parse Pack Data
@@ -143,7 +146,7 @@ public class PackManager {
         this.packDataMap.forEach((resourceLocation, dataEntry) -> {
             try {
                 IData data = dataEntry.getDataClass().newInstance();
-                data.parseData(this);
+                data.parseData(this, contentPackIn);
                 this.fillRegistries(data);
             } catch (InstantiationException | IllegalAccessException ex) {
                 ex.printStackTrace();

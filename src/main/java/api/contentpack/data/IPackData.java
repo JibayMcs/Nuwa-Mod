@@ -34,7 +34,7 @@ public interface IPackData extends IData {
      * @param packManagerIn
      */
     @Override
-    default void parseData(PackManager packManagerIn) {
+    default void parseData(PackManager packManagerIn, ContentPack contentPackIn) {
 
     }
 }

@@ -1,5 +1,6 @@
 package api.contentpack.data;
 
+import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -13,7 +14,7 @@ public interface IData {
      *
      * @param packManagerIn
      */
-    void parseData(PackManager packManagerIn);
+    void parseData(PackManager packManagerIn, ContentPack contentPackIn);
 
 
     /**
