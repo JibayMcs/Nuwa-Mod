@@ -26,7 +26,7 @@ public class PackManager {
     private final AtomicReference<InputStream> stream;
     private final AtomicReference<InputStreamReader> reader;
     private final List<ContentPack> packs;
-    private final Map<ResourceLocation, Data> packDataMap;
+    private final PriorityQueue<Data> packDataQueue;
     private final Logger logger;
     private final int dataVersion;
     private Gson gson;
@@ -45,7 +45,7 @@ public class PackManager {
         this.stream = new AtomicReference<>();
         this.reader = new AtomicReference<>();
         this.packs = new ArrayList<>();
-        this.packDataMap = new LinkedHashMap<>();
+        this.packDataQueue = new PriorityQueue<>();
         this.contentPackPath = contentPackPathIn;
         if (!Files.exists(contentPackPath)) {
             try {
@@ -58,7 +58,7 @@ public class PackManager {
 
     /**
      * Main method to load packs from {@link PackManager#contentPackPath}
-     * read zip content and inject {@link PackManager#packDataMap} into game
+     * read zip content and inject {@link PackManager#packDataQueue} into game
      */
     public void loadPacks() {
         if (this.contentPackPath != null) {
@@ -77,9 +77,6 @@ public class PackManager {
 
                                     if (contentPack != null) {
                                         if (contentPack.getPackInfo().getNuwaDataVersion() == this.dataVersion) {
-                                            this.packDataMap.forEach((resourceLocation, dataEntry) -> {
-                                                System.out.println(resourceLocation);
-                                            });
                                             //Parse Hardcoded Data
                                             this.parseHardcodedData(contentPack);
                                             //Parse Pack Data
@@ -143,7 +140,7 @@ public class PackManager {
     }
 
     private void parseHardcodedData(ContentPack contentPackIn) {
-        this.packDataMap.forEach((resourceLocation, dataEntry) -> {
+        this.packDataQueue.forEach((dataEntry) -> {
             try {
                 IData data = dataEntry.getDataClass().newInstance();
                 data.parseData(this, contentPackIn);
@@ -155,7 +152,7 @@ public class PackManager {
     }
 
     private void parseData(ContentPack contentPackIn) {
-        this.packDataMap.forEach((resourceLocation, dataEntry) -> {
+        this.packDataQueue.forEach((dataEntry) -> {
             try {
                 IData data = dataEntry.getDataClass().newInstance();
                 if (data instanceof IPackData) {
@@ -186,11 +183,11 @@ public class PackManager {
             dataIn.getObjectsList().stream()
                     .filter(Objects::nonNull)
                     .forEach(object -> {
-                        this.packDataMap.entrySet().stream()
-                                .filter(data -> data.getValue().getForgeRegistry() != null)
-                                .filter(data -> data.getValue().getForgeRegistry().getRegistrySuperType().equals(object.getRegistryType()))
+                        this.packDataQueue.stream()
+                                .filter(data -> data.getForgeRegistry() != null)
+                                .filter(data -> data.getForgeRegistry().getRegistrySuperType().equals(object.getRegistryType()))
                                 .forEach(data -> {
-                                    data.getValue().getForgeRegistry().register(object);
+                                    data.getForgeRegistry().register(object);
                                 });
                     });
         }
@@ -224,32 +221,30 @@ public class PackManager {
     /**
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      *
-     * @param dataNameIn
      * @param dataIn
      */
-    public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn) {
-        this.packDataMap.put(dataNameIn, new Data(dataIn));
+    public void registerData(Class<? extends IData> dataIn) {
+        this.packDataQueue.add(new Data(dataIn));
     }
 
     /**
      * Register {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      * Attach an {@link IForgeRegistry} if using {@link IData#getObjectsList()}
      *
-     * @param dataNameIn
      * @param dataIn
      * @param registryIn
      */
-    public void registerData(ResourceLocation dataNameIn, Class<? extends IData> dataIn, IForgeRegistry registryIn) {
-        this.packDataMap.put(dataNameIn, new Data(dataIn, registryIn));
+    public void registerData(Class<? extends IData> dataIn, IForgeRegistry registryIn) {
+        this.packDataQueue.add(new Data(dataIn, registryIn));
     }
 
     /**
      * Remove {@link IPackData} entry <b><u>ALWAYS</u></b> before {@link PackManager#loadPacks()} process
      *
-     * @param entryNameIn
+     * @param dataIn
      */
-    public void removePackDataEntry(ResourceLocation entryNameIn) {
-        this.packDataMap.remove(entryNameIn);
+    public void removePackDataEntry(Class<? extends IData> dataIn) {
+        this.packDataQueue.removeIf(data -> data.getDataClass().equals(dataIn));
     }
 
     public Gson getGson() {
@@ -269,7 +264,7 @@ public class PackManager {
         return packs;
     }
 
-    public Map<ResourceLocation, Data> getPackDataMap() {
-        return packDataMap;
+    public PriorityQueue<Data> getPackDataQueue() {
+        return packDataQueue;
     }
 }

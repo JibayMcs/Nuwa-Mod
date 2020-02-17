@@ -1,7 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.items.type;
 
 import fr.zeamateis.nuwa.contentpack.common.minecraft.items.JsonArmorItem;
-import fr.zeamateis.nuwa.contentpack.common.minecraft.items.JsonMusicDiskItem;
+import fr.zeamateis.nuwa.contentpack.common.minecraft.items.JsonMusicDiscItem;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.items.JsonSwordItem;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.items.base.JsonBlockItem;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.items.base.JsonItem;
@@ -21,7 +21,7 @@ public enum ItemType {
     SEEDS(JsonBlockItem.class),
     SHOVEL(JsonShovelItem.class),
     SWORD(JsonSwordItem.class),
-    MUSIC_DISC(JsonMusicDiskItem.class);
+    MUSIC_DISC(JsonMusicDiscItem.class);
 
     private Class<? extends Item> itemType;
 

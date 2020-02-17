@@ -8,9 +8,9 @@ import net.minecraft.util.SoundEvent;
 
 import javax.annotation.Nonnull;
 
-public class JsonMusicDiskItem extends MusicDiscItem implements IJsonItem {
+public class JsonMusicDiscItem extends MusicDiscItem implements IJsonItem {
 
-    public JsonMusicDiskItem(int comparatorValueIn, SoundEvent soundIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {
+    public JsonMusicDiscItem(int comparatorValueIn, SoundEvent soundIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {
         super(comparatorValueIn, soundIn, builder);
         builder.maxStackSize(1);
         RegistryUtil.forceRegistryName(this, registryNameIn);

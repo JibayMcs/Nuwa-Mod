@@ -2,7 +2,7 @@ package api.contentpack.data;
 
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class Data {
+public class Data implements Comparable<Data> {
 
     private final Class<? extends IData> dataClass;
 
@@ -25,4 +25,8 @@ public class Data {
         return forgeRegistryIn;
     }
 
+    @Override
+    public int compareTo(Data o) {
+        return 0;
+    }
 }
