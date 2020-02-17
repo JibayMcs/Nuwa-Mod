@@ -45,7 +45,7 @@ public class ClientEvents {
         if (event.getGui() instanceof MainMenuScreen) {
             int width = event.getGui().width;
             int height = event.getGui().height / 4 + (48 * 2) + 12;
-            Button contentPackButton = new ContentPackButton(false, width / 2 - 124, height - 12, 20, 20, 0, 0, 20, 64, 64, onPress -> {
+            Button contentPackButton = new ContentPackButton(false, width / 2 - 124, height - 12, 20, 20, 0, 0, 20, 64, 80, onPress -> {
                 Minecraft.getInstance().displayGuiScreen(new ContentPacksScreen(event.getGui()));
             });
             event.addWidget(contentPackButton);

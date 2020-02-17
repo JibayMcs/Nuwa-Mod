@@ -36,7 +36,7 @@ public class ContentPackButton extends ImageButton {
                 this.animationTicks = 0;
                 this.animationFrames = 0;
             }
-            this.blit(this.x, this.y, (float) this.animationFrames == 3 ? 20 : 40, (float) this.animationFrames == 3 ? 40 : this.animationFrames * 20, this.width, this.height, 64, 64);
+            this.blit(this.x, this.y, (float) this.animationFrames == 3 ? 20 : 40, (float) this.animationFrames == 3 ? 40 : this.animationFrames * 20, this.width, this.height, 64, 80);
         }
 
     }

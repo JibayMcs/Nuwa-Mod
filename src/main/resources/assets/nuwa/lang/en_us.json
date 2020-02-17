@@ -7,11 +7,15 @@
   "nuwa.infoPanel.label.authors": "§nAuthors:§r %s",
   "nuwa.infoPanel.label.credits": "§nCredits:§r",
   "nuwa.screen.tooltip.reloadAssets": "Reload All Packs Assets",
+  "nuwa.screen.tooltip.changelogs": "Changelogs of Nuwa !",
   "nuwa.license.by.text": "This work is licensed under a Creative Commons Attribution 4.0 International License.",
   "nuwa.license.by-nc.text": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.",
   "nuwa.license.by-nc-nd.text": "This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.",
   "nuwa.license.by-nc-sa.text": "This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.",
   "nuwa.license.by-nd.text": "This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License.",
   "nuwa.license.by-sa.text": "This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.",
-  "nuwa.multiplayer.contentpack.mismatch": "§lNuwa Content Pack Error§r\n\n\nMD5 Hash of §n%s§r (v%s) Client/Server Content Pack Mismatch.\n\nClient Hash: %s\nInfo: ContentPack[%s, v%s]\n\nServer Hash: %s\nInfo: ContentPack[%s, v%s]\n\nPlease, Contact an Administrator."
+  "nuwa.multiplayer.contentpack.mismatch": "§lNuwa Content Pack Error§r\n\n\nMD5 Hash of §n%s§r (v%s) Client/Server Content Pack Mismatch.\n\nClient Hash: %s\nInfo: ContentPack[%s, v%s]\n\nServer Hash: %s\nInfo: ContentPack[%s, v%s]\n\nPlease, Contact an Administrator.",
+  "nuwa.screen.changelog.title": "Changelogs",
+  "nuwa.screen.changelog.version": "Versions",
+  "nuwa.screen.changelog.fetchError": "Unable to retreive changelogs."
 }

@@ -2,32 +2,27 @@ package tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackChangelogScreen;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 public class JsonTests {
 
     public static void main(String[] args) {
         Gson gson = new GsonBuilder().create();
 
-        String json = "{\n" +
-                "  \"registryName\": \"effect_flames\",\n" +
-                "  \"effectType\": \"HARMFUL\",\n" +
-                "  \"liquidColor\": -609685,\n" +
-                "  \"performEffect\": {\n" +
-                "    \"processes\": [\n" +
-                "      {\n" +
-                "        \"processName\": \"nuwa:set_on_fire_process\",\n" +
-                "        \"parameters\": {\n" +
-                "          \"duration\": 1\n" +
-                "        },\n" +
-                "        \"conditions\" : [\n" +
-                "          {\n" +
-                "            \"entity\" : \"Player\"\n" +
-                "          }  \n" +
-                "        ]\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "}";
+        try {
+            URL url = new URL("https://files.leviathan-studio.com/amateis2/Nuwa/changelogs/changelogs.json");
+            BufferedReader read = new BufferedReader(
+                    new InputStreamReader(url.openStream()));
+            ContentPackChangelogScreen.ChangelogObject changelogObject = gson.fromJson(read, ContentPackChangelogScreen.ChangelogObject.class);
+            changelogObject.getUnreleased().forEach(releaseObject -> System.out.println(releaseObject.getVersion()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
 
     }

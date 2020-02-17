@@ -11,6 +11,7 @@ import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.client.gui.widget.list.ExtendedList;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
@@ -85,8 +86,12 @@ public class ContentPacksScreen extends Screen {
                 I18n.format("nuwa.screen.label.openFolder"), b -> Util.getOSType().openFile(Constant.MODELS_PACK_DIR)));
 
 
-        this.addButton(new ContentPackButton(true, listWidth - 14, this.height - 24, 20, 20, 20, 0, 20, 64, 64, onPress -> {
+        this.addButton(new ContentPackButton(true, listWidth - 14, this.height - 24, 20, 20, 20, 0, 20, 64, 80, onPress -> {
             ForgeHooksClient.refreshResources(this.minecraft);
+        }));
+
+        this.addButton(new ImageButton(contentPacksList.getWidth() - 14, this.height - 24, 20, 20, 0, 40, 20, new ResourceLocation(Constant.MODID, "textures/gui/buttons.png"), 64, 80, onPress -> {
+            this.minecraft.displayGuiScreen(new ContentPackChangelogScreen());
         }));
 
         search = new TextFieldWidget(getFontRenderer(), 8, 20, this.width / 2 - 28, 14, I18n.format("fml.menu.mods.search"));
@@ -208,12 +213,16 @@ public class ContentPacksScreen extends Screen {
 
         super.render(mouseX, mouseY, partialTicks);
 
-        this.buttons.forEach(buttons -> {
-            if (buttons instanceof ContentPackButton) {
-                if (buttons.isHovered()) {
-                    if (((ContentPackButton) buttons).toolTipText != null) {
-                        renderTooltip(Arrays.asList(((ContentPackButton) buttons).toolTipText), mouseX, mouseY);
+        this.buttons.forEach(button -> {
+            if (button instanceof ContentPackButton) {
+                if (button.isHovered()) {
+                    if (((ContentPackButton) button).toolTipText != null) {
+                        renderTooltip(Arrays.asList(((ContentPackButton) button).toolTipText), mouseX, mouseY);
                     }
+                }
+            } else if (button instanceof ImageButton) {
+                if (button.isHovered()) {
+                    renderTooltip(Arrays.asList(I18n.format("nuwa.screen.tooltip.changelogs")), mouseX, mouseY);
                 }
             }
         });
