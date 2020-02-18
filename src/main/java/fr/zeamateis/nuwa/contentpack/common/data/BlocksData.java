@@ -46,14 +46,13 @@ public class BlocksData implements IPackData {
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
-     *
+     *  @param zipFileIn     The {@link ZipFile} instance
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
-     * @param zipFileIn     The {@link ZipFile} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
-    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn) {
         BlockObject blocksObject = packManagerIn.getGson().fromJson(readerIn, BlockObject.class);
 
         AtomicReference<IJsonBlock> parsedBlock = new AtomicReference<>();
@@ -107,7 +106,7 @@ public class BlocksData implements IPackData {
                         if (NuwaRegistries.ITEM_GROUP.getValue(parsedItemGroup) != null) {
                             parsedBlock.get().setItemGroup(NuwaRegistries.ITEM_GROUP.getValue(parsedItemGroup).getItemGroup());
                         } else {
-                            packManagerIn.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
+                            packManagerIn.throwItemGroupWarn(contentPackIn, getEntryFolder(), parsedItemGroup);
                         }
                     } else {
                         parsedBlock.get().setItemGroup(ItemGroup.MISC);

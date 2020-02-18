@@ -51,14 +51,13 @@ public class ItemsData implements IPackData {
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
      * instances to parse datas from Content Pack zip file
-     *
+     *  @param zipFileIn     The {@link ZipFile} instance
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
-     * @param zipFileIn     The {@link ZipFile} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
     @Override
-    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, ZipFile zipFileIn, InputStreamReader readerIn) {
+    public void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn) {
 
         ItemObject itemsObject = packManagerIn.getGson().fromJson(readerIn, ItemObject.class);
 
@@ -83,7 +82,7 @@ public class ItemsData implements IPackData {
                     if (NuwaRegistries.ITEM_GROUP.getValue(parsedItemGroup) != null) {
                         properties.group(NuwaRegistries.ITEM_GROUP.getValue(parsedItemGroup).getItemGroup());
                     } else {
-                        packManagerIn.throwItemGroupWarn(contentPackIn, zipFileIn, getEntryFolder(), parsedItemGroup);
+                        packManagerIn.throwItemGroupWarn(contentPackIn, getEntryFolder(), parsedItemGroup);
                     }
                 } else {
                     properties.group(ItemGroup.MISC);
