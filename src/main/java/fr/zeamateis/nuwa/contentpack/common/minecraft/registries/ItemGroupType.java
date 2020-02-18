@@ -6,6 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
+/**
+ * Custom {@link IForgeRegistryEntry} for {@link ItemGroup}
+ *
+ * @author ZeAmateis
+ */
 public class ItemGroupType implements IForgeRegistryEntry<ItemGroupType> {
 
     private final ItemGroup itemGroupObject;

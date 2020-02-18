@@ -8,6 +8,11 @@ import net.minecraft.util.SoundEvent;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link MusicDiscItem}
+ *
+ * @author ZeAmateis
+ */
 public class JsonMusicDiscItem extends MusicDiscItem implements IJsonItem {
 
     public JsonMusicDiscItem(int comparatorValueIn, SoundEvent soundIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {

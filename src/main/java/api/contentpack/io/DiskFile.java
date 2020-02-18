@@ -1,4 +1,4 @@
-package fr.zeamateis.nuwa.io;
+package api.contentpack.io;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,11 +1,11 @@
 package api.contentpack;
 
+import api.contentpack.io.DiskFile;
+import api.contentpack.io.IFile;
+import api.contentpack.io.ZipEntryFile;
 import api.contentpack.json.PackInfoObject;
 import com.google.common.collect.Lists;
 import fr.zeamateis.nuwa.NuwaMod;
-import fr.zeamateis.nuwa.io.DiskFile;
-import fr.zeamateis.nuwa.io.IFile;
-import fr.zeamateis.nuwa.io.ZipEntryFile;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -26,11 +26,17 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/**
+ * Representation of a Content Pack, with majors informations
+ *
+ * @author ZeAmateis
+ */
 public class ContentPack {
 
     private final File contentPackFile;
     private final PackInfoObject packInfoObject;
     private final long zipFileSize;
+    private final Path basePath;
     private NativeImage packIcon;
     private ZipFile zipFile;
     private boolean isZipped;
@@ -39,7 +45,6 @@ public class ContentPack {
      * Collection of sub files inside this content pack
      */
     private Collection<IFile> subFiles;
-    private final Path basePath;
 
     /**
      * Creates a zipped pack
@@ -81,7 +86,7 @@ public class ContentPack {
         this.basePath = contentPackFolder;
         this.packInfoObject = packInfoObject;
         this.zipFileSize = 0L;
-        isZipped = false;
+        this.isZipped = false;
     }
 
     /**

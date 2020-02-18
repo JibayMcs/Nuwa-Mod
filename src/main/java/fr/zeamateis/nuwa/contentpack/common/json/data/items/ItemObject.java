@@ -5,6 +5,11 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.items.properties.ItemsProp
 import fr.zeamateis.nuwa.contentpack.common.json.data.items.properties.SoundProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.items.properties.ToolMaterialProperties;
 
+/**
+ * Reprensentation of Json {@link net.minecraft.item.Item} object
+ *
+ * @author ZeAmateis
+ */
 public class ItemObject {
 
     private ItemsPropertiesObject properties;

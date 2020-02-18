@@ -8,6 +8,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link AxeItem}
+ *
+ * @author ZeAmateis
+ */
 //TODO Check if it's necessary to replace the effective_on set
 public class JsonAxeItem extends AxeItem implements IJsonItem {
 

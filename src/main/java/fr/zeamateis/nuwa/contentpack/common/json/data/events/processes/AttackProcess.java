@@ -1,13 +1,17 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import api.contentpack.json.process.IProcess;
 import fr.zeamateis.nuwa.contentpack.common.json.data.type.DamageSourceType;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-
+/**
+ * {@link IProcess} to {@link Entity#attackEntityFrom(DamageSource, float)} based on a {@link DamageSource}
+ *
+ * @author ZeAmateis
+ */
 public class AttackProcess implements IProcess {
 
     private float attackDamage;

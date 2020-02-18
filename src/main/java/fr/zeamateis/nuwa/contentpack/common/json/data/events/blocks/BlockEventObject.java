@@ -3,6 +3,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.ProcessEvent;
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * Reprensentation of Json {@link ProcessEvent} objects
+ *
+ * @author ZeAmateis
+ */
 public class BlockEventObject {
 
     private String registryName;

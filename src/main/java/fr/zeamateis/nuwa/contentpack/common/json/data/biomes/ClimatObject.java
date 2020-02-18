@@ -2,6 +2,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 
 import net.minecraft.world.biome.Biome;
 
+/**
+ * Reprensentation of Json biome climat parameters object
+ *
+ * @author ZeAmateis
+ */
 public class ClimatObject {
 
     private Biome.RainType rainType;

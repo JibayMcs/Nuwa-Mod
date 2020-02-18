@@ -2,6 +2,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.events;
 
 import net.minecraft.util.ResourceLocation;
 
+/**
+ * Reprensentation of Json {@link api.contentpack.json.conditions.ICondition} object
+ *
+ * @author ZeAmateis
+ */
 public class ConditionObject {
 
     private String conditionClass;

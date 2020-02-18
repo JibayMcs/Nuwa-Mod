@@ -1,5 +1,10 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties;
 
+/**
+ * Reprensentation of Json ore properties
+ *
+ * @author ZeAmateis
+ */
 public class OreProperties {
 
     private int minExpDrop, maxExpDrop;

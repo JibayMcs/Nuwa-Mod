@@ -6,6 +6,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link PaintingType}
+ *
+ * @author ZeAmateis
+ */
 public class JsonPainting extends PaintingType {
 
     public JsonPainting(int width, int height, @Nonnull ResourceLocation registryNameIn) {

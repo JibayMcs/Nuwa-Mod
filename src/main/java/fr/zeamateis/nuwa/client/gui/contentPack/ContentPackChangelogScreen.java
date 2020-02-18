@@ -27,6 +27,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Nuwa Changelogs Screen
+ *
+ * @author ZeAmateis
+ */
 public class ContentPackChangelogScreen extends Screen {
 
     private Gson gson = new GsonBuilder().create();

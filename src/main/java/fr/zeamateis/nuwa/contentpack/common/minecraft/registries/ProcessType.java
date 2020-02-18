@@ -6,6 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
+/**
+ * Custom {@link IForgeRegistryEntry} for {@link api.contentpack.json.process.IProcess}
+ *
+ * @author ZeAmateis
+ */
 public class ProcessType implements IForgeRegistryEntry<ProcessType> {
 
     private final ProcessObject processObject;

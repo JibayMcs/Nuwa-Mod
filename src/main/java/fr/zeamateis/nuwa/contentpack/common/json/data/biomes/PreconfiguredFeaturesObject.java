@@ -3,6 +3,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 
+/**
+ * Reprensentation of Json {@link DefaultBiomeFeatures} preconfigurations object
+ *
+ * @author ZeAmateis
+ */
 public enum PreconfiguredFeaturesObject {
     CARVERS {
         @Override

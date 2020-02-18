@@ -10,6 +10,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link FenceBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonFenceBlock extends FenceBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;

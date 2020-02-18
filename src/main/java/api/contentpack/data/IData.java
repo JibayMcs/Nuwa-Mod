@@ -6,11 +6,19 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.LinkedList;
 
+/**
+ * Representing abstract data to parse inside Content pack,
+ * and a list of future objects to put in Forge Registry
+ * <br>
+ * Usefull for hardcoded datas who don't need {@link IPackData#getEntryFolder()}
+ *
+ * @author ZeAmateis
+ */
 public interface IData {
 
     /**
      * Use {@link PackManager}
-     * instance to parse datas from Content Pack zip file
+     * instance to parse datas from Content Pack
      *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance

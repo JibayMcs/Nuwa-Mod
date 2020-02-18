@@ -10,9 +10,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+/**
+ * Server-side events
+ *
+ * @author ZeAmateis
+ */
 @Mod.EventBusSubscriber(modid = Constant.MODID, value = Dist.DEDICATED_SERVER, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
 
+    /**
+     * Sending packet on player connecting on server to check any content packs mismatch from client/server
+     */
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getPlayer() != null) {

@@ -1,6 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -9,6 +10,12 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
+/**
+ * Reprensentation of Json {@link BlockPos}, {@link net.minecraft.world.dimension.DimensionType} or {@link EntityType}
+ * position parameters
+ *
+ * @author ZeAmateis
+ */
 public class PositionObject {
 
     private String dimension;
@@ -33,6 +40,12 @@ public class PositionObject {
         return facing;
     }
 
+    /**
+     * Getting position based on {@link #dimension}, {@link #blockPos} or {@link #atEntity}
+     * parameters
+     *
+     * @return World block position
+     */
     public BlockPos getPos(World worldIn, BlockPos defaultPosIn) {
         AtomicReference<BlockPos> parsedBlockPos = new AtomicReference<>();
         parsedBlockPos.set(defaultPosIn.up());

@@ -6,6 +6,13 @@ import api.contentpack.PackManager;
 import java.io.InputStreamReader;
 import java.util.zip.ZipFile;
 
+/**
+ * Representing abstract data to parse inside Content pack,
+ * but with a specific entry path<br>
+ * Especially for parsed data from json
+ *
+ * @author ZeAmateis
+ */
 public interface IPackData extends IData {
 
 
@@ -18,8 +25,9 @@ public interface IPackData extends IData {
 
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
-     *  @param packManagerIn The {@link PackManager} instance
+     * instances to parse datas from Content Pack
+     *
+     * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
      * @param readerIn      The {@link InputStreamReader} instance
      */
@@ -27,7 +35,7 @@ public interface IPackData extends IData {
 
     /**
      * Use {@link PackManager}
-     * instance to parse datas from Content Pack zip file
+     * instance to parse datas from Content Pack
      *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance

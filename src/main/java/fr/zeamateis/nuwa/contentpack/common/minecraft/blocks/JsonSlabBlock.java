@@ -10,6 +10,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link SlabBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonSlabBlock extends SlabBlock implements IJsonBlock {
     private VoxelShape shape, collisionShape;
     private ItemGroup itemGroup;

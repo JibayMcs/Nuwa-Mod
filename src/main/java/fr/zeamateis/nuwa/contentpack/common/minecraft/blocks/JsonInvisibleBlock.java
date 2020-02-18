@@ -12,6 +12,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link net.minecraft.block.BarrierBlock} type
+ *
+ * @author ZeAmateis
+ */
 public class JsonInvisibleBlock extends JsonBlock {
 
     public JsonInvisibleBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {

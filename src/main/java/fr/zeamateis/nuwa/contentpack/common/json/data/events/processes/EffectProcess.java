@@ -1,8 +1,8 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
+import api.contentpack.json.process.IProcess;
 import com.google.gson.annotations.SerializedName;
 import fr.zeamateis.nuwa.contentpack.common.json.data.effects.EffectObject;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effect;
@@ -14,6 +14,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
+/**
+ * {@link IProcess} to Apply/Remove/Clear {@link Effect} on {@link Entity}
+ *
+ * @author ZeAmateis
+ */
 public class EffectProcess implements IProcess {
 
     @SerializedName("applyEffect")

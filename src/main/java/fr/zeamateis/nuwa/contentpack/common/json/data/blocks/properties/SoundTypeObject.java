@@ -2,6 +2,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties;
 
 import net.minecraft.block.SoundType;
 
+/**
+ * Reprensentation of Json {@link SoundType} properties
+ *
+ * @author ZeAmateis
+ */
 public enum SoundTypeObject {
     WOOD(SoundType.WOOD),
     GROUND(SoundType.GROUND),

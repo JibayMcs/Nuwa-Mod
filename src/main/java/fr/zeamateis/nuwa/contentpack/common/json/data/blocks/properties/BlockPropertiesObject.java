@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.ToolType;
 
+/**
+ * Reprensentation of Json {@link Block.Properties} properties
+ *
+ * @author ZeAmateis
+ */
 public class BlockPropertiesObject {
 
     /**
@@ -24,6 +29,11 @@ public class BlockPropertiesObject {
     private boolean noDrops;
     private transient boolean tickingRandomly;
 
+    /**
+     * Getting parsed {@link Block.Properties} json object
+     *
+     * @return The parsed block properties
+     */
     public Block.Properties getParsedProperties() {
         Block.Properties properties = Block.Properties.create(getMaterialObject().getMaterial());
 

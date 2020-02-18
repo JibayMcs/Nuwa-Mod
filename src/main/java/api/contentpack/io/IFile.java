@@ -1,4 +1,4 @@
-package fr.zeamateis.nuwa.io;
+package api.contentpack.io;
 
 import java.io.IOException;
 import java.io.InputStream;

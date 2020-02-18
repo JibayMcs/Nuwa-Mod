@@ -6,6 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.lang.reflect.Field;
 
+/**
+ * Helper class for registries
+ *
+ * @author ZeAmateis
+ */
 public class RegistryUtil {
 
     private static Field regName;

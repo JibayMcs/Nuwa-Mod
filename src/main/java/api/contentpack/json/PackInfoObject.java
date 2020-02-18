@@ -2,21 +2,46 @@ package api.contentpack.json;
 
 import java.util.List;
 
+/**
+ * Representation of the "content.pack" file inside each Content Pack
+ *
+ * @author ZeAmateis
+ */
 public class PackInfoObject {
 
+    /**
+     * The name of the content pack
+     * Accepting upper cases
+     */
     private String packName;
 
+    /**
+     * The name of the content pack without any
+     * upper cases, spaces, special caracters,etc
+     * Used to register content pack objects in Forge Registry
+     */
     private String namespace;
 
+    /**
+     * String version of the content pack
+     */
     private String version;
 
+    /**
+     * Integer version of the parsing system of Nuwa
+     * Updated if reading jsons way change
+     */
     private int nuwaDataVersion;
 
+    /**
+     * String list to describe, define authors and credits your content pack
+     */
     private List<String> description, authors, credits;
 
+    /**
+     * Licence of the content pack
+     */
     private String license;
-
-    private transient int totalBlocks, totalItems;
 
     public PackInfoObject(String packName, String namespace, String version, int nuwaDataVersion, List<String> description, List<String> authors, List<String> credits, String license) {
         this.packName = packName;
@@ -72,25 +97,7 @@ public class PackInfoObject {
                 ", authors=" + authors +
                 ", credits=" + credits +
                 ", license='" + license + '\'' +
-                ", totalBlocks=" + totalBlocks +
-                ", totalItems=" + totalItems +
                 '}';
-    }
-
-    public int getTotalBlocks() {
-        return totalBlocks;
-    }
-
-    void setTotalBlocks(int totalBlocks) {
-        this.totalBlocks = totalBlocks;
-    }
-
-    public int getTotalItems() {
-        return totalItems;
-    }
-
-    void setTotalItems(int totalItems) {
-        this.totalItems = totalItems;
     }
 
 }

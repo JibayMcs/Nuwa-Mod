@@ -1,5 +1,10 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.paintings;
 
+/**
+ * Reprensentation of Json {@link net.minecraft.entity.item.PaintingType} object
+ *
+ * @author ZeAmateis
+ */
 public class PaintingObject {
 
     private String registryName;

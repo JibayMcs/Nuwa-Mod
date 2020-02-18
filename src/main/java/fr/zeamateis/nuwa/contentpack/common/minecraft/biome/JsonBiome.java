@@ -22,6 +22,11 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Json parsed {@link Biome}
+ *
+ * @author ZeAmateis
+ */
 public class JsonBiome extends Biome {
 
     private BiomeManager.BiomeType biomeType;

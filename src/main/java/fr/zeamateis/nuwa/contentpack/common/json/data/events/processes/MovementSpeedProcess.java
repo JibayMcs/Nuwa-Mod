@@ -1,10 +1,15 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import api.contentpack.json.process.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * {@link IProcess} to manipulate {@link Entity} Motion vector
+ *
+ * @author ZeAmateis
+ */
 public class MovementSpeedProcess implements IProcess {
 
     private double[] moveFactor;

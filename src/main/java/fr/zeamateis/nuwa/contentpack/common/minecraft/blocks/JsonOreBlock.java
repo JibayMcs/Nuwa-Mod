@@ -11,6 +11,11 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
+/**
+ * Json parsed {@link net.minecraft.block.Block} ore type
+ *
+ * @author ZeAmateis
+ */
 public class JsonOreBlock extends JsonBlock {
 
     private final int minExpDrop, maxExpDrop;

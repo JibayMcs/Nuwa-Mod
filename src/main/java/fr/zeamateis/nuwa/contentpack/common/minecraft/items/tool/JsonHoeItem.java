@@ -8,6 +8,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link HoeItem}
+ *
+ * @author ZeAmateis
+ */
 //TODO Check if it's necessary to replace the hoe_lookup map
 public class JsonHoeItem extends HoeItem implements IJsonItem {
 

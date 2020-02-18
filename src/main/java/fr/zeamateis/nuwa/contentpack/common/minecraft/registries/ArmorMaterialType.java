@@ -7,6 +7,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
+/**
+ * Custom {@link IForgeRegistryEntry} for {@link IArmorMaterial}
+ *
+ * @author ZeAmateis
+ */
 public class ArmorMaterialType implements IForgeRegistryEntry<ArmorMaterialType> {
 
     private final ArmorMaterialObject armorMaterialObject;

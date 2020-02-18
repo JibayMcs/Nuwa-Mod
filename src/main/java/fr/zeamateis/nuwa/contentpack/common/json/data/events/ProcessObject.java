@@ -1,5 +1,10 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events;
 
+/**
+ * Reprensentation of Json {@link api.contentpack.json.process.IProcess} object
+ *
+ * @author ZeAmateis
+ */
 public class ProcessObject {
 
     private String processClass;

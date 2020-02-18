@@ -18,6 +18,11 @@ import net.minecraft.world.IWorldReader;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link net.minecraft.block.CarpetBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonCarpetBlock extends Block implements IJsonBlock {
 
     private static final VoxelShape DEFAULT_CARPET_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);

@@ -11,6 +11,11 @@ import fr.zeamateis.nuwa.contentpack.common.minecraft.items.tool.JsonPixaxeItem;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.items.tool.JsonShovelItem;
 import net.minecraft.item.Item;
 
+/**
+ * Enumeration of different supported complexes items types
+ *
+ * @author ZeAmateis
+ */
 public enum ItemType {
     NULL(),
     DEFAULT(JsonItem.class),

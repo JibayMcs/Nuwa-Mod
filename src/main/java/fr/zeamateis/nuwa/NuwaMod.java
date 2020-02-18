@@ -2,20 +2,20 @@ package fr.zeamateis.nuwa;
 
 import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
+import api.contentpack.json.process.IProcess;
+import api.contentpack.resources.ContentPackFinder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.zeamateis.nuwa.common.network.C2SContentPackInfoPacket;
 import fr.zeamateis.nuwa.common.network.S2CContentPackInfoPacket;
-import fr.zeamateis.nuwa.contentpack.client.minecraft.assets.ContentPackFinder;
 import fr.zeamateis.nuwa.contentpack.common.data.*;
 import fr.zeamateis.nuwa.contentpack.common.json.adapter.IProcessAdapter;
 import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.BiomeObject;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.biome.JsonBiome;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ItemGroupType;
 import fr.zeamateis.nuwa.init.NuwaRegistries;
 import fr.zeamateis.nuwa.proxy.ClientProxy;
-import fr.zeamateis.nuwa.proxy.CommonProxy;
+import fr.zeamateis.nuwa.proxy.IProxy;
 import fr.zeamateis.nuwa.proxy.ServerProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
@@ -45,6 +45,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+/**
+ * Main Mod Class of Nuwa
+ *
+ * @author ZeAmateis
+ */
 //TODO Fix content packs not closed after loading.
 @Mod(Constant.MODID)
 public class NuwaMod implements ISelectiveResourceReloadListener {
@@ -56,7 +61,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .simpleChannel();
-    private static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+    private static final IProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     private static NuwaMod instance;
     private final PackManager packManager;
 
@@ -103,7 +108,7 @@ public class NuwaMod implements ISelectiveResourceReloadListener {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);
     }
 
-    static CommonProxy getProxy() {
+    static IProxy getProxy() {
         return PROXY;
     }
 

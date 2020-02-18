@@ -12,6 +12,11 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
+/**
+ * Data reading class for json representation of {@link net.minecraft.item.IArmorMaterial} objects
+ *
+ * @author ZeAmateis
+ */
 public class ArmorMaterialData implements IPackData {
 
     private final LinkedList<ArmorMaterialType> armorMaterialTypes;
@@ -32,7 +37,7 @@ public class ArmorMaterialData implements IPackData {
 
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
+     * instances to parse datas from Content Pack
      *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance

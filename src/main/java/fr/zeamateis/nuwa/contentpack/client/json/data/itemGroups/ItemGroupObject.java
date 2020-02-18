@@ -1,5 +1,10 @@
 package fr.zeamateis.nuwa.contentpack.client.json.data.itemGroups;
 
+/**
+ * Reprensentation of Json {@link net.minecraft.item.ItemGroup} object
+ *
+ * @author ZeAmateis
+ */
 public class ItemGroupObject {
 
     private String registryName, itemIcon, backgroundImage;

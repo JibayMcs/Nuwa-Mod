@@ -7,6 +7,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link BlockItem}
+ *
+ * @author ZeAmateis
+ */
 public class JsonBlockItem extends BlockItem implements IJsonItem {
 
     // private String craftstudioModelID = "null";

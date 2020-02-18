@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reprensentation of Json Ore {@link net.minecraft.world.gen.feature.Feature} Generation object
+ *
+ * @author ZeAmateis
+ */
 public class OresGenerationObject {
 
     private String dimension;

@@ -30,6 +30,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipFile;
 
+/**
+ * Data reading class for json representation of {@link Item} objects
+ *
+ * @author ZeAmateis
+ */
 public class ItemsData implements IPackData {
 
     private final LinkedList<IJsonItem> itemList;
@@ -50,8 +55,8 @@ public class ItemsData implements IPackData {
 
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
-     *  @param zipFileIn     The {@link ZipFile} instance
+     * instances to parse datas from Content Pack
+     *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
      * @param readerIn      The {@link InputStreamReader} instance

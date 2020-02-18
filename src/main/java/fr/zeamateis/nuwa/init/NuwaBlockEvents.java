@@ -10,9 +10,13 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * Events for {@link Block}
+ *
+ * @author ZeAmateis
+ */
 @Mod.EventBusSubscriber(modid = Constant.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class NuwaBlockEvents {
-
 
     @SubscribeEvent
     public static void onBreakBlock(BlockEvent.BreakEvent event) {
@@ -25,7 +29,7 @@ public class NuwaBlockEvents {
                 ProcessEvent playerBreakBlock = jsonBlock.getBlockEventObject().getPlayerDestroyBlockEvent();
                 if (playerBreakBlock != null) {
                     playerBreakBlock.getProcesses().forEach(process -> {
-                            process.process(world, event.getPos(), event.getPlayer());
+                        process.process(world, event.getPos(), event.getPlayer());
                     });
                 }
             }

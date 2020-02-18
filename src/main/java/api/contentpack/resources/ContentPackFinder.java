@@ -1,4 +1,4 @@
-package fr.zeamateis.nuwa.contentpack.client.minecraft.assets;
+package api.contentpack.resources;
 
 import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
@@ -8,6 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Custom {@link IPackFinder} for assets/data inside a Content Pack zip file or folder
+ *
+ * @author ZeAmateis
+ * @author jglrxavpok
+ */
 public class ContentPackFinder implements IPackFinder {
 
     private final ContentPack contentPack;

@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Reprensentation of Json {@link ProcessEvent} {@link EntityType} objects
+ *
+ * @author ZeAmateis
+ */
 public class EntityBlockEvent extends ProcessEvent {
 
     private List<String> affectedEntities = new ArrayList<>();

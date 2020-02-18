@@ -14,6 +14,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 
+/**
+ * Custom Forge Registries class handler
+ *
+ * @author ZeAmateis
+ */
 @Mod.EventBusSubscriber(modid = Constant.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class NuwaRegistries {
     public static final IForgeRegistry<ArmorMaterialType> ARMOR_MATERIAL = new RegistryBuilder<ArmorMaterialType>()

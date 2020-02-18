@@ -11,9 +11,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.lang.reflect.Type;
 
 /**
- * ItemStack Serializer/Deserializer
+ * {@link Gson} adapter class for {@link ItemStack} objects
  *
- * @version 0.0.1
+ * @author ZeAmateis
  */
 public class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
 

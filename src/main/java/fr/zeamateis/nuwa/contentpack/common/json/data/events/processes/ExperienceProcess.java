@@ -1,11 +1,16 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import api.contentpack.json.process.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * {@link IProcess} to Add/Remove {@link PlayerEntity#experienceLevel}
+ *
+ * @author ZeAmateis
+ */
 public class ExperienceProcess implements IProcess {
 
     private AddObject add;

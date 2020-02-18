@@ -4,8 +4,14 @@ import net.minecraft.client.Minecraft;
 
 import java.io.File;
 
-public class ClientProxy extends CommonProxy {
+/**
+ * @author ZeAmateis
+ */
+public class ClientProxy implements IProxy {
 
+    /**
+     * @return Client-side Content Packs folder
+     */
     @Override
     public File getPackDir() {
         return new File(Minecraft.getInstance().gameDir, "/contentpacks/");

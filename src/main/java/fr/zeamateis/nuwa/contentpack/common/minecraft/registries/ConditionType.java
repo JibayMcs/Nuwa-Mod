@@ -6,6 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
+/**
+ * Custom {@link IForgeRegistryEntry} for {@link ConditionType}
+ *
+ * @author ZeAmateis
+ */
 public class ConditionType implements IForgeRegistryEntry<ConditionType> {
 
     private final ConditionObject conditionObject;

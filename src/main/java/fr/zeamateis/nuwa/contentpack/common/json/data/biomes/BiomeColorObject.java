@@ -1,5 +1,10 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.biomes;
 
+/**
+ * Representation of Json biome colors parameters objects
+ *
+ * @author ZeAmateis
+ */
 public class BiomeColorObject {
     private int waterColor, waterFogColor;
     private Integer grassColor = null, foliageColor = null;

@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import api.contentpack.json.process.IProcess;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.PositionObject;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -10,6 +10,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+/**
+ * {@link IProcess} to Summon an {@link Entity} in the {@link World}
+ *
+ * @author ZeAmateis
+ */
 public class SummonProcess implements IProcess {
 
     private String entity;

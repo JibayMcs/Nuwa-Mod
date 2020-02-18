@@ -8,6 +8,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Reprensentation of Json {@link Item.Properties} properties
+ *
+ * @author ZeAmateis
+ */
 public class ItemsPropertiesObject {
 
     /**
@@ -25,6 +30,11 @@ public class ItemsPropertiesObject {
     private boolean noRepair;
     private Rarity rarity = Rarity.COMMON;
 
+    /**
+     * Getting parsed {@link Item.Properties} json object
+     *
+     * @return The parsed item properties
+     */
     public Item.Properties getParsedProperties() {
         Item.Properties properties = new Item.Properties();
 

@@ -8,6 +8,11 @@ import net.minecraftforge.common.BiomeManager;
 
 import java.util.List;
 
+/**
+ * Reprensentation of Json {@link Biome} object
+ *
+ * @author ZeAmateis
+ */
 public class BiomeObject {
 
     private String registryName;

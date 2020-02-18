@@ -6,6 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
+/**
+ * Custom {@link IForgeRegistryEntry} for {@link net.minecraft.item.IItemTier}
+ *
+ * @author ZeAmateis
+ */
 public class ToolMaterialType implements IForgeRegistryEntry<ToolMaterialType> {
 
     private final ToolMaterialObject toolMaterialObject;

@@ -9,6 +9,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link Effect}
+ *
+ * @author ZeAmateis
+ */
 //TODO Curative Items
 public class JsonEffect extends Effect {
     private boolean isInstant;

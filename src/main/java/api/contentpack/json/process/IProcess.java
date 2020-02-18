@@ -1,4 +1,4 @@
-package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base;
+package api.contentpack.json.process;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;

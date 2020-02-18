@@ -1,7 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.Check;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base.IPlayerCondition;
+import api.contentpack.json.conditions.Check;
+import api.contentpack.json.conditions.IPlayerCondition;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;

@@ -2,6 +2,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.type;
 
 import net.minecraft.util.DamageSource;
 
+/**
+ * Enumeration of different supported {@link DamageSource} types
+ *
+ * @author ZeAmateis
+ */
 public enum DamageSourceType {
 
     IN_FIRE(DamageSource.IN_FIRE),

@@ -4,7 +4,13 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.biomes.features.structures
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
 
+/**
+ * Reprensentation of Json {@link Feature} object
+ *
+ * @author ZeAmateis
+ */
 public class FeatureObject {
 
     private GenerationStage.Decoration decoration;

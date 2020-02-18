@@ -22,6 +22,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
+/**
+ * Json parsed {@link CropsBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonCropsBlock extends CropsBlock implements IJsonBlock, IGrowable {
     private static final IntegerProperty CROPS_AGE = BlockStateProperties.AGE_0_7;
     private final Item seedItem;

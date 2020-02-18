@@ -4,6 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.shapes.VoxelShape;
 
+/**
+ * Reprensentation of Json {@link VoxelShape} parameters object
+ *
+ * @author ZeAmateis
+ */
 public class ShapeObject {
 
     private double x1, y1, z1, x2, y2, z2;
@@ -17,15 +22,28 @@ public class ShapeObject {
         this.z2 = z2;
     }
 
-    public static VoxelShape hasVoxelShape(ShapeObject shapeIn) {
+    /**
+     * Convert {@link ShapeObject} to a {@link VoxelShape}
+     *
+     * @param shapeIn
+     * @return Parsed {@link ShapeObject} values as {@link VoxelShape}
+     */
+    public static VoxelShape toVoxelShape(ShapeObject shapeIn) {
         //return VoxelShapes.create(shapeIn.getX1(), shapeIn.getY1(), shapeIn.getZ1(), shapeIn.getX2(), shapeIn.getY2(), shapeIn.getZ2());
         return Block.makeCuboidShape(shapeIn.getX1(), shapeIn.getY1(), shapeIn.getZ1(), shapeIn.getX2(), shapeIn.getY2(), shapeIn.getZ2());
     }
+
 
     public static ShapeObject toShapeObject(AxisAlignedBB axisAlignedBBIn) {
         return new ShapeObject(axisAlignedBBIn.minX, axisAlignedBBIn.minY, axisAlignedBBIn.minZ, axisAlignedBBIn.maxX, axisAlignedBBIn.maxY, axisAlignedBBIn.maxZ);
     }
 
+    /**
+     * Convert {@link VoxelShape} to a {@link ShapeObject}
+     *
+     * @param voxelShapeIn
+     * @return {@link ShapeObject} value
+     */
     public static ShapeObject toShapeObject(VoxelShape voxelShapeIn) {
         return toShapeObject(voxelShapeIn.getBoundingBox());
     }

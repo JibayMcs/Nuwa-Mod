@@ -14,6 +14,11 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import java.util.Set;
 
+/**
+ * Json parsed {@link ToolItem} pickaxe type
+ *
+ * @author ZeAmateis
+ */
 public class JsonPixaxeItem extends ToolItem implements IJsonItem {
 
     public JsonPixaxeItem(IItemTier tier, Set<Block> effectiveOn, float attackDamageIn, float attackSpeedIn, Item.Properties builder, @Nonnull ResourceLocation registryNameIn) {

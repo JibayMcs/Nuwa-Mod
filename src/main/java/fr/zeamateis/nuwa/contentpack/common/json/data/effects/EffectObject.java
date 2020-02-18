@@ -3,6 +3,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.effects;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.ProcessEvent;
 import net.minecraft.potion.EffectType;
 
+/**
+ * Reprensentation of Json {@link net.minecraft.potion.Effect} object
+ *
+ * @author ZeAmateis
+ */
 public class EffectObject {
 
     private String name, registryName;

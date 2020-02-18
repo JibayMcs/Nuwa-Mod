@@ -25,6 +25,11 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.zip.ZipFile;
 
+/**
+ * Data reading class for json representation of {@link Block} objects
+ *
+ * @author ZeAmateis
+ */
 public class BlocksData implements IPackData {
 
     private final LinkedList<IJsonBlock> blocksList;
@@ -45,8 +50,8 @@ public class BlocksData implements IPackData {
 
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
-     *  @param zipFileIn     The {@link ZipFile} instance
+     * instances to parse datas from Content Pack
+     *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
      * @param readerIn      The {@link InputStreamReader} instance

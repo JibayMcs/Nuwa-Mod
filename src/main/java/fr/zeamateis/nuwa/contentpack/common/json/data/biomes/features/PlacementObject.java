@@ -6,6 +6,11 @@ import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Reprensentation of Json {@link Placement} object
+ *
+ * @author ZeAmateis
+ */
 public class PlacementObject {
 
     private String name;

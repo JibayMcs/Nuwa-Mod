@@ -22,6 +22,11 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.zip.ZipFile;
 
+/**
+ * Data reading class for json representation of {@link Biome} objects
+ *
+ * @author ZeAmateis
+ */
 public class BiomeData implements IPackData {
 
     private final LinkedList<Biome> biomes;
@@ -42,7 +47,7 @@ public class BiomeData implements IPackData {
 
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
+     * instances to parse datas from Content Pack
      *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance

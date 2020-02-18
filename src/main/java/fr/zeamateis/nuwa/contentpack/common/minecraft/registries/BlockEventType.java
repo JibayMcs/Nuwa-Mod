@@ -6,6 +6,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
+/**
+ * Custom {@link IForgeRegistryEntry} for {@link BlockEventType}
+ *
+ * @author ZeAmateis
+ */
 public class BlockEventType implements IForgeRegistryEntry<BlockEventType> {
 
     private final BlockEventObject blockEventsObject;

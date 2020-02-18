@@ -4,6 +4,11 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 
+/**
+ * Reprensentation of Json {@link WorldCarver} object
+ *
+ * @author ZeAmateis
+ */
 public class CarverObject {
 
     private GenerationStage.Carving type;

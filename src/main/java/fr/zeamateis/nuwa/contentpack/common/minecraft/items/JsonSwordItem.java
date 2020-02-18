@@ -8,6 +8,11 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link SwordItem}
+ *
+ * @author ZeAmateis
+ */
 public class JsonSwordItem extends SwordItem implements IJsonItem {
 
     public JsonSwordItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder, @Nonnull ResourceLocation registryNameIn) {

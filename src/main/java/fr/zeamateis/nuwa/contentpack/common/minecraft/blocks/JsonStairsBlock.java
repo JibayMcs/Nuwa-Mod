@@ -11,6 +11,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link StairsBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonStairsBlock extends StairsBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;

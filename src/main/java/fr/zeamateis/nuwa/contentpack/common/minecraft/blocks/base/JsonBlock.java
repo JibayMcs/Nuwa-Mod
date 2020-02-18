@@ -18,6 +18,11 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link Block}
+ *
+ * @author ZeAmateis
+ */
 public class JsonBlock extends Block implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;

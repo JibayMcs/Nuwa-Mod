@@ -5,7 +5,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
-
+/**
+ * Reprensentation of Json {@link IItemTier} (ToolMaterial) object
+ *
+ * @author ZeAmateis
+ */
 public class ToolMaterialObject implements IItemTier {
 
     private float attackDamage, efficiency;

@@ -34,6 +34,12 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Main Screen to display Content Packs information, by clicking
+ * the content pack Button in the {@link net.minecraft.client.gui.screen.MainMenuScreen}
+ *
+ * @author ZeAmateis
+ */
 public class ContentPacksScreen extends Screen {
     private static final Logger LOGGER = LogManager.getLogger();
     private final List<ContentPack> unsortedMods;

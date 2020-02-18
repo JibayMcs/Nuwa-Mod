@@ -6,6 +6,11 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Reprensentation of Json {@link SurfaceBuilder} object
+ *
+ * @author ZeAmateis
+ */
 public class SurfaceObject {
 
     private EnumSurfaceBuilder surfaceBuilderType;

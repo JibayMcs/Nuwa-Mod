@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import api.contentpack.json.process.IProcess;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.PositionObject;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
@@ -20,6 +20,11 @@ import net.minecraft.world.server.TicketType;
 import java.util.EnumSet;
 import java.util.Set;
 
+/**
+ * {@link IProcess} to Teleport {@link Entity} based on {@link PositionObject}
+ *
+ * @author ZeAmateis
+ */
 public class TeleportProcess implements IProcess {
 
     private PositionObject position;

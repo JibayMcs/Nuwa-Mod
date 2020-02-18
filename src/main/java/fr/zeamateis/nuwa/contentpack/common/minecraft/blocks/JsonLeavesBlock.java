@@ -11,6 +11,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link LeavesBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonLeavesBlock extends LeavesBlock implements IJsonBlock, ILeavesColor {
 
     private ItemGroup itemGroup;

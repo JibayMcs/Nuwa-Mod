@@ -15,6 +15,11 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+/**
+ * Client-to-Server Content pack info packet to check md5 mismatch between Client and Server
+ *
+ * @author ZeAmateis
+ */
 public class C2SContentPackInfoPacket {
 
     private UUID playerEntity;

@@ -8,6 +8,11 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * Json parsed {@link Potion}
+ *
+ * @author ZeAmateis
+ */
 public class JsonPotion extends Potion {
 
     public JsonPotion(@Nullable String baseNameIn, @Nonnull ResourceLocation registryNameIn, EffectInstance... effectsIn) {

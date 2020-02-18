@@ -37,9 +37,17 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * Client-side events
+ *
+ * @author ZeAmateis
+ */
 @Mod.EventBusSubscriber(modid = Constant.MODID, value = Dist.CLIENT)
 public class ClientEvents {
 
+    /**
+     * Adding a fresh new Content Pack button on the {@link MainMenuScreen}
+     */
     @SubscribeEvent
     public static void onInitGuiEvent(GuiScreenEvent.InitGuiEvent.Post event) {
         if (event.getGui() instanceof MainMenuScreen) {
@@ -52,6 +60,9 @@ public class ClientEvents {
         }
     }
 
+    /**
+     * Render helper for invisibles blocks on held item, like {@link net.minecraft.block.BarrierBlock}
+     */
     @SubscribeEvent
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
         PlayerEntity player = Minecraft.getInstance().player;
@@ -93,9 +104,11 @@ public class ClientEvents {
         }
     }
 
+    /**
+     * Change block and item color according to the biome color
+     */
     @Mod.EventBusSubscriber(modid = Constant.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class NuwaColourManager {
-
         @SubscribeEvent
         public static void registerBlockColourHandlers(ColorHandlerEvent.Block event) {
             BlockColors blockcolors = event.getBlockColors();

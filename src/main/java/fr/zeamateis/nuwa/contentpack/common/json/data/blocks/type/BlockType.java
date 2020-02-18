@@ -7,6 +7,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 
+/**
+ * Enumeration of different supported complexes blocks types
+ *
+ * @author ZeAmateis
+ */
 public enum BlockType {
     NULL(),
     DEFAULT(JsonBlock.class, Block.Properties.from(Blocks.STONE)),
@@ -42,6 +47,12 @@ public enum BlockType {
         this.defaultProperties = defaultProperties;
     }
 
+    /**
+     * Getting {@link BlockType} based on value
+     *
+     * @param valueIn
+     * @return {@link BlockType}
+     */
     public static BlockType blockTypeOf(String valueIn) {
         try {
             return BlockType.valueOf(valueIn);

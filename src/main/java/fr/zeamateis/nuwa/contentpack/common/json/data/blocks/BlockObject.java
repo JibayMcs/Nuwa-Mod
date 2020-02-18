@@ -4,6 +4,11 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockPro
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.OreProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.shape.VoxelShapeObject;
 
+/**
+ * Reprensentation of Json {@link net.minecraft.block.Block} object
+ *
+ * @author ZeAmateis
+ */
 public class BlockObject {
 
     private BlockPropertiesObject properties;

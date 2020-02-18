@@ -10,6 +10,11 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link net.minecraft.block.SoulSandBlock} type
+ *
+ * @author ZeAmateis
+ */
 public class JsonSlowBlock extends JsonBlock {
 
     public JsonSlowBlock(Properties properties, @Nonnull ResourceLocation registryNameIn) {

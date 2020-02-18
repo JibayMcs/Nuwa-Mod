@@ -2,6 +2,11 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties;
 
 import net.minecraft.block.material.Material;
 
+/**
+ * Reprensentation of Json {@link Material} properties
+ *
+ * @author ZeAmateis
+ */
 public enum MaterialObject {
     AIR(Material.AIR),
     STRUCTURE_VOID(Material.STRUCTURE_VOID),

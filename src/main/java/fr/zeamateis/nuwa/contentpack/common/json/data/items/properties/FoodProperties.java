@@ -9,7 +9,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-//TODO Implements Effects
+
+/**
+ * Reprensentation of Json {@link Food} properties
+ *
+ * @author ZeAmateis
+ */
 public class FoodProperties {
 
     private int hunger;
@@ -30,6 +35,11 @@ public class FoodProperties {
         this.fastToEat = false;
     }
 
+    /**
+     * Getting parsed {@link Food} based on Json object
+     *
+     * @return Parsed {@link Food}
+     */
     public Food getFood() {
         Food.Builder builder = new Food.Builder();
 

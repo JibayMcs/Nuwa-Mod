@@ -1,6 +1,6 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
+import api.contentpack.json.process.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -8,6 +8,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * {@link IProcess} to play sound in the {@link World}
+ *
+ * @author ZeAmateis
+ */
 public class PlaySoundProcess implements IProcess {
 
     private String sound;

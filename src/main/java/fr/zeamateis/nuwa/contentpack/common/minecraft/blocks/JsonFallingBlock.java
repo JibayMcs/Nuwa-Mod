@@ -10,6 +10,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link FallingBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonFallingBlock extends FallingBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;

@@ -10,6 +10,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link PaneBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonPaneBlock extends PaneBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;

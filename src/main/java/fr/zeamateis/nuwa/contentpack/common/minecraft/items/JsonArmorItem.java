@@ -9,6 +9,12 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link ArmorItem}
+ *
+ * @author ZeAmateis
+ */
+//TODO Armor Ticks events/effect
 public class JsonArmorItem extends ArmorItem implements IJsonItem {
 
     public JsonArmorItem(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder, @Nonnull ResourceLocation registryNameIn) {

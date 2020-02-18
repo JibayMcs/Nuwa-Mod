@@ -5,6 +5,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Reprensentation of Json {@link Biome.SpawnListEntry} object
+ *
+ * @author ZeAmateis
+ */
 public class SpawnObject {
 
     private EntityClassification entityClassification;

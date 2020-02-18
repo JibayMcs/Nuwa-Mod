@@ -3,6 +3,7 @@ package fr.zeamateis.nuwa.contentpack.common.data;
 import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
 import api.contentpack.data.IData;
+import api.contentpack.json.conditions.ICondition;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.ConditionObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.registries.ConditionType;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -10,6 +11,11 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.LinkedList;
 
+/**
+ * Data reading class for json representation of {@link ICondition} objects
+ *
+ * @author ZeAmateis
+ */
 public class ConditionsData implements IData {
 
     private final LinkedList<ConditionType> conditionTypes;
@@ -20,7 +26,7 @@ public class ConditionsData implements IData {
 
     /**
      * Use {@link PackManager}
-     * instance to parse datas from Content Pack zip file
+     * instance to parse datas from Content Pack
      *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance

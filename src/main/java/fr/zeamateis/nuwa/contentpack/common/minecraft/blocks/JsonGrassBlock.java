@@ -11,6 +11,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link TallGrassBlock}
+ *
+ * @author ZeAmateis
+ */
 public class JsonGrassBlock extends TallGrassBlock implements IJsonBlock, IBiomeColor {
 
     private VoxelShape shape, collisionShape;

@@ -14,6 +14,11 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.zip.ZipFile;
 
+/**
+ * Data reading class for json representation of {@link Potion} objects
+ *
+ * @author ZeAmateis
+ */
 public class PotionsData implements IPackData {
 
     private LinkedList<Potion> potions;
@@ -34,8 +39,8 @@ public class PotionsData implements IPackData {
 
     /**
      * Use {@link PackManager}, {@link ContentPack}, {@link ZipFile} and {@link InputStreamReader}
-     * instances to parse datas from Content Pack zip file
-     *  @param zipFileIn     The {@link ZipFile} instance
+     * instances to parse datas from Content Pack
+     *
      * @param packManagerIn The {@link PackManager} instance
      * @param contentPackIn The {@link ContentPack} instance
      * @param readerIn      The {@link InputStreamReader} instance

@@ -2,6 +2,12 @@ package api.contentpack.data;
 
 import net.minecraftforge.registries.IForgeRegistry;
 
+/**
+ * Define a Class that represent the datas to parse on reading content pack
+ * Assign an {@link IForgeRegistry} to put parsed datas objects in registries
+ *
+ * @author ZeAmateis
+ */
 public class Data implements Comparable<Data> {
 
     private final Class<? extends IData> dataClass;

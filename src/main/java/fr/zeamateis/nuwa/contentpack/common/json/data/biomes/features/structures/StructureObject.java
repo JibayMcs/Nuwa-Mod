@@ -8,6 +8,11 @@ import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
 import net.minecraft.world.gen.feature.structure.*;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Reprensentation of Json {@link Structure} object
+ *
+ * @author ZeAmateis
+ */
 public class StructureObject {
 
     private String name; //mandatory

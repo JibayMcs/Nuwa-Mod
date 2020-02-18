@@ -9,6 +9,11 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.LinkedList;
 
+/**
+ * Data reading class for json representation of {@link fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess} objects
+ *
+ * @author ZeAmateis
+ */
 public class ProcessesData implements IData {
 
     private LinkedList<ProcessType> processTypes;

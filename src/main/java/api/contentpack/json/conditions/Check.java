@@ -1,4 +1,4 @@
-package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.condition.base;
+package api.contentpack.json.conditions;
 
 public class Check {
     public Type type;

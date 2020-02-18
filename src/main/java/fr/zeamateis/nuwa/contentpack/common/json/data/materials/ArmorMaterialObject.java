@@ -8,6 +8,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Reprensentation of Json {@link IArmorMaterial} object
+ *
+ * @author ZeAmateis
+ */
 public class ArmorMaterialObject {
 
     private int[] maxDamageArray;
@@ -80,6 +85,11 @@ public class ArmorMaterialObject {
         return registryName;
     }
 
+    /**
+     * Getting json parsed {@link IArmorMaterial} object
+     *
+     * @return {@link IArmorMaterial} object
+     */
     public IArmorMaterial getMaterial() {
         return new IArmorMaterial() {
             @Override

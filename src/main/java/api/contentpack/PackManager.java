@@ -20,6 +20,13 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+/**
+ * Main class to manage content packs,<br>
+ * read it from contentpack folder as folder or zip file,
+ * parse data, put data objects in Forge Registries
+ *
+ * @author ZeAmateis
+ */
 public class PackManager {
 
     private final Path contentPackPath;
@@ -72,7 +79,7 @@ public class PackManager {
      * Walks down the contentpacks/ folder hierarchy to find pack present as folders
      */
     private void loadUnzippedPacks() {
-        // load zipped packs
+        // load unzipped packs
         try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
             walk.map(Path::toFile)
                     .filter(f -> f.isDirectory())

@@ -9,6 +9,11 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FileUtils;
 
+/**
+ * Content Pack list representation in {@link ContentPacksScreen}
+ *
+ * @author ZeAmateis
+ */
 public class ContentPacksList extends ExtendedList<ContentPacksList.PackEntry> {
     private final int listWidth;
     private ContentPacksScreen parent;

@@ -10,6 +10,11 @@ import net.minecraft.util.math.shapes.VoxelShape;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Json parsed {@link BushBlock} type
+ *
+ * @author ZeAmateis
+ */
 public class JsonFlowerBlock extends BushBlock implements IJsonBlock {
 
     private VoxelShape shape, collisionShape;

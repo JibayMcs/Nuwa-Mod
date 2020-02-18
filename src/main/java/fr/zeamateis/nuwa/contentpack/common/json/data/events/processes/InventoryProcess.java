@@ -1,7 +1,7 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.events.processes;
 
+import api.contentpack.json.process.IProcess;
 import com.google.gson.annotations.SerializedName;
-import fr.zeamateis.nuwa.contentpack.common.json.data.events.processes.base.IProcess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,6 +13,11 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
+/**
+ * {@link IProcess} to manipulate {@link PlayerEntity#inventory}
+ *
+ * @author ZeAmateis
+ */
 public class InventoryProcess implements IProcess {
 
     @SerializedName("addItemToInventory")

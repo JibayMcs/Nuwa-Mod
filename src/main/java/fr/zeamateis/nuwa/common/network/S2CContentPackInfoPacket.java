@@ -13,6 +13,11 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+/**
+ * Server-to-Client Content pack info packet to check md5 mismatch between Client and Server
+ *
+ * @author ZeAmateis
+ */
 public class S2CContentPackInfoPacket {
 
     private UUID playerEntity;
