@@ -6,7 +6,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- *
+ * File present inside a zip file
  * @author jglrxavpok
  */
 public class ZipEntryFile implements IFile {

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 /**
- *
+ * File present on disk
  * @author jglrxavpok
  */
 public class DiskFile implements IFile {

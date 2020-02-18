@@ -68,6 +68,9 @@ public class PackManager {
         }
     }
 
+    /**
+     * Walks down the contentpacks/ folder hierarchy to find pack present as folders
+     */
     private void loadUnzippedPacks() {
         // load zipped packs
         try (Stream<Path> walk = Files.walk(this.contentPackPath)) {
@@ -76,10 +79,9 @@ public class PackManager {
                     .collect(Collectors.toList())
                     .forEach(pack -> {
                         Path basePath = pack.toPath();
-                        try(Stream<Path> subFiles = Files.walk(basePath)) {
-                            parseAndAdd(createUnzippedContentPack(basePath, subFiles.map(basePath::relativize).collect(Collectors.toList())));
-                        }
-                        catch (Exception e) {
+                        try {
+                            parseAndAdd(createUnzippedContentPack(basePath));
+                        } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
                     });
@@ -88,7 +90,14 @@ public class PackManager {
         }
     }
 
-    private ContentPack createUnzippedContentPack(Path basePath, List<Path> subFiles) throws FileNotFoundException {
+    /**
+     * Create {@link ContentPack} based on a folder
+     *
+     * @param basePath base folder path
+     * @return
+     * @throws IOException
+     */
+    private ContentPack createUnzippedContentPack(Path basePath) throws FileNotFoundException {
         Path actualPath = basePath.resolve("content.pack");
         File actualFile = actualPath.toFile();
 
@@ -110,6 +119,10 @@ public class PackManager {
         }
     }
 
+    /**
+     * Parses the data inside a content pack and adds it to the list of loaded packs
+     * @param contentPack
+     */
     private void parseAndAdd(ContentPack contentPack) {
         if (contentPack != null) {
             if (contentPack.getPackInfo().getNuwaDataVersion() == this.dataVersion) {
@@ -126,6 +139,9 @@ public class PackManager {
         }
     }
 
+    /**
+     * Walks down the contentpacks/ folder hierarchy to find pack present as zip files
+     */
     private void loadZippedPacks() {
         // load zipped packs
         try (Stream<Path> walk = Files.walk(this.contentPackPath)) {

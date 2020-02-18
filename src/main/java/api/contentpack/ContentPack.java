@@ -41,6 +41,12 @@ public class ContentPack {
     private Collection<IFile> subFiles;
     private final Path basePath;
 
+    /**
+     * Creates a zipped pack
+     * @param contentPackFileIn
+     * @param packInfoObject
+     * @param zipFileSize
+     */
     public ContentPack(File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this.contentPackFile = contentPackFileIn;
         this.packInfoObject = packInfoObject;
@@ -49,6 +55,13 @@ public class ContentPack {
         isZipped = true;
     }
 
+    /**
+     * Creates a zipped pack, with the given icon
+     * @param iconStream
+     * @param contentPackFileIn
+     * @param packInfoObject
+     * @param zipFileSize
+     */
     public ContentPack(InputStream iconStream, File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this(contentPackFileIn, packInfoObject, zipFileSize);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -60,6 +73,20 @@ public class ContentPack {
         });
     }
 
+    /**
+     * Creates a folder-based pack
+     */
+    public ContentPack(Path contentPackFolder, PackInfoObject packInfoObject) {
+        this.contentPackFile = contentPackFolder.toFile();
+        this.basePath = contentPackFolder;
+        this.packInfoObject = packInfoObject;
+        this.zipFileSize = 0L;
+        isZipped = false;
+    }
+
+    /**
+     * Creates a folder-based pack, with the given icon
+     */
     public ContentPack(InputStream iconStream, Path contentPackFolder, PackInfoObject packInfoObject) {
         this(contentPackFolder, packInfoObject);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
@@ -69,14 +96,6 @@ public class ContentPack {
                 e.printStackTrace();
             }
         });
-    }
-
-    public ContentPack(Path contentPackFolder, PackInfoObject packInfoObject) {
-        this.contentPackFile = contentPackFolder.toFile();
-        this.basePath = contentPackFolder;
-        this.packInfoObject = packInfoObject;
-        this.zipFileSize = 0L;
-        isZipped = false;
     }
 
     private ZipFile getBackingZip() throws IOException {
