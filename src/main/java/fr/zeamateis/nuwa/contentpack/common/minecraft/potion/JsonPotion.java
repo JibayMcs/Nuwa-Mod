@@ -6,7 +6,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Json parsed {@link Potion}
@@ -15,8 +14,20 @@ import javax.annotation.Nullable;
  */
 public class JsonPotion extends Potion {
 
-    public JsonPotion(@Nullable String baseNameIn, @Nonnull ResourceLocation registryNameIn, EffectInstance... effectsIn) {
+    private final String baseName;
+
+    public JsonPotion(@Nonnull String baseNameIn, @Nonnull ResourceLocation registryNameIn, EffectInstance... effectsIn) {
         super(baseNameIn, effectsIn);
+        this.baseName = baseNameIn;
         RegistryUtil.forceRegistryName(this, registryNameIn);
+    }
+
+    /**
+     * Gets the name of this PotionType with a prefix (such as "Splash" or "Lingering") prepended
+     */
+    @Override
+    public String getNamePrefixed(String prefix) {
+        String originalPrefix = prefix.substring("item.minecraft.".length());
+        return String.format("item.%s.%s%s", this.getRegistryName().getNamespace(), originalPrefix, this.baseName);
     }
 }

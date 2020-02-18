@@ -49,11 +49,10 @@ public class PotionsData implements IPackData {
     public void parseData(PackManager packManagerIn, ContentPack contentPackIn, InputStreamReader readerIn) {
         PotionObject potionObject = packManagerIn.getGson().fromJson(readerIn, PotionObject.class);
         ResourceLocation registryName = new ResourceLocation(contentPackIn.getNamespace(), potionObject.getRegistryName());
-        String baseName = potionObject.getBaseName() != null ? potionObject.getBaseName() : potionObject.getRegistryName();
         EffectInstance[] effectInstances = potionObject.getEffects().stream()
                 .map(effectObject ->
                         new EffectInstance(ForgeRegistries.POTIONS.getValue(new ResourceLocation(effectObject.getEffectName())), effectObject.getDuration())).toArray(EffectInstance[]::new);
-        this.potions.add(new JsonPotion(baseName, registryName, effectInstances));
+        this.potions.add(new JsonPotion(potionObject.getBaseName(), registryName, effectInstances));
     }
 
     /**

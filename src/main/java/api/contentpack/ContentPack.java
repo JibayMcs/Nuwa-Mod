@@ -246,7 +246,7 @@ public class ContentPack {
                 "contentPackFile=" + contentPackFile +
                 ", packInfoObject=" + packInfoObject +
                 ", isZipped=" + isZipped +
-                ", zipFileSize=" + contentPackSize +
+                ", contentPackSize=" + contentPackSize +
                 ", packIcon=" + packIcon +
                 '}';
     }

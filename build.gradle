@@ -13,7 +13,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'java-library'
 
-version = '0.1.4'
+version = '0.1.5'
 group = 'fr.zeamateis.nuwa'
 archivesBaseName = 'nuwa'
 def brokkguiVersion = '1.0.0-58-SNAPSHOT'
@@ -89,6 +89,7 @@ jar {
     }
 
     exclude("tests/**")
+    exclude("**/*.xcf")
     exclude("assets/nuwa/models/**")
 }
 

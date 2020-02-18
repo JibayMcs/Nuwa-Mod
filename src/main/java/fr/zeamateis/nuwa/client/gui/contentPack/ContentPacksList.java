@@ -65,7 +65,7 @@ public class ContentPacksList extends ExtendedList<ContentPacksList.PackEntry> {
         public void render(int entryIdx, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean p_194999_5_, float partialTicks) {
             String name = stripControlCodes(contentPack.getPackName());
             String version = stripControlCodes(contentPack.getVersion());
-            String zipSize = stripControlCodes(FileUtils.byteCountToDisplaySize(contentPack.getContentPackSize()));
+            String contentPackSize = stripControlCodes(FileUtils.byteCountToDisplaySize(contentPack.getContentPackSize()));
             FontRenderer font = this.parent.getFontRenderer();
 
             //Display pack name
@@ -73,7 +73,7 @@ public class ContentPacksList extends ExtendedList<ContentPacksList.PackEntry> {
             //Display pack version
             font.drawString(font.trimStringToWidth(version, listWidth), left + (this.hasPackIcon ? 32 : 3), top + 2 + font.FONT_HEIGHT, 0x666666);
             //Display zip/folder file size
-            font.drawString(font.trimStringToWidth(zipSize, listWidth), left + (this.hasPackIcon ? 32 : 3), top + 12 + font.FONT_HEIGHT, 0x666666);
+            font.drawString(font.trimStringToWidth(contentPackSize, listWidth), left + (this.hasPackIcon ? 32 : 3), top + 12 + font.FONT_HEIGHT, 0x666666);
 
             bindPackIcon();
             if (hasPackIcon) {
