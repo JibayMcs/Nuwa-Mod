@@ -98,6 +98,25 @@ public class PackManager {
     }
 
     /**
+     * Getting size of given folder
+     */
+    private long getFolderSize(File folder) {
+        long length = 0;
+        File[] files = folder.listFiles();
+
+        int count = files.length;
+
+        for (int i = 0; i < count; i++) {
+            if (files[i].isFile()) {
+                length += files[i].length();
+            } else {
+                length += getFolderSize(files[i]);
+            }
+        }
+        return length;
+    }
+
+    /**
      * Create {@link ContentPack} based on a folder
      *
      * @param basePath base folder path
@@ -120,9 +139,9 @@ public class PackManager {
 
         if (packIconEntry != null) {
             stream.set(new FileInputStream(packIconEntry));
-            return new ContentPack(stream.get(), basePath, packInfoObject);
+            return new ContentPack(stream.get(), basePath, packInfoObject, getFolderSize(basePath.toFile()));
         } else {
-            return new ContentPack(basePath, packInfoObject);
+            return new ContentPack(basePath, packInfoObject, getFolderSize(basePath.toFile()));
         }
     }
 

@@ -35,7 +35,7 @@ public class ContentPack {
 
     private final File contentPackFile;
     private final PackInfoObject packInfoObject;
-    private final long zipFileSize;
+    private final long contentPackSize;
     private final Path basePath;
     private NativeImage packIcon;
     private ZipFile zipFile;
@@ -55,7 +55,7 @@ public class ContentPack {
     public ContentPack(File contentPackFileIn, PackInfoObject packInfoObject, long zipFileSize) {
         this.contentPackFile = contentPackFileIn;
         this.packInfoObject = packInfoObject;
-        this.zipFileSize = zipFileSize;
+        this.contentPackSize = zipFileSize;
         this.basePath = null;
         isZipped = true;
     }
@@ -81,19 +81,19 @@ public class ContentPack {
     /**
      * Creates a folder-based pack
      */
-    public ContentPack(Path contentPackFolder, PackInfoObject packInfoObject) {
+    public ContentPack(Path contentPackFolder, PackInfoObject packInfoObject, long folderPackSize) {
         this.contentPackFile = contentPackFolder.toFile();
         this.basePath = contentPackFolder;
         this.packInfoObject = packInfoObject;
-        this.zipFileSize = 0L;
+        this.contentPackSize = folderPackSize;
         this.isZipped = false;
     }
 
     /**
      * Creates a folder-based pack, with the given icon
      */
-    public ContentPack(InputStream iconStream, Path contentPackFolder, PackInfoObject packInfoObject) {
-        this(contentPackFolder, packInfoObject);
+    public ContentPack(InputStream iconStream, Path contentPackFolder, PackInfoObject packInfoObject, long folderPackSize) {
+        this(contentPackFolder, packInfoObject, folderPackSize);
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             try {
                 packIcon = NativeImage.read(iconStream);
@@ -220,8 +220,8 @@ public class ContentPack {
         this.packIcon = packIconIn;
     }
 
-    public long getZipFileSize() {
-        return zipFileSize;
+    public long getContentPackSize() {
+        return contentPackSize;
     }
 
     public File getFile() {
@@ -246,7 +246,7 @@ public class ContentPack {
                 "contentPackFile=" + contentPackFile +
                 ", packInfoObject=" + packInfoObject +
                 ", isZipped=" + isZipped +
-                ", zipFileSize=" + zipFileSize +
+                ", zipFileSize=" + contentPackSize +
                 ", packIcon=" + packIcon +
                 '}';
     }
