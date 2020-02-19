@@ -88,13 +88,33 @@ public class BlocksData implements IPackData {
                         }
                     }
                     break;
+                    /*
+                    case STAIRS:
+                    case SLABS:
+                    case WALL:
+                    case FALLING_BLOCK:
+                    case FENCE:
+                    case FENCE_GATE:
+                    case TRAPDOOR:
+                    case DOOR:
+                    case FLOWER:
+                    case TALL_PLANT:
+                    case GRASS:
+                    case GLASS:
+                    case PANE:
+                    case CARPET:
+                    case SLOW_BLOCK:
+                    case BIOME_COLOR:
+                    case INVISIBLE:
+                    case LEAVES:
+                     */
                     case DEFAULT:
+                    default:
                         parsedBlock.set((IJsonBlock) blockType.getBlockType()
                                 .getDeclaredConstructor(Block.Properties.class, ResourceLocation.class)
                                 .newInstance(properties, blockRegistryName));
                         break;
                 }
-
 
                 if (blocksObject.getEvent() != null) {
                     parsedBlock.get().setBlockEventObject(NuwaRegistries.BLOCK_EVENT.getValue(new ResourceLocation(blocksObject.getEvent())).getBlockEventsObject());
@@ -137,7 +157,6 @@ public class BlocksData implements IPackData {
                         new Item.Properties().group(parsedBlock.get().getItemGroup()),
                         Objects.requireNonNull(parsedBlock.get().getRegistryName()));
                 ForgeRegistries.ITEMS.register(jsonBlockItem);
-
 
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();

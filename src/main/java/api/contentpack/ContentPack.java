@@ -125,7 +125,7 @@ public class ContentPack {
             } else {
                 subFiles = walkFolders();
             }
-            NuwaMod.LOGGER.warn("Read files from content pack {}: {}", getPackInfo().getPackName(), subFiles.stream().map(it -> it.getName()).collect(Collectors.joining(",")));
+            NuwaMod.LOGGER.debug("Read files from content pack {}: {}", getPackInfo().getPackName(), subFiles.stream().map(it -> it.getName()).collect(Collectors.joining(",")));
         }
         return subFiles;
     }
