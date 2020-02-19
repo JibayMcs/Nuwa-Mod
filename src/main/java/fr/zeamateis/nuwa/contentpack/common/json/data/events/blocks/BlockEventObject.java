@@ -3,6 +3,8 @@ package fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.base.ProcessEvent;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.List;
+
 /**
  * Reprensentation of Json {@link ProcessEvent} objects
  *
@@ -12,7 +14,7 @@ public class BlockEventObject {
 
     private String registryName;
 
-    private EntityBlockEvent entityCollideBlockEvent;
+    private List<EntityBlockEvent> entitiesCollideBlockEvents;
     private ProcessEvent playerDestroyBlockEvent;
     private ProcessEvent leftClickBlockEvent, rightClickBlockEvent;
 
@@ -24,8 +26,8 @@ public class BlockEventObject {
         this.registryName = registryName.toString();
     }
 
-    public EntityBlockEvent getEntityCollideBlockEvent() {
-        return entityCollideBlockEvent;
+    public List<EntityBlockEvent> getEntitiesCollideBlockEvents() {
+        return entitiesCollideBlockEvents;
     }
 
     public ProcessEvent getPlayerDestroyBlockEvent() {

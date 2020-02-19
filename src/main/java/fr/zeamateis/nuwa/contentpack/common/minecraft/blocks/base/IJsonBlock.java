@@ -12,6 +12,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.extensions.IForgeBlock;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import java.util.List;
+
 public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
     VoxelShape getShape();
 
@@ -31,21 +33,23 @@ public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
 
     default void onEntityCollisionEvent(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         if (getBlockEventObject() != null) {
-            EntityBlockEvent entityBlockEvent = getBlockEventObject().getEntityCollideBlockEvent();
-            if (entityBlockEvent != null) {
-                if (!entityBlockEvent.getAffectedEntities().isEmpty()) {
-                    entityBlockEvent.getAffectedEntities().stream().forEach(entityType -> {
-                        entityBlockEvent.getProcesses().forEach(process -> {
-                            if (entityIn.getType().equals(entityType)) {
-                                process.process(worldIn, pos, entityIn);
-                            }
+            List<EntityBlockEvent> entitiesBlockEvents = getBlockEventObject().getEntitiesCollideBlockEvents();
+            if (entitiesBlockEvents != null) {
+                entitiesBlockEvents.forEach(entityBlockEvent -> {
+                    if (!entityBlockEvent.getAffectedEntities().isEmpty()) {
+                        entityBlockEvent.getAffectedEntities().stream().forEach(entityType -> {
+                            entityBlockEvent.getProcesses().forEach(process -> {
+                                if (entityIn.getType().equals(entityType)) {
+                                    process.process(worldIn, pos, entityIn);
+                                }
+                            });
                         });
-                    });
-                } else {
-                    entityBlockEvent.getProcesses().forEach(process -> {
-                        process.process(worldIn, pos, entityIn);
-                    });
-                }
+                    } else {
+                        entityBlockEvent.getProcesses().forEach(process -> {
+                            process.process(worldIn, pos, entityIn);
+                        });
+                    }
+                });
             }
         }
     }
