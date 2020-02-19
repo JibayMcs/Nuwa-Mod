@@ -1,6 +1,8 @@
 package fr.zeamateis.nuwa.contentpack.common.json.data.blocks;
 
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.BlockPropertiesObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.CropsProperties;
+import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.FallingProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.OreProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.shape.VoxelShapeObject;
 
@@ -11,22 +13,24 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.shape.VoxelShapeObj
  */
 public class BlockObject {
 
-    private BlockPropertiesObject properties;
     private String registryName;
     private String itemGroup;
-    private VoxelShapeObject voxelShape;
     private String blockType;
 
-    private String cropSeed;
+    private BlockPropertiesObject properties;
+
+    private VoxelShapeObject voxelShape;
+
+    private CropsProperties cropsProperties;
 
     private OreProperties oreProperties;
 
     private String event;
 
-    public BlockObject(String registryName, String itemGroup) {
-        this.registryName = registryName;
-        this.itemGroup = itemGroup;
-    }
+    /**
+     * Used for {@link fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonFallingBlock}
+     */
+    private FallingProperties fallingProperties;
 
     public BlockPropertiesObject getProperties() {
         return properties;
@@ -48,8 +52,8 @@ public class BlockObject {
         return blockType;
     }
 
-    public String getCropSeed() {
-        return cropSeed;
+    public CropsProperties getCropsProperties() {
+        return cropsProperties;
     }
 
     public OreProperties getOreProperties() {
@@ -58,5 +62,9 @@ public class BlockObject {
 
     public String getEvent() {
         return event;
+    }
+
+    public FallingProperties getFallingProperties() {
+        return fallingProperties;
     }
 }

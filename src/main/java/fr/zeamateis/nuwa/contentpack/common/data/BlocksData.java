@@ -4,6 +4,8 @@ import api.contentpack.ContentPack;
 import api.contentpack.PackManager;
 import api.contentpack.data.IPackData;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.BlockObject;
+import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.CropsProperties;
+import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.FallingProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.properties.OreProperties;
 import fr.zeamateis.nuwa.contentpack.common.json.data.blocks.type.BlockType;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonCropsBlock;
@@ -19,6 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -70,14 +73,36 @@ public class BlocksData implements IPackData {
                 blocksObject.getProperties().getParsedProperties() : blockType.getDefaultProperties();
 
         OreProperties oreProperties = blocksObject.getOreProperties();
+        CropsProperties cropsProperties = blocksObject.getCropsProperties();
+        FallingProperties fallingProperties = blocksObject.getFallingProperties();
 
         if (blockType != BlockType.NULL) {
             try {
                 switch (blockType) {
                     case CROPS: {
-                        parsedBlock.set((IJsonBlock) blockType.getBlockType()
-                                .getDeclaredConstructor(Item.class, Block.Properties.class, ResourceLocation.class)
-                                .newInstance(ForgeRegistries.ITEMS.getValue(new ResourceLocation(blocksObject.getCropSeed())), properties, blockRegistryName));
+                        if (cropsProperties != null) {
+                            //Tricky way to force Block#fillStateContainer() to add  property in builder before constructing class
+                            Class<? extends Block> blockTypeClass = blockType.getBlockType();
+                            try {
+                                Field cropsAge = blockTypeClass.getDeclaredField("cropsAge");
+                                cropsAge.setAccessible(true);
+                                cropsAge.set(blockTypeClass, cropsProperties.getAgeProperty());
+                            } catch (NoSuchFieldException ex) {
+                                ex.printStackTrace();
+                            }
+                            //Parsed JsonCropBlock
+                            parsedBlock.set((IJsonBlock) blockTypeClass
+                                    .getDeclaredConstructor(CropsProperties.class, Block.Properties.class, ResourceLocation.class)
+                                    .newInstance(cropsProperties, properties, blockRegistryName));
+                        }
+                    }
+                    break;
+                    case FALLING_BLOCK: {
+                        if (fallingProperties != null) {
+                            parsedBlock.set((IJsonBlock) blockType.getBlockType()
+                                    .getDeclaredConstructor(FallingProperties.class, Block.Properties.class, ResourceLocation.class)
+                                    .newInstance(fallingProperties, properties, blockRegistryName));
+                        }
                     }
                     break;
                     case ORE: {

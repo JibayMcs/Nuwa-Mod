@@ -4,10 +4,14 @@ import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventOb
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.ILeavesColor;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -64,5 +68,10 @@ public class JsonLeavesBlock extends LeavesBlock implements IJsonBlock, ILeavesC
     @Override
     public void setItemGroup(ItemGroup itemGroup) {
         this.itemGroup = itemGroup;
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        this.onEntityCollisionEvent(state, worldIn, pos, entityIn);
     }
 }

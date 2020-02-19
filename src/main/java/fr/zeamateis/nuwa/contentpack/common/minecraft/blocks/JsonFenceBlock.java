@@ -3,10 +3,14 @@ package fr.zeamateis.nuwa.contentpack.common.minecraft.blocks;
 import fr.zeamateis.nuwa.contentpack.common.json.data.events.blocks.BlockEventObject;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -67,4 +71,8 @@ public class JsonFenceBlock extends FenceBlock implements IJsonBlock {
         this.itemGroup = itemGroup;
     }
 
+    @Override
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        this.onEntityCollisionEvent(state, worldIn, pos, entityIn);
+    }
 }

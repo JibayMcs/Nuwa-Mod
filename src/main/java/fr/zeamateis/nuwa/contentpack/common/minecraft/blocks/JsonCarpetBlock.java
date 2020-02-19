@@ -6,6 +6,7 @@ import fr.zeamateis.nuwa.contentpack.common.minecraft.util.RegistryUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -94,4 +96,8 @@ public class JsonCarpetBlock extends Block implements IJsonBlock {
         return !worldIn.isAirBlock(pos.down());
     }
 
+    @Override
+    public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+        this.onEntityCollisionEvent(state, worldIn, pos, entityIn);
+    }
 }
