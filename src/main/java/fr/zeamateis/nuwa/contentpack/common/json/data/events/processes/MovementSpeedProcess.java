@@ -16,9 +16,7 @@ public class MovementSpeedProcess implements IProcess {
 
     @Override
     public void process(World worldIn, BlockPos posIn, Entity entityIn) {
-        if (!worldIn.isRemote()) {
-            entityIn.setMotion(entityIn.getMotion().mul(moveFactor[0], moveFactor[1], moveFactor[2]));
-        }
+        entityIn.setMotion(entityIn.getMotion().mul(moveFactor[0], moveFactor[1], moveFactor[2]));
     }
 
     @Override

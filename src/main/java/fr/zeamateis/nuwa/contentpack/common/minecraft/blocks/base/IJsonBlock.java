@@ -41,7 +41,10 @@ public interface IJsonBlock extends IForgeRegistryEntry<Block>, IForgeBlock {
                             }
                         });
                     });
-
+                } else {
+                    entityBlockEvent.getProcesses().forEach(process -> {
+                        process.process(worldIn, pos, entityIn);
+                    });
                 }
             }
         }

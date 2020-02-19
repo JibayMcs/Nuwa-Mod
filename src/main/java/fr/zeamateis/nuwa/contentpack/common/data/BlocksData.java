@@ -88,14 +88,6 @@ public class BlocksData implements IPackData {
                         }
                     }
                     break;
-                    case SLOW_BLOCK: {
-                        if (blocksObject.getMotionValue() != null) {
-                            parsedBlock.set((IJsonBlock) blockType.getBlockType()
-                                    .getDeclaredConstructor(double[].class, Block.Properties.class, ResourceLocation.class)
-                                    .newInstance(blocksObject.getMotionValue(), properties, blockRegistryName));
-                        }
-                    }
-                    break;
                     /*
                     case STAIRS:
                     case SLABS:

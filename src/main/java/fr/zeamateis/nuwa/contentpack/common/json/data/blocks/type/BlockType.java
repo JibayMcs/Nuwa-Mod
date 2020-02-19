@@ -30,7 +30,6 @@ public enum BlockType {
     PANE(JsonPaneBlock.class, Block.Properties.from(Blocks.IRON_BARS)),
     CARPET(JsonCarpetBlock.class, Block.Properties.from(Blocks.WHITE_CARPET)),
     CROPS(JsonCropsBlock.class, Block.Properties.from(Blocks.WHEAT)),
-    SLOW_BLOCK(JsonSlowBlock.class, Block.Properties.from(Blocks.STONE).doesNotBlockMovement()),
     BIOME_COLOR(JsonBiomeColorBlock.class, Block.Properties.from(Blocks.STONE)),
     INVISIBLE(JsonInvisibleBlock.class, Block.Properties.from(Blocks.BARRIER)),
     LEAVES(JsonLeavesBlock.class, Block.Properties.from(Blocks.ACACIA_LEAVES)),

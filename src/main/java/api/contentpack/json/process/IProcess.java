@@ -10,6 +10,5 @@ public interface IProcess {
 
     void process(World worldIn, BlockPos posIn, Entity entityIn);
 
-
     String getRegistryName();
 }
