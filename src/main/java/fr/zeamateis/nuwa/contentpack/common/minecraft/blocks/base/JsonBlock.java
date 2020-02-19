@@ -57,7 +57,7 @@ public class JsonBlock extends Block implements IJsonBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return this.shape;
+        return this.shape != null ? this.shape : VoxelShapes.fullCube();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class JsonBlock extends Block implements IJsonBlock {
         if (getBlockEventObject() != null && getBlockEventObject().getEntityCollideBlockEvent() != null) {
             return Block.makeCuboidShape(1.0D, 0.0D, 1.0D, 15.0D, 15.0D, 15.0D);
         } else {
-            return this.blocksMovement ? this.collisionShape : VoxelShapes.empty();
+            return this.collisionShape != null ? this.blocksMovement ? VoxelShapes.empty() : this.collisionShape : VoxelShapes.fullCube();
         }
     }
 

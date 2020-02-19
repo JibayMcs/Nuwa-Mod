@@ -1,12 +1,10 @@
 package fr.zeamateis.nuwa.client.event;
 
-import api.contentpack.data.IPackData;
 import com.mojang.blaze3d.platform.GlStateManager;
 import fr.zeamateis.nuwa.Constant;
 import fr.zeamateis.nuwa.NuwaMod;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPackButton;
 import fr.zeamateis.nuwa.client.gui.contentPack.ContentPacksScreen;
-import fr.zeamateis.nuwa.contentpack.common.data.BlocksData;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.JsonInvisibleBlock;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IBiomeColor;
 import fr.zeamateis.nuwa.contentpack.common.minecraft.blocks.base.IJsonBlock;
@@ -113,29 +111,24 @@ public class ClientEvents {
         public static void registerBlockColourHandlers(ColorHandlerEvent.Block event) {
             BlockColors blockcolors = event.getBlockColors();
 
-            NuwaMod.getPackManager().getPackDataQueue().forEach((data) -> {
-                if (data.getForgeRegistry() != null)
-                    try {
-                        if (data.getForgeRegistry().getRegistrySuperType().equals(BlocksData.class)) {
-                            ((IPackData) data.getDataClass().newInstance()).getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class))
-                                    .forEach(block -> {
-                                        if (block instanceof IJsonBlock) {
-                                            IJsonBlock jsonBlock = (IJsonBlock) block;
-                                            if (jsonBlock instanceof IBiomeColor) {
-                                                IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
-                                                blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getGrassColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), (Block) biomeColorBlock);
-                                            } else if (jsonBlock instanceof ILeavesColor) {
-                                                ILeavesColor biomeColorBlock = (ILeavesColor) jsonBlock;
-                                                blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : FoliageColors.getDefault(), (Block) biomeColorBlock);
-                                            }
+            NuwaMod.getPackManager().getPackDataQueue()
+                    .forEach(data -> {
+                        if (data.getForgeRegistry() != null) {
+                            if (data.getForgeRegistry().getRegistrySuperType().equals(Block.class))
+                                data.getForgeRegistry().getValues().forEach(block -> {
+                                    if (block instanceof IJsonBlock) {
+                                        IJsonBlock jsonBlock = (IJsonBlock) block;
+                                        if (jsonBlock instanceof IBiomeColor) {
+                                            IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
+                                            blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getGrassColor(worldIn, pos) : GrassColors.get(0.5D, 1.0D), (Block) biomeColorBlock);
+                                        } else if (jsonBlock instanceof ILeavesColor) {
+                                            ILeavesColor biomeColorBlock = (ILeavesColor) jsonBlock;
+                                            blockcolors.register((state, worldIn, pos, tintIndex) -> worldIn != null && pos != null ? BiomeColors.getFoliageColor(worldIn, pos) : FoliageColors.getDefault(), (Block) biomeColorBlock);
                                         }
-                                    });
+                                    }
+                                });
                         }
-
-                    } catch (InstantiationException | IllegalAccessException ex) {
-                        ex.printStackTrace();
-                    }
-            });
+                    });
         }
 
         @SubscribeEvent
@@ -143,33 +136,30 @@ public class ClientEvents {
             final BlockColors blockColors = event.getBlockColors();
             final ItemColors itemColors = event.getItemColors();
 
-            NuwaMod.getPackManager().getPackDataQueue().forEach((data) -> {
-                if (data.getForgeRegistry() != null)
-                    try {
-                        if (data.getForgeRegistry().getRegistrySuperType().equals(BlocksData.class)) {
-                            ((IPackData) data.getDataClass().newInstance()).getObjectsList().stream().filter(registryEntry -> registryEntry.getRegistryType().equals(Block.class)).forEach(block -> {
-                                if (block instanceof IJsonBlock) {
-                                    IJsonBlock jsonBlock = (IJsonBlock) block;
-                                    if (jsonBlock instanceof IBiomeColor) {
-                                        IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
-                                        itemColors.register((p_210235_1_, p_210235_2_) -> {
-                                            BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
-                                            return blockColors.getColor(blockstate, null, null, p_210235_2_);
-                                        }, (Block) biomeColorBlock);
-                                    } else if (jsonBlock instanceof ILeavesColor) {
-                                        ILeavesColor biomeColorBlock = (ILeavesColor) jsonBlock;
-                                        itemColors.register((p_210235_1_, p_210235_2_) -> {
-                                            BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
-                                            return blockColors.getColor(blockstate, null, null, p_210235_2_);
-                                        }, (Block) biomeColorBlock);
+            NuwaMod.getPackManager().getPackDataQueue()
+                    .forEach(data -> {
+                        if (data.getForgeRegistry() != null) {
+                            if (data.getForgeRegistry().getRegistrySuperType().equals(Block.class))
+                                data.getForgeRegistry().getValues().forEach(block -> {
+                                    if (block instanceof IJsonBlock) {
+                                        IJsonBlock jsonBlock = (IJsonBlock) block;
+                                        if (jsonBlock instanceof IBiomeColor) {
+                                            IBiomeColor biomeColorBlock = (IBiomeColor) jsonBlock;
+                                            itemColors.register((p_210235_1_, p_210235_2_) -> {
+                                                BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
+                                                return blockColors.getColor(blockstate, null, null, p_210235_2_);
+                                            }, (Block) biomeColorBlock);
+                                        } else if (jsonBlock instanceof ILeavesColor) {
+                                            ILeavesColor biomeColorBlock = (ILeavesColor) jsonBlock;
+                                            itemColors.register((p_210235_1_, p_210235_2_) -> {
+                                                BlockState blockstate = ((BlockItem) p_210235_1_.getItem()).getBlock().getDefaultState();
+                                                return blockColors.getColor(blockstate, null, null, p_210235_2_);
+                                            }, (Block) biomeColorBlock);
+                                        }
                                     }
-                                }
-                            });
+                                });
                         }
-                    } catch (InstantiationException | IllegalAccessException ex) {
-                        ex.printStackTrace();
-                    }
-            });
+                    });
         }
     }
 

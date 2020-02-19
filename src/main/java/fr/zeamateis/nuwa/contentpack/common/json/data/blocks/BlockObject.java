@@ -21,6 +21,8 @@ public class BlockObject {
 
     private OreProperties oreProperties;
 
+    private double[] motionValue;
+
     private String event;
 
     public BlockObject(String registryName, String itemGroup) {
@@ -54,6 +56,10 @@ public class BlockObject {
 
     public OreProperties getOreProperties() {
         return oreProperties;
+    }
+
+    public double[] getMotionValue() {
+        return motionValue;
     }
 
     public String getEvent() {

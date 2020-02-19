@@ -11,11 +11,19 @@ public class VoxelShapeObject {
 
     private ShapeObject shape, collisionShape;
 
-    public VoxelShape getShape() {
+    public ShapeObject getShape() {
+        return shape;
+    }
+
+    public ShapeObject getCollisionShape() {
+        return collisionShape;
+    }
+
+    public VoxelShape getVoxelShape() {
         return ShapeObject.toVoxelShape(shape);
     }
 
-    public VoxelShape getCollisionShape() {
+    public VoxelShape getVoxelCollisionShape() {
         return ShapeObject.toVoxelShape(collisionShape);
     }
 

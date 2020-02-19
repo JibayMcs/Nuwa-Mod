@@ -88,6 +88,14 @@ public class BlocksData implements IPackData {
                         }
                     }
                     break;
+                    case SLOW_BLOCK: {
+                        if (blocksObject.getMotionValue() != null) {
+                            parsedBlock.set((IJsonBlock) blockType.getBlockType()
+                                    .getDeclaredConstructor(double[].class, Block.Properties.class, ResourceLocation.class)
+                                    .newInstance(blocksObject.getMotionValue(), properties, blockRegistryName));
+                        }
+                    }
+                    break;
                     /*
                     case STAIRS:
                     case SLABS:
@@ -103,7 +111,6 @@ public class BlocksData implements IPackData {
                     case GLASS:
                     case PANE:
                     case CARPET:
-                    case SLOW_BLOCK:
                     case BIOME_COLOR:
                     case INVISIBLE:
                     case LEAVES:
@@ -121,8 +128,10 @@ public class BlocksData implements IPackData {
                 }
 
                 //Voxel Shapes
-                parsedBlock.get().setShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getShape() : VoxelShapes.fullCube());
-                parsedBlock.get().setCollisionShape(blocksObject.getVoxelShape() != null ? blocksObject.getVoxelShape().getCollisionShape() : VoxelShapes.fullCube());
+                if (blocksObject.getVoxelShape() != null) {
+                    parsedBlock.get().setShape(blocksObject.getVoxelShape().getShape() != null ? blocksObject.getVoxelShape().getVoxelShape() : VoxelShapes.fullCube());
+                    parsedBlock.get().setCollisionShape(blocksObject.getVoxelShape().getCollisionShape() != null ? blocksObject.getVoxelShape().getVoxelCollisionShape() : VoxelShapes.fullCube());
+                }
 
                 //ItemGroup
                 if (!(parsedBlock.get() instanceof JsonCropsBlock)) {

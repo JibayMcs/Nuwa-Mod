@@ -15,15 +15,15 @@ public class BlockPropertiesObject {
      * Default Properties for a basic block if json file has no datas
      */
     @SerializedName("material")
-    private MaterialObject materialObject;
+    private MaterialObject materialObject = MaterialObject.ROCK;
     private float hardness;
     private float resistance;
     private int lightValue;
     @SerializedName("soundType")
-    private SoundTypeObject soundTypeObject;
+    private SoundTypeObject soundTypeObject = SoundTypeObject.STONE;
     private boolean doesNotBlockMovement;
     private int harvestLevel;
-    private String harvestTool;
+    private String harvestTool = "pickaxe";
     private float slipperiness;
     private boolean hasVariableOpacity;
     private boolean noDrops;
